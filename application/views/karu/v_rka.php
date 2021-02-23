@@ -1,4 +1,4 @@
-    <div class="card mb-3">
+ <div class="card mb-3">
      <div class="card-header">
         <i class="fa fa-table"></i> <?php echo $page_title ?>
       </div>
@@ -73,24 +73,24 @@
                   <td><?php echo $key->target?></td>
                   <td><?php echo $key->alokasi_tahun2021?></td>
                   <td class="text-center">
-                    <a href="<?php echo site_url()?>/C_Belanja/edit/<?php echo $key->id; ?>">
+                    <a href="<?php echo site_url()?>/C_Karu/edit/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-warning">
                         <i class="metismenu-icon fa fa-external-link-alt"></i> Ajukan Sebagai Draft DPA
                       </button>
                     </a>
-                    <a href="<?php echo site_url()?>/C_Belanja/detail/<?php echo $key->id; ?>">
+                    <a href="<?php echo site_url()?>/C_Karu/detail/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-primary">
                         <i class="metismenu-icon fa fa-list"></i> Detail
                       </button>
                     </a>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                      <a href="<?php echo site_url()?>/C_Belanja/edit/<?php echo $key->id; ?>" class="btn btn-warning">
+                      <a href="<?php echo site_url()?>/C_Karu/edit/<?php echo $key->id; ?>" class="btn btn-warning">
                         <i class="metismenu-icon fa fa-edit"></i>
                       </a>
-                      <a href="<?php echo site_url()?>/C_Belanja/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
+                      <a href="<?php echo site_url()?>/C_Karu/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
                         <i class="metismenu-icon fa fa-trash"></i>
                       </a>
-                      <a href="<?php echo site_url()?>/C_Belanja/cetak/<?php echo $key->id; ?>" class="btn btn-primary">
+                      <a href="<?php echo site_url()?>/C_Karu/cetak/<?php echo $key->id; ?>" class="btn btn-primary">
                         <i class="metismenu-icon fa fa-print"></i>
                       </a>
                     </div>

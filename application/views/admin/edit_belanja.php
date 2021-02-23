@@ -21,7 +21,40 @@
 
                     <?php echo (isset( $upload_error)) ? '<div class="alert alert-warning" role="alert">' .$upload_error. '</div>' : ''; ?>
 
-                    <?php echo form_open( current_url(), array('class' => 'needs-validation', 'novalidate' => '') ); ?>
+                    <?php echo form_open( current_url(), array('class' => 'needs-validation', 'novalidate' => '', 'id'=>'form1') ); ?>
+
+                        
+                     <div class="form-group">
+                          <label>Pilih Program : </label>
+                          <select id="kategori" name="program" class="form-control" value="<?php echo set_value('program', $belanja->program) ?>" required="">
+                            <option value="Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat">Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat</option>
+                            <option value="Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota">Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="title">Pilih Program</label>
+                            <select id="kategori" name="program" class="form-control" required>
+                            <?php
+                              $program=$belanja->program;
+                              if ($belanja== "Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat") echo "<option value='Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat' selected>Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat</option>";
+                              else echo "<option value='Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat'>Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat</option>";
+                              if ($belanja== "Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota") echo "<option value='Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota' selected>Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota</option>";
+                              else echo "<option value='Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota'>Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota</option>";                      
+                            ?>
+                          </select>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="title">Pilih Kegiatan</label>
+                            <select id="kegiatan" name="kegiatan" class="form-control" required>
+                            <?php
+                              $kegiatan=$belanja->kegiatan;
+                              if ($kegiatan== "Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat") echo "<option value='' disabled selected>Pilih Kegiatan</option><option value='Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)'>Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)</option><option value='Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)'>Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)</option><option value='Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota'>Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota</option>";
+                              else if ($kegiatan== "Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota") echo "<option value='Peningkatan Pelayanan RSUD'>Peningkatan Pelayanan RSUD</option>";
+                            ?>
+                          </select>
+                        </div>
 
                     <div class="form-group">
                         <label for="text">Tanggal</label>
