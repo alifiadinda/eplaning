@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2021 at 04:37 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.2.34
+-- Generation Time: Feb 25, 2021 at 06:44 AM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -48,6 +48,7 @@ INSERT INTO `akun` (`id_akun`, `username`, `password`, `nama`, `level`) VALUES
 ('6ad5c5a6baa74a05a216', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Tes Admin IT', 'Admin'),
 ('78e6ba3f91f24305a065', 'pengusul1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Pengusul', 'karu'),
 ('a10b4545fa424d79bf84', 'asdasd', '4473e588b35568687564de38ed134d0b', 'asdsadas', 'admin'),
+('bdac6a1ad28d464fb82b', 'adminkasubag', '31b8c943aab6287440162172e591c89f', 'Admin Kasubag', 'Kasubit'),
 ('c3a9397b32084249927a', 'lalala', '2e3817293fc275dbee74bd71ce6eb056', 'lalala', 'penerima');
 
 -- --------------------------------------------------------
@@ -57,24 +58,29 @@ INSERT INTO `akun` (`id_akun`, `username`, `password`, `nama`, `level`) VALUES
 --
 
 CREATE TABLE `detail_belanja` (
-  `id_detail` int(200) NOT NULL,
+  `id_detail` int(11) NOT NULL,
   `kode_rekening` varchar(255) NOT NULL,
   `uraian` text NOT NULL,
-  `butuh_rincian` tinyint(1) NOT NULL DEFAULT 0
+  `butuh_rincian` tinyint(1) NOT NULL DEFAULT 0,
+  `parent` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `detail_belanja`
 --
 
-INSERT INTO `detail_belanja` (`id_detail`, `kode_rekening`, `uraian`, `butuh_rincian`) VALUES
-(8, '5.1', 'Belanja Operasi', 0),
-(9, '5.1.01', 'Belanja Pegawai', 0),
-(10, '5.1.01.03', 'Tambahan Penghasilan berdasarkan Pertimbangan Objektif Lainnya ASN', 0),
-(14, '5.1.01.03.07', 'Belanja Honorarium', 0),
-(15, '5.1.01.03.07.0001', 'Belanja Honorarium Penanggungjawaban Pengelola Keuangan', 1),
-(16, '5.1.01.03.07.0002', 'Belanja Honorarium Pengadaan Barang/Jasa', 1),
-(17, '5.1.01.03.08', 'Belanja Jasa Pengelolaan BMD', 0);
+INSERT INTO `detail_belanja` (`id_detail`, `kode_rekening`, `uraian`, `butuh_rincian`, `parent`) VALUES
+(8, '5.1', 'Belanja Operasi', 0, NULL),
+(9, '5.1.01', 'Belanja Pegawai', 0, 8),
+(10, '5.1.01.03', 'Tambahan Penghasilan berdasarkan Pertimbangan Objektif Lainnya ASN', 0, 9),
+(14, '5.1.01.03.07', 'Belanja Honorarium', 0, 10),
+(15, '5.1.01.03.07.0001', 'Belanja Honorarium Penanggungjawaban Pengelola Keuangan', 1, 14),
+(16, '5.1.01.03.07.0002', 'Belanja Honorarium Pengadaan Barang/Jasa', 1, 14),
+(17, '5.1.02', 'Belanja Barang dan Jasa', 0, 8),
+(22, '5.1.02.01', 'Belanja Barang', 0, 17),
+(23, '5.1.02.01.01', 'Belanja Barang Pakai Habis', 0, 22),
+(24, '5.1.02.01.01.0002', 'Belanja Bahan-Bahan Kimia', 1, 23),
+(25, '5.1.02.01.01.0005', 'Belanja Bahan-Bahan Baku', 1, 23);
 
 -- --------------------------------------------------------
 
@@ -94,14 +100,14 @@ CREATE TABLE `dpa_detail` (
 --
 
 INSERT INTO `dpa_detail` (`id_dpa_detail`, `id_dpa`, `id_detail`, `jumlah`) VALUES
-(37, 27, 8, 0),
-(38, 27, 9, 0),
-(39, 27, 10, 0),
-(43, 27, 11, 0),
-(44, 27, 12, 0),
-(45, 27, 15, 0),
 (47, 29, 15, 0),
-(48, 29, 16, 0);
+(48, 29, 16, 0),
+(50, 28, 16, 0),
+(84, 34, 15, 0),
+(85, 34, 16, 0),
+(114, 31, 15, 0),
+(124, 27, 15, 0),
+(131, 26, 15, 0);
 
 -- --------------------------------------------------------
 
@@ -125,19 +131,13 @@ CREATE TABLE `rincian` (
 --
 
 INSERT INTO `rincian` (`id_rincian`, `id_dpa_detail`, `keterangan`, `koefisien`, `satuan`, `harga`, `PPN`, `jumlah`) VALUES
-(51, 43, 'djndjnjbdd', '2', '2', 2, 2, 2),
-(52, 43, 'djbfjdhbfhdb', '3', '3', 3, 3, 3),
-(53, 44, 'cie bisa', '2', '2', 2, 2, 2),
-(54, 45, 'Bendahara Pengeluaran Pembantu\r\nSpesifikasi : Nilai pagu dana di atas Rp50 miliar s.d. Rp 75 miliar', '12 Orang /Bulan', 'OB', 1150000, 0, 13800000),
-(55, 45, 'Bendahara Penerimaan Pembantu\r\nSpesifikasi : Nilai pagu dana di atas Rp 5miliar s.d. Rp 10 miliar', '12 Orang /Bulan', 'OB', 640000, 0, 7680000),
-(60, 47, 'Bendahara Pengeluaran Pembantu\r\nSpesifikasi : Nilai pagu dana di atas Rp50 miliar s.d. Rp 75 miliar', '12 Orang /Bulan', 'OB', 1150000, 0, 13800000),
-(61, 47, 'Bendahara Penerimaan Pembantu\r\nSpesifikasi : Nilai pagu dana di atas Rp 5miliar s.d. Rp 10 miliar', '12 Orang /Bulan', 'OB', 640000, 0, 7680000),
-(62, 47, 'Pejabat Penatausahaan Keuangan SKPD(PPK SKPD)\r\nSpesifikasi : Nilai pagu dana di atas Rp10 miliar s.d. Rp 25 miliar', '12 Orang /Bulan', 'OB', 1250000, 0, 15000000),
-(63, 47, 'Pejabat Pelaksana Teknis Kegiatan (PPTK)\r\nSpesifikasi : Nilai pagu dana di atas Rp10 miliar s.d. Rp 25 miliar', '12 Orang /Bulan', 'OB', 2920000, 0, 35040000),
-(64, 47, 'Bendahara Pengeluaran Pembantu\r\nSpesifikasi : Nilai pagu dana di atas Rp50 miliar s.d. Rp 75 miliar', '12 Orang /Bulan', 'OB', 1150000, 0, 13800000),
-(65, 47, 'Bendahara Penerimaan Pembantu\r\nSpesifikasi : Nilai pagu dana di atas Rp 5miliar s.d. Rp 10 miliar', '12 Orang /Bulan', 'OB', 640000, 0, 7680000),
-(66, 48, 'Pejabat Pemeriksa Hasil Pekerjaan(PjPHP)/Panitia Pemeriksa Hasil Pekerjaan(PPHP)\r\nSpesifikasi : Nilai pagu dana di atas Rp10 miliar s.d. Rp 25 miliar', '12 Orang /Bulan', 'OB', 570000, 0, 6840000),
-(67, 48, 'Honorarium Pejabat PengadaanBarang/Jasa (PPBJ)\r\nSpesifikasi : -', '12 Orang /Bulan', 'OB', 680000, 0, 8160000);
+(70, 50, 'Testinggg', '3', '3', 3, 3, 3),
+(123, 84, 'ewrertgr', '1', '1', 1, 1, 1),
+(124, 85, 'fergfregrgtrgtrg', '2', '2', 22, 2, 2),
+(176, 114, 'ytryhtruty', '1', '1', 1, 1, 1),
+(188, 124, 'Keterangan 3', '3', '3', 3, 3, 3),
+(199, 131, 'Pejabat Pelaksana Teknis Kegiatan (PPTK)\r\nSpesifikasi : Nilai pagu dana di atas Rp 1\r\nmiliar s.d. Rp 2,5 miliar', '12 Orang / Bulan ', 'OB', 1910000, 0, 22920000),
+(200, 131, 'Pejabat Penatausahaan Keuangan SKPD (PPK\r\nSKPD)\r\nSpesifikasi : Nilai pagu dana di atas Rp 1\r\nmiliar s.d. Rp 2,5 miliar', '12 Orang / Bulan ', 'OB', 770000, 0, 9240000);
 
 -- --------------------------------------------------------
 
@@ -173,14 +173,16 @@ CREATE TABLE `sk_belanja` (
 --
 
 INSERT INTO `sk_belanja` (`id`, `tanggal_sk`, `program`, `kegiatan`, `subkegiatan`, `indikator`, `target`, `alokasi_tahun2021`, `status`) VALUES
-(26, '2021-02-10', 'Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota', 'Peningkatan Pelayanan RSUD', 'Pelayanan dan Penunjang Pelayanan BLUD', 'dkdcnsdjkncd', 0, 0, 'Draft DPA'),
+(26, '2021-02-22', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota', 'Peningkatan Tata Kelola RSUD dan Fasilitas Pelayanan Kesehatan Tingkat daerah kabupaten/Kota', 'Presentase Unit Pelayanan Kesehatan Yang Memenuhi SPM', 100, 1407408000, 'RKA'),
 (27, '2021-11-09', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '9', 9, 9, 'RKA'),
 (28, '2021-02-14', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)', 'Pengadaan Prasarana dan Pendukung Fasilitas Pelayanan Kesehatan(RSUD)', 'dfgfhb', 10, 2021, 'RKA'),
 (29, '2021-02-15', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '1', 1, 1, 'RKA'),
 (30, '2021-02-16', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '2', 2, 2, 'RKA'),
 (31, '2021-02-15', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '77', 3, 33, 'RKA'),
-(32, '2021-02-14', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '4', 4, 4, 'RKA'),
-(33, '2021-02-15', 'Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota', 'Peningkatan Pelayanan RSUD', 'Pelayanan dan Penunjang Pelayanan BLUD', '2', 2, 2, 'DPA');
+(32, '2021-02-13', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '43', 43, 43, 'RKA'),
+(33, '2021-02-15', 'Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota', 'Peningkatan Pelayanan RSUD', 'Pelayanan dan Penunjang Pelayanan BLUD', '2', 2, 2, 'DPA'),
+(34, '2021-02-01', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '3', 2, 2, 'Draft DPA'),
+(35, '2021-02-23', 'Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '6', 6, 6, 'RKA');
 
 --
 -- Indexes for dumped tables
@@ -231,19 +233,19 @@ ALTER TABLE `sk_belanja`
 -- AUTO_INCREMENT for table `detail_belanja`
 --
 ALTER TABLE `detail_belanja`
-  MODIFY `id_detail` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `dpa_detail`
 --
 ALTER TABLE `dpa_detail`
-  MODIFY `id_dpa_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id_dpa_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT for table `rincian`
 --
 ALTER TABLE `rincian`
-  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
 
 --
 -- AUTO_INCREMENT for table `ruangan`
@@ -255,7 +257,7 @@ ALTER TABLE `ruangan`
 -- AUTO_INCREMENT for table `sk_belanja`
 --
 ALTER TABLE `sk_belanja`
-  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
