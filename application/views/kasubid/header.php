@@ -30,6 +30,8 @@
   <link rel="stylesheet" href="<?php echo base_url();?>adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
   <!-- SweetAlert -->
   <link rel="stylesheet" href="<?php echo base_url();?>adminlte/sa/dist/sweetalert2.min.css">
+  <!-- jQuery -->
+  <script src="<?= base_url('assets/adminlte/plugins/jquery/jquery.min.js') ?>"></script>
   <script>
     function tampilkan(){
       var kategori=document.getElementById("form1").kategori.value;
@@ -145,39 +147,65 @@
             </a>
           </li>
 
-          <li class="nav-item has-treeview">
-            <a href="<?php echo site_url('C_Belanja')?>" class="nav-link">
-              <i class="nav-icon fas fa-tasks"></i>
-              <p>
-               Sub Kegiatan Belanja
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?php echo site_url('C_Belanja')?>" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>SK Belanja</p>
-                </a>
-              </li>
-            </ul>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?php echo site_url();?>/C_Kasubid/viewListNilaiStandar" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>RKA</p>
-                </a>
-              </li>
-            </ul>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?php echo site_url();?>/C_admin/viewListNilaiKonversi" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>DPA</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+           <li class="nav-item has-treeview">
+              <a href="<?php echo site_url('C_Kasubid/Belanja')?>" class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                  Sub Kegiatan Belanja
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?php echo site_url('C_Kasubid/Belanja')?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>SK Belanja</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?php echo site_url();?>/C_Kasubid/RKA" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>RKA</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?php echo site_url();?>/C_Kasubid/Draft" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Draft DPA</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?php echo site_url();?>/C_Kasubid/DPA" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>DPA</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a href="<?php echo site_url();?>/C_admin/Usulan" class="nav-link" >
+                <i class="nav-icon fas fa-key"></i>
+                <p>
+                  Usulan
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="<?= site_url('C_Kasubid/detail_belanja');?>" class="nav-link" >
+                <i class="nav-icon fas fa-list"></i>
+                <p>
+                  Master Detail
+                </p>
+              </a>
+            </li>
           
         </ul>
       </nav>

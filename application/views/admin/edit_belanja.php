@@ -21,7 +21,58 @@
 
                     <?php echo (isset( $upload_error)) ? '<div class="alert alert-warning" role="alert">' .$upload_error. '</div>' : ''; ?>
 
-                    <?php echo form_open( current_url(), array('class' => 'needs-validation', 'novalidate' => '') ); ?>
+                    <?php echo form_open( current_url(), array('class' => 'needs-validation', 'novalidate' => '', 'id'=>'form1') ); ?>
+
+                        
+                     <div class="form-group">
+                          <label>Pilih Program : </label>
+                          <select id="kategori" name="program" onchange="tampilkan()" class="form-control" required="">
+                            <option value="Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat" <?php if($belanja->program=="Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat"){echo "selected";} ?>>Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat</option>
+                            <option value="Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota" <?php if($belanja->program=="Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota"){echo "selected";} ?>>Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="title">Pilih Program</label>
+                            <select id="kegiatan" name="kegiatan"  onchange="tampilkansub()" class="form-control" required>
+                            <?php
+                              $program=$belanja->program;
+                              if ($program== "Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat"){ ?>
+
+                                <option value='Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)' <?php if($belanja->kegiatan=="Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)"){echo "selected";} ?>>Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)</option>
+                                <option value='Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)' <?php if($belanja->kegiatan=="Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)"){echo "selected";} ?>>Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)</option>
+                                <option value='Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota' <?php if($belanja->kegiatan=="Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota"){echo "selected";} ?>>Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota</option>
+
+                                <?php
+                              }else{ ?>
+                                <option value='Peningkatan Pelayanan RSUD' <?php if($belanja->kegiatan=="Peningkatan Pelayanan RSUD"){echo "selected";} ?>>Peningkatan Pelayanan RSUD</option>
+                              <?php }
+                            ?>
+                          </select>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="title">Pilih Kegiatan</label>
+                          <select id="tampil" name="subkegiatan" class="form-control" required>
+                            <?php
+                              $kegiatan=$belanja->kegiatan;
+                              if ($kegiatan== "Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)"){ ?>
+                                <option value='Operasional Pelayanan RSUD' <?php if($belanja->subkegiatan=="Operasional Pelayanan RSUD"){echo "selected";} ?>>Operasional Pelayanan RSUD</option>
+                                <?php
+                              }else if ($kegiatan== "Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)"){
+                            ?>
+                              <option value="Pengadaan Prasarana dan Pendukung Fasilitas Pelayanan Kesehatan(RSUD)" <?php if($belanja->subkegiatan=="Pengadaan Prasarana dan Pendukung Fasilitas Pelayanan Kesehatan(RSUD)"){echo "selected";} ?>>Pengadaan Prasarana dan Pendukung Fasilitas Pelayanan Kesehatan(RSUD)</option>
+                              <option value="Pengadaan Alat Kesehatan atau Alat Penunjang Medik Fasilitas Pelayanan Kesehatan" <?php if($belanja->subkegiatan=="Pengadaan Alat Kesehatan atau Alat Penunjang Medik Fasilitas Pelayanan Kesehatan"){echo "selected";} ?>>Pengadaan Alat Kesehatan atau Alat Penunjang Medik Fasilitas Pelayanan Kesehatan</option>
+                            <?php }else if ($kegiatan== "Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota"){?>
+                              <option value="Peningkatan Tata Kelola RSUD dan Fasilitas Pelayanan Kesehatan Tingkat daerah kabupaten/Kota" <?php if($belanja->subkegiatan=="Peningkatan Tata Kelola RSUD dan Fasilitas Pelayanan Kesehatan Tingkat daerah kabupaten/Kota"){echo "selected";} ?>>Peningkatan Tata Kelola RSUD dan Fasilitas Pelayanan Kesehatan Tingkat daerah kabupaten/Kota</option>
+                            <?php }else{
+                              ?>
+                              <option value="Pelayanan dan Penunjang Pelayanan BLUD" <?php if($belanja->subkegiatan=="Pelayanan dan Penunjang Pelayanan BLUD"){echo "selected";} ?>>Pelayanan dan Penunjang Pelayanan BLUD</option>
+                              <?php
+                            }
+                            ?>
+                          </select>
+                        </div>
 
                     <div class="form-group">
                         <label for="text">Tanggal</label>
@@ -50,7 +101,7 @@
 
                      <div class="form-group">
                         <label for="text">Status</label>
-                        <input type="text" class="form-control" name="status" value="<?php echo set_value('status', $belanja->status) ?>" required>
+                        <input type="text" class="form-control" name="status" readonly="readonly" value="<?php echo set_value('status', $belanja->status) ?>" required>
                         <div class="invalid-feedback">Isi Status</div>
                     </div>
                     
