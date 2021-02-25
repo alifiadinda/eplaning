@@ -80,4 +80,10 @@ class C_DetailBelanja extends CI_Controller {
 		redirect(site_url('c_karu/detail_belanja'));
 	}
 
+	public function deletekasubid($id_detail){
+		$this->db->where('id_detail', $id_detail);
+		$result = $this->db->delete('detail_belanja');
+		redirect(site_url('C_Kasubid/detail_belanja'));
+	}
+
 }

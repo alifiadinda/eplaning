@@ -30,6 +30,8 @@
   <link rel="stylesheet" href="<?php echo base_url();?>adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
   <!-- SweetAlert -->
   <link rel="stylesheet" href="<?php echo base_url();?>adminlte/sa/dist/sweetalert2.min.css">
+  <!-- jQuery -->
+  <script src="<?= base_url('assets/adminlte/plugins/jquery/jquery.min.js') ?>"></script>
   <script>
     function tampilkan(){
       var kategori=document.getElementById("form1").kategori.value;

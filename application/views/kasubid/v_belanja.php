@@ -1,4 +1,4 @@
- <div class="content-header">
+<div class="content-header">
               <div class="container-fluid">
                 <div class="row mb-2">
                   <div class="col-sm-6">
@@ -24,7 +24,7 @@
                         ?>
                         <?php echo validation_errors(); ?>
                         <?php echo (isset( $upload_error)) ? '<div class="alert alert-warning" role="alert">' .$upload_error. '</div>' : ''; ?>
-                       <?php echo form_open_multipart( 'C_Karu/create', array('class' => 'needs-validation', 'novalidate' => '', 'id'=>'form1') ); ?>
+                       <?php echo form_open_multipart( 'C_Kasubid/create', array('class' => 'needs-validation', 'novalidate' => '', 'id'=>'form1') ); ?>
                         <div class="form-group">
                           <label>Pilih Program : </label>
                           <select id="kategori" name="program" onchange="tampilkan()" class="form-control" required="">
@@ -141,8 +141,8 @@
                         <div class="form-group">
                           <label>Data tersaring sesuai pilihan diatas : </label><br>
                           <?php if(!empty($program)){?>
-                          <!-- <?php echo anchor('C_Belanja/create', 'Tambah', array('class' => 'btn btn-primary')); ?><br><br> -->
-                          <?php echo form_open( 'C_Belanja/create', array('class' => 'needs-validation', 'novalidate' => '') ); ?>
+                          <!-- <?php echo anchor('C_Kasubid/create', 'Tambah', array('class' => 'btn btn-primary')); ?><br><br> -->
+                          <?php echo form_open( 'C_Kasubid/create', array('class' => 'needs-validation', 'novalidate' => '') ); ?>
                             <input type="hidden" name="kategori" value="<?php echo $program?>">
                             <input type="hidden" name="kegiatan" value="<?php echo $kegiatan?>">
                             <input type="hidden" name="tampil" value="<?php echo $subkegiatan?>">
@@ -176,17 +176,17 @@
                                                 <td><?php echo $value->target?></td>
                                                 <td><?php echo $value->alokasi_tahun2021?></td>
                                                 <td align='center'>
-                                                   <a href="<?php echo site_url()?>/C_Karu/detail/<?php echo $value->id; ?>">
+                                                   <a href="<?php echo site_url()?>/C_Kasubid/detail/<?php echo $value->id; ?>">
                                                       <button type="button" class="btn mr-2 mb-2 btn-primary">
                                                         <i class="metismenu-icon fa fa-edit"></i> Detail
                                                        </button>
                                                     </a>
-                                                     <a href="<?php echo site_url()?>/C_Karu/edit/<?php echo $value->id; ?>">
+                                                     <a href="<?php echo site_url()?>/C_Kasubid/edit/<?php echo $value->id; ?>">
                                                       <button type="button" class="btn mr-2 mb-2 btn-warning">
                                                           <i class="metismenu-icon fa fa-edit"></i> Edit
                                                       </button>
                                                      </a>
-                                                    <a href="<?php echo site_url()?>/C_Karu/delete/<?php echo $value->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')">
+                                                    <a href="<?php echo site_url()?>/C_Kasubid/delete/<?php echo $value->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')">
                                                     <button type="button" class="btn mr-2 mb-2 btn-danger" >
                                                       <i class="metismenu-icon fa fa-user-times"></i> Hapus
                                                     </button>
