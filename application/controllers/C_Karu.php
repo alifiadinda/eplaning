@@ -238,7 +238,7 @@ class C_Karu extends CI_Controller {
         if ($this->form_validation->run() === FALSE)
         {
             $this->load->view('karu/header');
-            $this->load->view('admin/edit_belanja',$data);
+            $this->load->view('karu/edit_belanja',$data);
             $this->load->view('karu/footer');
         } else {
 
