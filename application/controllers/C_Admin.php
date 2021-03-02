@@ -10,6 +10,7 @@ class C_Admin extends CI_Controller {
 		if ($this->session->userdata('status')==TRUE) 
 		{
 			$this->load->model('M_admin');
+			$this->load->model('M_Belanja');
 		}else{	
 			redirect('C_login');
 		}
@@ -119,6 +120,50 @@ class C_Admin extends CI_Controller {
 		echo "<script>alert('Akun telah berhasil dihapus!')</script>";
 		redirect('C_admin/viewAkun','refresh');
 	}
+
+
+	// UPDATE CETAK
+	public function cetak($id_rka) {
+		// $data['capaian'] = 100;
+		// $data['sk_belanja'] = $this->where  .....($id_rka) get('sk_belanja')->row();
+		$data['id_dpa'] = $id_rka;
+        $data['sk_belanja'] = $this->db->where('id', $id_rka)->get('sk_belanja')->row();
+		$data['RKA'] = $this->M_admin->getRKA();
+		$data['belanja'] = $this->M_Belanja->get_belanja_by_id_rka($id_rka);
+
+        //$data['detail'] = $this->getDetailBelanja($id_dpa);
+		$data['detail'] = $this->getDetailBelanja($id_rka);
+
+		$this->load->view('admin/v_cetak_rka',$data);
+	}
+
+	function getDetailBelanja($id_dpa){
+		$this->db->order_by('db.kode_rekening');
+		$result = $this->db->get('detail_belanja db')->result();
+		foreach ($result as $key => $value) {
+			$result[$key]->kode_rekening_parent = $value->parent ? $this->getKodeRekeningParent($value->parent) : '';
+
+			$dpa_detail = $this->db
+			->where('id_dpa', $id_dpa)
+			->where('id_detail', $value->id_detail)->get('dpa_detail')->row();
+			if ($dpa_detail) {
+				$result[$key]->rincian = $this->getRincian($dpa_detail->id_dpa_detail);
+			} else {
+				$result[$key]->rincian = [];
+			}
+		}
+		return $result;
+	}
+
+	function getKodeRekeningParent($id_parent) {
+		return $this->db->where('id_detail',$id_parent)->get('detail_belanja')->row()->kode_rekening;
+	}
+
+	function getRincian($id_dpa_detail){
+		$this->db->where('id_dpa_detail', $id_dpa_detail);
+		return $this->db->get('rincian')->result();
+	}
+	// UPDATE CETAK
 
 }
 

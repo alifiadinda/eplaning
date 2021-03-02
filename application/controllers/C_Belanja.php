@@ -102,7 +102,7 @@ class C_Belanja extends CI_Controller {
         $ppn = $this->input->post('ppn[]');
         $jumlah = $this->input->post('jumlah[]');
 
-        $unique = !empty($id_detail) ? array_unique($id_detail) : [];
+        $unique = array_unique($id_detail);
         foreach ($unique as $key => $uniq) {
             $this->bersihkanRincianDetail($id_dpa, $uniq);
         }
@@ -139,7 +139,7 @@ class C_Belanja extends CI_Controller {
         }
     }
 
-    public function bersihkanRincianDetail($id_dpa){
+   public function bersihkanRincianDetail($id_dpa){
         $ada = $this->db->where('id_dpa', $id_dpa)->get('dpa_detail')->result();
         foreach ($ada as $key => $value) {
             $this->db->where('id_dpa_detail', $value->id_dpa_detail)->delete('rincian');
@@ -197,7 +197,6 @@ class C_Belanja extends CI_Controller {
         } else {
 
             $post_data = array(
-                'program'                => $this->input->post('program'),
                 'tanggal_sk'             => $this->input->post('tanggal_sk'),
                 'indikator'              => $this->input->post('indikator'),
                 'target'                 => $this->input->post('target'),

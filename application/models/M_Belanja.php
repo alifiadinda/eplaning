@@ -35,6 +35,12 @@ class M_Belanja extends CI_Model {
         return $query->row();
     }
 
+    public function get_belanja_by_id_rka($id_rka)
+    {
+        $query = $this->db->get_where('sk_belanja', array('id' => $id_rka));
+        return $query->row();
+    }
+
     public function update_belanja($data, $id) 
     {
         if ( !empty($data) && !empty($id) ){

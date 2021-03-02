@@ -17,8 +17,9 @@
 					<?php print_r($detail) ?>
 				</pre> -->
 				<form method="POST" action="<?= site_url('c_belanja/save_rincian') ?>">
-					<button type="submit" class="btn btn-primary">Simpan</button>
-					<input type="hidden" name="id_dpa" value="<?= $id_dpa ?>">
+					<a class="btn btn-primary" href="<?= base_url('index.php/c_admin/rka') ?>">Kembali</a>
+					<button type="submit" class="btn btn-success">Simpan</button>
+					<input type="hidden" name="id_dpa" value="<?= $id_dpa  ?>">
 					<br>
 					<br>
 					<table class="table">
@@ -37,7 +38,7 @@
 						</thead>
 						<tbody>
 							<?php foreach ($detail as $key => $d) { ?>
-							<tr>
+							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>">
 								<td>
 									<?php if ($d->butuh_rincian==1) { ?>
 									<span class="btn btn-success" onclick="tambahRincian(this, '<?= $d->id_detail ?>')"><i class="fa fa-plus"></i></span>
@@ -45,11 +46,12 @@
 								</td>
 								<td ><?= $d->kode_rekening; ?></td>
 								<td ><?= $d->uraian; ?></td>
-								<td colspan="6">
+								<td colspan="5">
 								</td>
+								<td class="text-right">0</td>
 							</tr>
 							<?php foreach ($d->rincian as $key => $rincian) { ?>
-							<tr>
+							<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>">
 								<td>
 									<span class="btn btn-danger" onclick="hapusKolom(this)"><i class="fa fa-trash"></i></span>
 								</td>
@@ -57,22 +59,22 @@
 									<input name="id_detail[]" type="hidden" value="<?= $d->id_detail ?>" />
 								</td>
 								<td>
-									<textarea class="form-control" name="keterangan[]" placeholder="Keterangan"><?= $rincian->keterangan; ?></textarea>
+									<textarea class="form-control" name="keterangan[]" placeholder="Keterangan" required><?= $rincian->keterangan; ?></textarea>
 								</td>
 								<td>
-									<input class="form-control" name="koefisien[]" type="text" placeholder="Koefisien" value="<?= $rincian->koefisien ?>" />
+									<input class="form-control" name="koefisien[]" type="text" placeholder="Koefisien" required value="<?= $rincian->koefisien ?>" />
 								</td>
 								<td>
-									<input class="form-control" name="satuan[]" type="text" placeholder="Satuan" value="<?= $rincian->satuan ?>" />
+									<input class="form-control" name="satuan[]" type="text" placeholder="Satuan" required value="<?= $rincian->satuan ?>" />
 								</td>
 								<td>
-									<input class="form-control" name="harga[]" type="text" placeholder="Harga" value="<?= $rincian->harga ?>" />
+									<input class="form-control" name="harga[]" type="text" placeholder="Harga" required value="<?= $rincian->harga ?>" />
 								</td>
 								<td>
-									<input class="form-control" name="ppn[]" type="text" placeholder="PPN" value="<?= $rincian->PPN ?>" />
+									<input class="form-control" name="ppn[]" type="text" placeholder="PPN" required value="<?= $rincian->PPN ?>" />
 								</td>
-								<td>
-									<input class="form-control" name="jumlah[]" type="text" placeholder="Jumlah" value="<?= $rincian->jumlah ?>" />
+								<td class="inputRincian">
+									<input class="form-control" name="jumlah[]" type="text" placeholder="Jumlah" required value="<?= $rincian->jumlah ?>" />
 								</td>
 							</tr>
 							<?php } ?>
@@ -99,7 +101,7 @@
 	function tambahRincian(el, id_detail) {
 		const barisUraian = $(el).closest('tr')
 		const barisRincianBaru = $('<tr>')
-		barisRincianBaru.addClass('barisRincianBaru')
+		barisRincianBaru.addClass('barisRincian'+id_detail)
 
 		const kolomHapus		= $('<td>')
 		const kolomIdDetail 	= $('<td>')
@@ -113,12 +115,12 @@
 		kolomHapus.append('<span class="btn btn-danger" onclick="hapusKolom(this)"><i class="fa fa-trash"></i></span>')
 		kolomIdDetail.append(`<input name="id_detail[]" type="hidden" value="${id_detail}" />`)
 		kolomIdDetail.prop('colspan', 2)
-		kolomKet.append('<textarea class="form-control" name="keterangan[]" placeholder="Keterangan"></textarea>')
-		kolomKoefisien.append('<input class="form-control" name="koefisien[]" type="text" placeholder="Koefisien" />')
-		kolomSatuan.append('<input class="form-control" name="satuan[]" type="text" placeholder="Satuan" />')
-		kolomHarga.append('<input class="form-control" name="harga[]" type="text" placeholder="Harga" />')
-		kolomPPN.append('<input class="form-control" name="ppn[]" type="text" placeholder="PPN" />')
-		kolomJumlah.append('<input class="form-control" name="jumlah[]" type="text" placeholder="Jumlah" />')
+		kolomKet.append('<textarea class="form-control" name="keterangan[]" placeholder="Keterangan" required></textarea>')
+		kolomKoefisien.append('<input class="form-control" name="koefisien[]" type="text" placeholder="Koefisien" required />')
+		kolomSatuan.append('<input class="form-control" name="satuan[]" type="text" placeholder="Satuan" required />')
+		kolomHarga.append('<input class="form-control" name="harga[]" type="text" placeholder="Harga" required />')
+		kolomPPN.append('<input class="form-control" name="ppn[]" type="text" placeholder="PPN" required />')
+		kolomJumlah.append('<input class="form-control" name="jumlah[]" type="text" placeholder="Jumlah" required />')
 
 		barisRincianBaru.append(kolomHapus)
 		barisRincianBaru.append(kolomIdDetail)
@@ -128,14 +130,41 @@
 		barisRincianBaru.append(kolomHarga)
 		barisRincianBaru.append(kolomPPN)
 		barisRincianBaru.append(kolomJumlah)
-		barisUraian.after(barisRincianBaru)
+		$('.barisRincian'+id_detail).last().after(barisRincianBaru)
+		refreshJumlah()
 	}
 
 	function hapusKolom(el){
 		$(el).closest('tr').remove()
+		refreshJumlah()
+	}
+
+	function refreshJumlah(){
+		const tr_parent = $($('.kode_rekening').get().reverse())
+
+		tr_parent.each((index,item)=>{
+			let jumlah = 0
+			
+			const tr_child = $('.'+item.id)
+			tr_child.each((index2,item2)=>{
+				const last_col = $(item2).children().last()
+				if (last_col.hasClass('inputRincian')) {
+					const value =  parseInt(last_col.find('input').val())
+					jumlah += value
+				} else {
+					const value = parseInt(last_col.text().trim())
+					jumlah += value
+				}
+			})
+			
+			$(item).children().last().text(jumlah)
+		})
+
 	}
 
 	$(document).ready(()=> {
+
+		refreshJumlah()
 
 		const body = $('#body')
 

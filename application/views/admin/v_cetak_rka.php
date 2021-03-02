@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cetak RKA</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+	<div>
+		<table class="table table-bordered">
+			<thead class="text-center">
+				<tr>
+					<th colspan="2">Indikator &amp; Tolok Ukur</th>
+				</tr>
+			</thead>
+			<tbody>
+				 <tr>
+                  <th>Program</th>
+                  <th>Kegiatan</th>
+                  <th>Sub Kegiatan</th>
+                  <th>Indikator</th>
+                  <th>Target</th>
+                  <th>Alokasi Tahun 2021</th>
+                </tr>
+              </thead>
+              <tbody>
+              <?php if( !empty($RKA) ) : ?>
+
+              <?php
+                foreach ($RKA as $key) :
+              ?>
+                <tr>
+                  <td><?php echo $key->program?></td>
+                  <td><?php echo $key->kegiatan?></td>
+                  <td><?php echo $key->subkegiatan?></td>
+                  <td><?php echo $key->indikator?></td>
+                  <td><?php echo $key->target?></td>
+                  <td><?php echo $key->alokasi_tahun2021?></td>
+              </tr>
+                  <?php endforeach; ?>
+
+              <?php else : ?>
+              <p>Belum ada data.</p>
+              <?php endif; ?>
+			</tbody>
+		</table>
+
+		<table class="table table-bordered">
+			<thead class="text-center">
+				<tr>
+					<th rowspan="2" style="vertical-align: middle;">Kode Rekening</th>
+					<th rowspan="2" style="vertical-align: middle;">Uraian</th>
+					<th colspan="4">Rincian Perhitungan</th>
+					<th rowspan="2" style="vertical-align: middle;">Jumlah</th>
+				</tr>
+				<tr>
+					<th>Koefisien</th>
+					<th>Satuan</th>
+					<th>Harga</th>
+					<th>PPN</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($detail as $ke_d => $d) { ?>
+				<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>">
+					<td class="font-weight-bold"><?= $d->kode_rekening; ?></td>
+					<td class="font-weight-bold"colspan="5"><?= $d->uraian; ?></td>
+					<td class="font-weight-bold text-right jumlah">0</td>
+				</tr>
+				<?php foreach ($d->rincian as $key_r => $r) { ?>
+				<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>">
+					<td></td>
+					<td><?= $r->keterangan; ?></td>
+					<td><?= $r->koefisien; ?></td>
+					<td><?= $r->satuan; ?></td>
+					<td class="text-right harga"><?= $r->harga; ?></td>
+					<td><?= $r->PPN; ?></td>
+					<td class="text-right jumlah"><?= $r->jumlah; ?></td>
+				</tr>
+				<?php } ?>
+
+				<?php } ?>
+			</tbody>
+		</table>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script type="text/javascript">
+		function refreshJumlah(){
+			const tr_parent = $($('.kode_rekening').get().reverse())
+
+			tr_parent.each((index,item)=>{
+				let jumlah = 0
+
+				const tr_child = $('.'+item.id)
+				tr_child.each((index2,item2)=>{
+					const last_col = $(item2).children().last()
+					const value = parseInt(last_col.text().trim())
+					jumlah += value
+				})
+
+				$(item).children().last().text(jumlah)
+			})
+		}
+
+		function formatRupiah(){
+			// cara mengambil view pakai jquery
+			const td_jumlah = $('.jumlah')
+			td_jumlah.each((index,item)=>{
+				const jumlah = $(item).html()
+				$(item).html(rupiah(jumlah, 'Rp.'))
+			})
+
+			const td_harga = $('.harga')
+			td_harga.each((index,item)=>{
+				const harga = $(item).html()
+				$(item).html(rupiah(harga))
+			})
+		}
+
+		function rupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   = number_string.split(','),
+			sisa     = split[0].length % 3,
+			rupiah     = split[0].substr(0, sisa),
+			ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				rupiah += separator + ribuan.join('.');
+			}
+
+			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+			return prefix == undefined ? rupiah : (rupiah ? prefix + rupiah : '');
+		}
+
+		$(document).ready(()=>{
+			refreshJumlah()
+			formatRupiah()
+		})
+
+	</script>
+
+</body>
+</html>

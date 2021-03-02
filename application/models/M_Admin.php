@@ -63,8 +63,13 @@ class M_Admin extends CI_Model {
 	public function getSatuData($id_detail)
 	{
 		$this->db->where('id_detail',$id_detail);
-		$query = $this->db->get('detail_belanja');
-		return $query->row();
+		$result = $this->db->get('detail_belanja')->row();
+		if ($result) {
+			if ($result->butuh_rincian=='1') {
+				$result->butuh_rincian = 'checked';
+			}
+		}
+		return $result;
 	}
 
 	public function getDetail()

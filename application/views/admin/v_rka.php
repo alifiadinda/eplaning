@@ -72,32 +72,28 @@
                   <td><?php echo $key->indikator?></td>
                   <td><?php echo $key->target?></td>
                   <td><?php echo $key->alokasi_tahun2021?></td>
-                  <td align='center'>
+                  <td class="text-center">
                     <a href="<?php echo site_url()?>/C_Belanja/edit/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-warning">
-                        <i class="metismenu-icon fa fa-edit"></i> Ajukan Sebagai Draft DPA
+                        <i class="metismenu-icon fa fa-external-link-alt"></i> Ajukan Sebagai Draft DPA
                       </button>
                     </a>
                     <a href="<?php echo site_url()?>/C_Belanja/detail/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-primary">
-                        <i class="metismenu-icon fa fa-edit"></i> Detail
+                        <i class="metismenu-icon fa fa-list"></i> Detail
                       </button>
                     </a>
-                    <a href="<?php echo site_url()?>/C_Belanja/edit/<?php echo $key->id; ?>">
-                      <button type="button" class="btn mr-2 mb-2 btn-warning">
-                        <i class="metismenu-icon fa fa-edit"></i> Edit
-                      </button>
-                    </a>
-                    <a href="<?php echo site_url()?>/C_Belanja/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')">
-                      <button type="button" class="btn mr-2 mb-2 btn-danger" >
-                        <i class="metismenu-icon fa fa-user-times"></i> Hapus
-                      </button>
-                    </a>
-                    <a href="<?php echo site_url()?>/C_Belanja/cetak/<?php echo $key->id; ?>">
-                      <button type="button" class="btn mr-2 mb-2 btn-primary">
-                        <i class="metismenu-icon fa fa-edit"></i> Cetak
-                      </button>
-                    </a>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <a href="<?php echo site_url()?>/C_Belanja/edit/<?php echo $key->id; ?>" class="btn btn-warning">
+                        <i class="metismenu-icon fa fa-edit"></i>
+                      </a>
+                      <a href="<?php echo site_url()?>/C_Belanja/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
+                        <i class="metismenu-icon fa fa-trash"></i>
+                      </a>
+                      <a href="<?php echo site_url()?>/c_admin/cetak/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
+                        <i class="metismenu-icon fa fa-print"></i>
+                      </a>
+                    </div>
                 </td>
                 </tr>
                   <?php endforeach; ?>
