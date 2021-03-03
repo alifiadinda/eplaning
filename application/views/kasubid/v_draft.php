@@ -72,32 +72,57 @@
                   <td><?php echo $key->indikator?></td>
                   <td><?php echo $key->target?></td>
                   <td><?php echo $key->alokasi_tahun2021?></td>
-                  <td align='center'>
-                    <a href="<?php echo site_url()?>/C_Kasubid/edit/<?php echo $key->id; ?>">
+                 <td align='center'>
+
+
+                  <?php 
+                    if($this->session->userdata('level')=="Karu"){
+                      if($key->status_karu==1 && $key->status_karu_dpa==0){
+                  ?>
+                    <a href="<?php echo site_url()?>/C_Belanja/ajukan_dpa/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-warning">
-                        <i class="metismenu-icon fa fa-edit"></i> Ajukan Sebagai DPA
+                        <i class="metismenu-icon fa fa-edit"></i> Ajukan ACC DPA
                       </button>
                     </a>
-                    <a href="<?php echo site_url()?>/C_Kasubid/detail/<?php echo $key->id; ?>">
-                      <button type="button" class="btn mr-2 mb-2 btn-primary">
-                        <i class="metismenu-icon fa fa-edit"></i> Detail
+                  <?php
+                      }else if($key->status_karu==1 && $key->status_karu_dpa==1){ ?>
+                      <button type="button" class="btn mr-2 mb-2 btn-success">
+                        <i class="metismenu-icon fa fa-check"></i> Ajuan terkirim
                       </button>
-                    </a>
-                    <a href="<?php echo site_url()?>/C_Kasubid/edit/<?php echo $key->id; ?>">
+                  <?php }
+                    }
+                  ?>
+
+
+                  <?php 
+                    if($this->session->userdata('level')=="kasubid"){
+                      if($key->status_karu==1 && $key->status_karu_dpa==1 && $key->status=="Draft DPA"){
+                  ?>
+                    <a href="<?php echo site_url()?>/C_Belanja/ajukan_dpa_kasubid/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-warning">
-                        <i class="metismenu-icon fa fa-edit"></i> Edit
+                        <i class="metismenu-icon fa fa-edit"></i> ACC Draft DPA
                       </button>
                     </a>
-                    <a href="<?php echo site_url()?>/C_Kasubid/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')">
-                      <button type="button" class="btn mr-2 mb-2 btn-danger" >
-                        <i class="metismenu-icon fa fa-user-times"></i> Hapus
+                  <?php
+                      }else if($key->status_karu==1 && $key->status=="DPA"){ ?>
+                      <button type="button" class="btn mr-2 mb-2 btn-success">
+                        <i class="metismenu-icon fa fa-check"></i> Sudah Diacc
                       </button>
-                    </a>
-                    <a href="<?php echo site_url()?>/C_Kasubid/cetak/<?php echo $key->id; ?>">
-                      <button type="button" class="btn mr-2 mb-2 btn-primary">
-                        <i class="metismenu-icon fa fa-edit"></i> Cetak
-                      </button>
-                    </a>
+                  <?php }
+                    }
+                  ?>
+                  
+                   <div class="btn-group" role="group" aria-label="Basic example">
+                      <a href="<?php echo site_url()?>/C_Kasubid/edit/<?php echo $key->id; ?>" class="btn btn-warning">
+                        <i class="metismenu-icon fa fa-edit"></i>
+                      </a>
+                      <a href="<?php echo site_url()?>/C_Kasubid/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
+                        <i class="metismenu-icon fa fa-trash"></i>
+                      </a>
+                      <a href="<?php echo site_url()?>/c_admin/cetakdraft/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
+                        <i class="metismenu-icon fa fa-print"></i>
+                      </a>
+                    </div>
                 </td>
                 </tr>
                   <?php endforeach; ?>

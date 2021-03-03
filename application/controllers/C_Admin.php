@@ -128,13 +128,38 @@ class C_Admin extends CI_Controller {
 		// $data['sk_belanja'] = $this->where  .....($id_rka) get('sk_belanja')->row();
 		$data['id_dpa'] = $id_rka;
         $data['sk_belanja'] = $this->db->where('id', $id_rka)->get('sk_belanja')->row();
-		$data['RKA'] = $this->M_admin->getRKA();
-		$data['belanja'] = $this->M_Belanja->get_belanja_by_id_rka($id_rka);
+		$data['RKA'] = $this->M_admin->getSatuRKA($id_rka);
 
         //$data['detail'] = $this->getDetailBelanja($id_dpa);
 		$data['detail'] = $this->getDetailBelanja($id_rka);
 
 		$this->load->view('admin/v_cetak_rka',$data);
+	}
+
+	public function cetakdraft($id_draft) {
+		// $data['capaian'] = 100;
+		// $data['sk_belanja'] = $this->where  .....($id_rka) get('sk_belanja')->row();
+		$data['id_dpa'] = $id_draft;
+        $data['sk_belanja'] = $this->db->where('id', $id_draft)->get('sk_belanja')->row();
+		$data['Draft'] = $this->M_admin->getSatuDraft($id_draft);
+
+        //$data['detail'] = $this->getDetailBelanja($id_dpa);
+		$data['detail'] = $this->getDetailBelanja($id_draft);
+
+		$this->load->view('admin/v_cetak_draft',$data);
+	}
+
+	public function cetakdpa($id_dpa) {
+		// $data['capaian'] = 100;
+		// $data['sk_belanja'] = $this->where  .....($id_rka) get('sk_belanja')->row();
+		$data['id_dpa'] = $id_dpa;
+        $data['sk_belanja'] = $this->db->where('id', $id_dpa)->get('sk_belanja')->row();
+		$data['DPA'] = $this->M_admin->getSatuDPA($id_dpa);
+
+        //$data['detail'] = $this->getDetailBelanja($id_dpa);
+		$data['detail'] = $this->getDetailBelanja($id_dpa);
+
+		$this->load->view('admin/v_cetak_dpa',$data);
 	}
 
 	function getDetailBelanja($id_dpa){

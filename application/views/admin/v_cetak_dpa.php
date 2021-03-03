@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Cetak RKA</title>
+	<title>Cetak DRAFT DPA</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
@@ -10,7 +10,7 @@
 			<thead class="text-center">
 				<tr>
 					<th colspan="2">DOKUMEN PELAKSANAAN ANGGARAN SATUAN KERJA PERANGKAT DAERAH</th>
-					<th rowspan="2" style="vertical-align: middle;">Formulir <br> <?php echo $RKA->status?></th>
+					<th rowspan="2" style="vertical-align: middle;">Formulir <br> <?php echo $DPA->status?></th>
 				</tr>
 				<tr>
 					<th>Pemerintahan Kota Malang Tahun Anggaran 2021</th>
@@ -27,27 +27,27 @@
 			<tbody>
 				<tr>
 					<th>Program</th>
-					<td colspan="2"><?php echo $RKA->program?></td>
+					<td colspan="2"><?php echo $DPA->program?></td>
 				</tr>
 				<tr>
 					<th>Kegiatan</th>
-					<td colspan="2"><?php echo $RKA->kegiatan?></td>
+					<td colspan="2"><?php echo $DPA->kegiatan?></td>
 				</tr>
 				<tr>
 					<th>Sub Kegiatan</th>
-					<td colspan="2"><?php echo $RKA->subkegiatan?></td>
+					<td colspan="2"><?php echo $DPA->subkegiatan?></td>
 				</tr>
 				<tr>
 					<th>Indikator</th>
-					<td colspan="2"><?php echo $RKA->indikator?></td>
+					<td colspan="2"><?php echo $DPA->indikator?></td>
 				</tr>
 				<tr>
 					<th>Target</th>
-					<td colspan="2"><?php echo $RKA->target?></td>
+					<td colspan="2"><?php echo $DPA->target?></td>
 				</tr>
 				<tr>
 					<th>Alokasi Tahun 2021</th>
-					<td colspan="2"><?php echo $RKA->alokasi_tahun2021?></td>
+					<td colspan="2"><?php echo $DPA->alokasi_tahun2021?></td>
 				</tr>
 			</tbody>
 		</table>

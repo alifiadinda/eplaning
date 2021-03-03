@@ -73,11 +73,6 @@
                   <td><?php echo $key->target?></td>
                   <td><?php echo $key->alokasi_tahun2021?></td>
                   <td class="text-center">
-                    <a href="<?php echo site_url()?>/C_Belanja/edit/<?php echo $key->id; ?>">
-                      <button type="button" class="btn mr-2 mb-2 btn-warning">
-                        <i class="metismenu-icon fa fa-external-link-alt"></i> Ajukan Sebagai Draft DPA
-                      </button>
-                    </a>
                     <a href="<?php echo site_url()?>/C_Belanja/detail/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-primary">
                         <i class="metismenu-icon fa fa-list"></i> Detail

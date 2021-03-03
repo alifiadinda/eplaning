@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2021 at 06:44 AM
+-- Generation Time: Mar 03, 2021 at 05:11 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -107,7 +107,11 @@ INSERT INTO `dpa_detail` (`id_dpa_detail`, `id_dpa`, `id_detail`, `jumlah`) VALU
 (85, 34, 16, 0),
 (114, 31, 15, 0),
 (124, 27, 15, 0),
-(131, 26, 15, 0);
+(144, 26, 15, 0),
+(145, 35, 15, 0),
+(146, 35, 16, 0),
+(147, 35, 24, 0),
+(148, 32, 15, 0);
 
 -- --------------------------------------------------------
 
@@ -136,8 +140,12 @@ INSERT INTO `rincian` (`id_rincian`, `id_dpa_detail`, `keterangan`, `koefisien`,
 (124, 85, 'fergfregrgtrgtrg', '2', '2', 22, 2, 2),
 (176, 114, 'ytryhtruty', '1', '1', 1, 1, 1),
 (188, 124, 'Keterangan 3', '3', '3', 3, 3, 3),
-(199, 131, 'Pejabat Pelaksana Teknis Kegiatan (PPTK)\r\nSpesifikasi : Nilai pagu dana di atas Rp 1\r\nmiliar s.d. Rp 2,5 miliar', '12 Orang / Bulan ', 'OB', 1910000, 0, 22920000),
-(200, 131, 'Pejabat Penatausahaan Keuangan SKPD (PPK\r\nSKPD)\r\nSpesifikasi : Nilai pagu dana di atas Rp 1\r\nmiliar s.d. Rp 2,5 miliar', '12 Orang / Bulan ', 'OB', 770000, 0, 9240000);
+(221, 144, 'Pejabat Pelaksana Teknis Kegiatan (PPTK)\r\nSpesifikasi : Nilai pagu dana di atas Rp 1\r\nmiliar s.d. Rp 2,5 miliar', '12 Orang / Bulan ', 'OB', 1910000, 0, 22920000),
+(222, 144, 'Pejabat Penatausahaan Keuangan SKPD (PPK\r\nSKPD)\r\nSpesifikasi : Nilai pagu dana di atas Rp 1\r\nmiliar s.d. Rp 2,5 miliar', '12 Orang / Bulan ', 'OB', 770000, 0, 9240000),
+(223, 145, 'uyjuyju', '1', '1', 1, 1, 1),
+(224, 146, 'tyhyt', '1', '1', 1, 1, 1),
+(225, 147, 'hy', '1', '1', 1, 1, 1),
+(226, 148, 'ttttttythg', '1', '1', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -165,24 +173,26 @@ CREATE TABLE `sk_belanja` (
   `indikator` varchar(200) NOT NULL,
   `target` int(200) NOT NULL,
   `alokasi_tahun2021` int(200) NOT NULL,
-  `status` varchar(200) NOT NULL
+  `status` varchar(200) NOT NULL,
+  `status_karu` int(11) NOT NULL,
+  `status_karu_dpa` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sk_belanja`
 --
 
-INSERT INTO `sk_belanja` (`id`, `tanggal_sk`, `program`, `kegiatan`, `subkegiatan`, `indikator`, `target`, `alokasi_tahun2021`, `status`) VALUES
-(26, '2021-02-22', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota', 'Peningkatan Tata Kelola RSUD dan Fasilitas Pelayanan Kesehatan Tingkat daerah kabupaten/Kota', 'Presentase Unit Pelayanan Kesehatan Yang Memenuhi SPM', 100, 1407408000, 'RKA'),
-(27, '2021-11-09', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '9', 9, 9, 'RKA'),
-(28, '2021-02-14', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)', 'Pengadaan Prasarana dan Pendukung Fasilitas Pelayanan Kesehatan(RSUD)', 'dfgfhb', 10, 2021, 'RKA'),
-(29, '2021-02-15', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '1', 1, 1, 'RKA'),
-(30, '2021-02-16', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '2', 2, 2, 'RKA'),
-(31, '2021-02-15', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '77', 3, 33, 'RKA'),
-(32, '2021-02-13', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '43', 43, 43, 'RKA'),
-(33, '2021-02-15', 'Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota', 'Peningkatan Pelayanan RSUD', 'Pelayanan dan Penunjang Pelayanan BLUD', '2', 2, 2, 'DPA'),
-(34, '2021-02-01', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '3', 2, 2, 'Draft DPA'),
-(35, '2021-02-23', 'Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '6', 6, 6, 'RKA');
+INSERT INTO `sk_belanja` (`id`, `tanggal_sk`, `program`, `kegiatan`, `subkegiatan`, `indikator`, `target`, `alokasi_tahun2021`, `status`, `status_karu`, `status_karu_dpa`) VALUES
+(26, '2021-02-22', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota', 'Peningkatan Tata Kelola RSUD dan Fasilitas Pelayanan Kesehatan Tingkat daerah kabupaten/Kota', 'Presentase Unit Pelayanan Kesehatan Yang Memenuhi SPM', 100, 1407408000, 'RKA', 0, 1),
+(27, '2021-11-09', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '9', 9, 9, 'RKA', 0, 0),
+(28, '2021-02-14', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)', 'Pengadaan Prasarana dan Pendukung Fasilitas Pelayanan Kesehatan(RSUD)', 'dfgfhb', 10, 2021, 'RKA', 0, 0),
+(29, '2021-02-15', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '1', 1, 1, 'RKA', 0, 0),
+(30, '2021-02-16', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '2', 2, 2, 'RKA', 0, 0),
+(31, '2021-02-15', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '77', 3, 33, 'RKA', 0, 0),
+(32, '2021-02-13', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '43', 43, 43, 'RKA', 0, 0),
+(33, '2021-02-15', 'Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota', 'Peningkatan Pelayanan RSUD', 'Pelayanan dan Penunjang Pelayanan BLUD', '2', 2, 2, 'DPA', 0, 0),
+(34, '2021-02-01', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '3', 2, 2, 'Draft DPA', 0, 0),
+(35, '2021-02-23', 'Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '6', 6, 6, 'RKA', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -239,13 +249,13 @@ ALTER TABLE `detail_belanja`
 -- AUTO_INCREMENT for table `dpa_detail`
 --
 ALTER TABLE `dpa_detail`
-  MODIFY `id_dpa_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `id_dpa_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 
 --
 -- AUTO_INCREMENT for table `rincian`
 --
 ALTER TABLE `rincian`
-  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
+  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT for table `ruangan`

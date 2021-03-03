@@ -73,11 +73,6 @@
                   <td><?php echo $key->target?></td>
                   <td><?php echo $key->alokasi_tahun2021?></td>
                   <td class="text-center">
-                     <a href="<?php echo site_url()?>/C_Belanja/edit/<?php echo $key->id; ?>">
-                      <button type="button" class="btn mr-4 mb-2 btn-warning">
-                        <i class="metismenu-icon fa fa-external-link-alt"></i> Ajukan Sebagai DPA
-                      </button>
-                    </a>
                     <a href="<?php echo site_url()?>/C_Belanja/detail/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-6 mb-6 btn-primary">
                         <i class="metismenu-icon fa fa-list"></i> Detail
@@ -90,7 +85,7 @@
                       <a href="<?php echo site_url()?>/C_Belanja/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
                         <i class="metismenu-icon fa fa-trash"></i>
                       </a>
-                      <a href="<?php echo site_url()?>/c_admin/cetak/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
+                      <a href="<?php echo site_url()?>/c_admin/cetakdraft/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
                         <i class="metismenu-icon fa fa-print"></i>
                       </a>
                 </td>

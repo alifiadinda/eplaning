@@ -26,6 +26,30 @@ class M_Admin extends CI_Model {
 		return $query->result();
 	}
 
+	public function getSatuRKA($id_rka='')
+	{
+		$this->db->where('id',$id_rka);
+		$this->db->where('status','rka');
+		$query = $this->db->get('sk_belanja');
+		return $query->row();
+	}
+
+	public function getSatuDraft($id_draft='')
+	{
+		$this->db->where('id',$id_draft);
+		$this->db->where('status','Draft DPA');
+		$query = $this->db->get('sk_belanja');
+		return $query->row();
+	}
+
+	public function getSatuDPA($id_dpa='')
+	{
+		$this->db->where('id',$id_dpa);
+		$this->db->where('status','DPA');
+		$query = $this->db->get('sk_belanja');
+		return $query->row();
+	}
+
 	public function getDraft()
 	{
 		$get = $this->input->get();

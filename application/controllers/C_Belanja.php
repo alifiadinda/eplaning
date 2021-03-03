@@ -225,5 +225,65 @@ class C_Belanja extends CI_Controller {
         redirect('C_Belanja');
     }
 
+    public function ajukan_draftdpa($id){
+        $this->load->model('M_Belanja');
+
+            $post_data = array(
+                'status_karu_dpa'             => 1
+            );
+            
+            if ($this->M_Belanja->update_belanja($post_data, $id)) {
+                redirect('C_Karu/RKA');
+            } else {
+                redirect('C_Karu/RKA');
+            }
+            $this->load->view('karu/footer'); 
+    }
+
+    public function ajukan_draftdpa_kasub($id){
+        $this->load->model('M_Belanja');
+
+            $post_data = array(
+                'status'             => "Draft DPA"
+            );
+            
+            if ($this->M_Belanja->update_belanja($post_data, $id)) {
+                redirect('C_Kasubid/RKA');
+            } else {
+                redirect('C_Kasubid/RKA');
+            }
+            $this->load->view('kasubid/footer'); 
+    }
+
+    public function ajukan_dpa($id){
+        $this->load->model('M_Belanja');
+
+            $post_data = array(
+                'status_karu_dpa'             => 1
+            );
+            
+            if ($this->M_Belanja->update_belanja($post_data, $id)) {
+                redirect('C_Karu/Draft');
+            } else {
+                redirect('C_Karu/Draft');
+            }
+            $this->load->view('karu/footer'); 
+    }
+    
+    public function ajukan_dpa_kasubid($id){
+        $this->load->model('M_Belanja');
+
+            $post_data = array(
+                'status'             => "DPA"
+            );
+            
+            if ($this->M_Belanja->update_belanja($post_data, $id)) {
+                redirect('C_Kasubid/Draft');
+            } else {
+                redirect('C_Kasubid/Draft');
+            }
+            $this->load->view('kasubid/footer'); 
+    }
+
 
 }

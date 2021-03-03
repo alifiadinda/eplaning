@@ -72,12 +72,44 @@
                   <td><?php echo $key->indikator?></td>
                   <td><?php echo $key->target?></td>
                   <td><?php echo $key->alokasi_tahun2021?></td>
-                  <td class="text-center">
-                    <a href="<?php echo site_url()?>/C_Kasubid/edit/<?php echo $key->id; ?>">
+                  <td align='center'>
+
+                  <?php 
+                    if($this->session->userdata('level')=="Karu"){
+                      if($key->status_karu==0){
+                  ?>
+                    <a href="<?php echo site_url()?>/C_Belanja/ajukan_draftdpa/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-warning">
-                        <i class="metismenu-icon fa fa-external-link-alt"></i> Ajukan Sebagai Draft DPA
+                        <i class="metismenu-icon fa fa-edit"></i> Ajukan Sebagai Draft DPA
                       </button>
                     </a>
+                  <?php
+                      }else{ ?>
+                      <button type="button" class="btn mr-2 mb-2 btn-success">
+                        <i class="metismenu-icon fa fa-check"></i> Ajuan terkirim
+                      </button>
+                  <?php }
+                    }
+                  ?>
+
+                  <?php 
+                    if($this->session->userdata('level')=="kasubid"){
+                      if($key->status_karu==1 && $key->status=="RKA"){
+                  ?>
+                    <a href="<?php echo site_url()?>/C_Belanja/ajukan_draftdpa_kasub/<?php echo $key->id; ?>">
+                      <button type="button" class="btn mr-2 mb-2 btn-warning">
+                        <i class="metismenu-icon fa fa-edit"></i> ACC Draft DPA
+                      </button>
+                    </a>
+                  <?php
+                      }else if($key->status_karu==1 && $key->status=="Draft DPA"){ ?>
+                      <button type="button" class="btn mr-2 mb-2 btn-success">
+                        <i class="metismenu-icon fa fa-check"></i> Sudah Diacc
+                      </button>
+                  <?php }
+                    }
+                  ?>
+                  
                     <a href="<?php echo site_url()?>/C_Kasubid/detail/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-primary">
                         <i class="metismenu-icon fa fa-list"></i> Detail
@@ -90,7 +122,7 @@
                       <a href="<?php echo site_url()?>/C_Kasubid/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
                         <i class="metismenu-icon fa fa-trash"></i>
                       </a>
-                      <a href="<?php echo site_url()?>/C_Kasubid/cetak/<?php echo $key->id; ?>" class="btn btn-primary">
+                       <a href="<?php echo site_url()?>/c_admin/cetak/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
                         <i class="metismenu-icon fa fa-print"></i>
                       </a>
                     </div>

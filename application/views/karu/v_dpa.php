@@ -72,8 +72,8 @@
                   <td><?php echo $key->indikator?></td>
                   <td><?php echo $key->target?></td>
                   <td><?php echo $key->alokasi_tahun2021?></td>
-                   <td align='center'>
-                    <a href="<?php echo site_url()?>/C_Karu/cetak/<?php echo $key->id; ?>">
+                    <td align='center'>
+                    <a href="<?php echo site_url()?>/C_Admin/cetakdpa/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-primary">
                         <i class="metismenu-icon fa fa-edit"></i> Cetak
                       </button>
