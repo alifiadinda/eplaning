@@ -72,7 +72,7 @@
                   <td><?php echo $key->indikator?></td>
                   <td><?php echo $key->target?></td>
                   <td><?php echo $key->alokasi_tahun2021?></td>
-                 <td align='center'>
+                  <td align='center'>
 
 
                   <?php 
@@ -111,7 +111,12 @@
                   <?php }
                     }
                   ?>
-                  
+
+                       <a href="<?php echo site_url()?>/C_Karu/detail/<?php echo $key->id; ?>">
+                      <button type="button" class="btn mr-6 mb-6 btn-primary">
+                        <i class="metismenu-icon fa fa-list"></i> Detail
+                      </button>
+                    </a>
                     <div class="btn-group" role="group" aria-label="Basic example">
                       <a href="<?php echo site_url()?>/C_Karu/edit/<?php echo $key->id; ?>" class="btn btn-warning">
                         <i class="metismenu-icon fa fa-edit"></i>
@@ -140,3 +145,4 @@
 </div>
 </div>
 </div>
+

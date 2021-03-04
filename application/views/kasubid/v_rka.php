@@ -1,4 +1,4 @@
- <div class="card mb-3">
+    <div class="card mb-3">
      <div class="card-header">
         <i class="fa fa-table"></i> <?php echo $page_title ?>
       </div>
@@ -93,7 +93,7 @@
                   ?>
 
                   <?php 
-                    if($this->session->userdata('level')=="kasubid"){
+                    if($this->session->userdata('level')=="Kasubid"){
                       if($key->status_karu==1 && $key->status=="RKA"){
                   ?>
                     <a href="<?php echo site_url()?>/C_Belanja/ajukan_draftdpa_kasub/<?php echo $key->id; ?>">
@@ -109,8 +109,9 @@
                   <?php }
                     }
                   ?>
-                  
-                    <a href="<?php echo site_url()?>/C_Kasubid/detail/<?php echo $key->id; ?>">
+
+
+                     <a href="<?php echo site_url()?>/C_Kasubid/detail/<?php echo $key->id; ?>">
                       <button type="button" class="btn mr-2 mb-2 btn-primary">
                         <i class="metismenu-icon fa fa-list"></i> Detail
                       </button>
@@ -122,7 +123,7 @@
                       <a href="<?php echo site_url()?>/C_Kasubid/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
                         <i class="metismenu-icon fa fa-trash"></i>
                       </a>
-                       <a href="<?php echo site_url()?>/c_admin/cetak/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
+                      <a href="<?php echo site_url()?>/c_admin/cetak/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
                         <i class="metismenu-icon fa fa-print"></i>
                       </a>
                     </div>
@@ -143,3 +144,4 @@
 </div>
 </div>
 </div>
+

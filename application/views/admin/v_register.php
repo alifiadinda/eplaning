@@ -42,7 +42,7 @@
 											<option value="" disabled selected>Pilih Level Akun</option>
 											<option value="Admin">Admin</option>
 											<option value="Karu">Karu</option>
-											<option value="Kasubit">Kasubit</option>
+											<option value="Kasubid">Kasubag</option>
 										</select>
 								</div>
 									<button id="submitBtn" type="submit" class="btn btn-primary">Proses</button>

@@ -88,6 +88,7 @@
                       <a href="<?php echo site_url()?>/c_admin/cetakdraft/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
                         <i class="metismenu-icon fa fa-print"></i>
                       </a>
+                    </div>
                 </td>
                 </tr>
                   <?php endforeach; ?>

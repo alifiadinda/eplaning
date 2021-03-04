@@ -225,11 +225,11 @@ class C_Belanja extends CI_Controller {
         redirect('C_Belanja');
     }
 
-    public function ajukan_draftdpa($id){
+   public function ajukan_draftdpa($id){
         $this->load->model('M_Belanja');
 
             $post_data = array(
-                'status_karu_dpa'             => 1
+                'status_karu'             => 1
             );
             
             if ($this->M_Belanja->update_belanja($post_data, $id)) {
@@ -239,7 +239,7 @@ class C_Belanja extends CI_Controller {
             }
             $this->load->view('karu/footer'); 
     }
-
+    
     public function ajukan_draftdpa_kasub($id){
         $this->load->model('M_Belanja');
 
