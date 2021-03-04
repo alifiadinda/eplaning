@@ -47,7 +47,7 @@
 				</tr>
 				<tr>
 					<th>Alokasi Tahun 2021</th>
-					<td colspan="2"><?php echo $DPA->alokasi_tahun2021?></td>
+					<td colspan="2" id="alokasi"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -72,7 +72,7 @@
 				<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>">
 					<td class="font-weight-bold"><?= $d->kode_rekening; ?></td>
 					<td class="font-weight-bold"colspan="5"><?= $d->uraian; ?></td>
-					<td class="font-weight-bold text-right jumlah">0</td>
+					<td class="font-weight-bold text-right jumlah <?= (!$d->parent) ? 'alokasi' : '' ?>">0</td>
 				</tr>
 				<?php foreach ($d->rincian as $key_r => $r) { ?>
 				<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>">
@@ -113,6 +113,18 @@
 			})
 		}
 
+		function refreshAlokasi(){
+			let alokasi = 0
+			const td_alokasi = $('.alokasi')
+			td_alokasi.each((index,item)=>{
+				const isi = parseInt($(item).text())
+				alokasi += isi
+			})
+			$('#alokasi').text(rupiah(alokasi.toString(), 'Rp. '))
+
+		}
+
+
 		function formatRupiah(){
 			// cara mengambil view pakai jquery
 			const td_jumlah = $('.jumlah')
@@ -146,6 +158,7 @@
 
 		$(document).ready(()=>{
 			refreshJumlah()
+			refreshAlokasi()
 			formatRupiah()
 		})
 
