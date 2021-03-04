@@ -19,8 +19,8 @@
 				<form method="POST" action="<?= site_url('c_belanja/save_rincian') ?>">
 					<a class="btn btn-primary" href="<?= base_url('index.php/c_admin/rka') ?>">Kembali</a>
 					<button type="submit" class="btn btn-success">Simpan</button>
-					<span id="alokasi">0</span>
 					<input type="hidden" name="id_dpa" value="<?= $id_dpa  ?>">
+					<input type="hidden" name="alokasi" id="input_alokasi"/>
 					<br>
 					<br>
 					<table class="table">
@@ -49,7 +49,7 @@
 								<td ><?= $d->uraian; ?></td>
 								<td colspan="5">
 								</td>
-								<td class="text-right">0</td>
+								<td class="text-right <?= (!$d->parent) ? 'alokasi' : '' ?>">0</td>
 							</tr>
 							<?php foreach ($d->rincian as $key => $rincian) { ?>
 							<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>">
@@ -75,7 +75,7 @@
 									<input class="form-control" name="ppn[]" type="text" placeholder="PPN" required value="<?= $rincian->PPN ?>" />
 								</td>
 								<td class="inputRincian">
-									<input class="form-control" name="jumlah[]" type="text" placeholder="Jumlah" required value="<?= $rincian->jumlah ?>" />
+									<input class="form-control" name="jumlah[]" type="text" onchange="changeAlokasi()" placeholder="Jumlah" required value="<?= $rincian->jumlah ?>" />
 								</td>
 							</tr>
 							<?php } ?>
@@ -88,6 +88,10 @@
 	</div>
 </div>
 <script type="text/javascript">
+
+	function changeAlokasi(e){
+		refreshAlokasi()
+	}
 
 	function buatIdRandom() {
 		var result				= '';
@@ -121,7 +125,7 @@
 		kolomSatuan.append('<input class="form-control" name="satuan[]" type="text" placeholder="Satuan" required />')
 		kolomHarga.append('<input class="form-control" name="harga[]" type="text" placeholder="Harga" required />')
 		kolomPPN.append('<input class="form-control" name="ppn[]" type="text" placeholder="PPN" required />')
-		kolomJumlah.append('<input class="form-control" name="jumlah[]" type="text" placeholder="Jumlah" required />')
+		kolomJumlah.append('<input class="form-control" name="jumlah[]" type="text" onchange="refreshAlokasi()" placeholder="Jumlah" required />')
 
 		barisRincianBaru.append(kolomHapus)
 		barisRincianBaru.append(kolomIdDetail)
@@ -161,11 +165,25 @@
 			$(item).children().last().text(jumlah)
 		})
 
+		refreshAlokasi()
+
+	}
+
+	function refreshAlokasi(){
+		let alokasi = 0
+		const td_alokasi = $('.alokasi')
+		td_alokasi.each((index,item)=>{
+			const isi = parseInt($(item).text())
+			alokasi += isi
+		})
+
+		$('#input_alokasi').val(alokasi)
 	}
 
 	$(document).ready(()=> {
 
 		refreshJumlah()
+		refreshAlokasi()
 
 		const body = $('#body')
 
