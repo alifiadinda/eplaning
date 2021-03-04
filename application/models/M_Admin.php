@@ -9,6 +9,57 @@ class M_Admin extends CI_Model {
 		return $query->result();
 	}
 
+	public function hitung_akun()
+	{
+		$query = $this->db->get('akun');
+	    if($query->num_rows()>0)
+	    {
+	      return $query->num_rows();
+	    }
+	    else
+	    {
+	      return 0;
+	    }
+	}
+	public function hitung_RKA()
+	{
+		$query = $this->db->get_where('sk_belanja', array('status' => 'RKA'));
+	    if($query->num_rows()>0)
+	    {
+	      return $query->num_rows();
+	    }
+	    else
+	    {
+	      return 0;
+	    }
+	}
+
+	public function hitung_draft_DPA()
+	{
+		$query = $this->db->get_where('sk_belanja', array('status' => 'Draft DPA'));
+	    if($query->num_rows()>0)
+	    {
+	      return $query->num_rows();
+	    }
+	    else
+	    {
+	      return 0;
+	    }
+	}
+
+	public function hitung_DPA()
+	{
+		$query = $this->db->get_where('sk_belanja', array('status' => 'DPA'));
+	    if($query->num_rows()>0)
+	    {
+	      return $query->num_rows();
+	    }
+	    else
+	    {
+	      return 0;
+	    }
+	}
+
 	public function getRKA()
 	{
 		$get = $this->input->get();

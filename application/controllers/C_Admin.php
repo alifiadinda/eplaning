@@ -19,9 +19,14 @@ class C_Admin extends CI_Controller {
 
 	public function index()
 	{
+		$data['data_rka'] = $this->M_admin->hitung_RKA();
+		$data['data_draft'] = $this->M_admin->hitung_draft_DPA();
+		$data['data_dpa'] = $this->M_admin->hitung_DPA();
+		$data['data_akun'] = $this->M_admin->hitung_akun();
+
 		$this->load->view('admin/header');
 		// $this->load->view('admin/sidebar');
-		$this->load->view('admin/v_home');
+		$this->load->view('admin/v_home', $data);
 		$this->load->view('admin/footer');
 	}
 

@@ -16,12 +16,16 @@ class C_Karu extends CI_Controller {
 		}
     }
 
-    public function index()
+   public function index()
     {
+        $data['data_rka'] = $this->M_admin->hitung_RKA();
+        $data['data_draft'] = $this->M_admin->hitung_draft_DPA();
+        $data['data_dpa'] = $this->M_admin->hitung_DPA();
+
         $this->load->view('karu/header');
-        //$this->load->view('karu/sidebar');
-        $this->load->view('karu/v_home');
-		$this->load->view('karu/footer');
+        // $this->load->view('admin/sidebar');
+        $this->load->view('karu/v_home', $data);
+        $this->load->view('karu/footer');
     }
 
     public function RKA()
@@ -263,16 +267,70 @@ class C_Karu extends CI_Controller {
         }
     }
 
-    public function delete($id){
+      public function editdraft($id = NULL)
+    {
+        $data['page_title'] = 'Edit Sub Kegiatan Belanja';
+        $this->load->library('form_validation');
+        $this->load->model('M_Belanja');
+
+        $data['belanja'] = $this->M_Belanja->get_belanja_by_id($id);
+
+        if ( empty($id) || !$data['belanja'] ) redirect('C_Karu/Belanja');
+
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('indikator', 'Indikator', 'required',
+            array('required' => 'Mohon Isi %s'));
+        $this->form_validation->set_rules('target', 'Target', 'required',
+            array('required' => 'Mohon Isi %s'));
+
+
+        if ($this->form_validation->run() === FALSE)
+        {
+            $this->load->view('karu/header');
+            $this->load->view('karu/edit_belanja',$data);
+            $this->load->view('karu/footer');
+        } else {
+
+            $post_data = array(
+                'program'                => $this->input->post('program'),
+                'tanggal_sk'             => $this->input->post('tanggal_sk'),
+                'indikator'              => $this->input->post('indikator'),
+                'target'                 => $this->input->post('target'),
+                'alokasi_tahun2021'      => $this->input->post('alokasi_tahun2021'),
+                'status'                 => $this->input->post('status')
+            );
+
+            $this->load->view('karu/header');
+            
+            if ($this->M_Belanja->update_belanja($post_data, $id)) {
+                redirect('C_Karu/Draft');
+            } else {
+                redirect('C_Karu/Draft');
+            }
+            $this->load->view('karu/footer'); 
+
+        }
+    }
+
+      public function deleterka($id){
         $data['page_title'] = 'Hapus';
 
         $this->load->model('M_Belanja');
         $this->M_Belanja->delete($id);
 
-        redirect('C_Karu/Belanja');
+        redirect('C_Karu/RKA');
     }
 
+    public function deletedraft($id){
+        $data['page_title'] = 'Hapus';
 
+        $this->load->model('M_Belanja');
+        $this->M_Belanja->delete($id);
+
+        redirect('C_Karu/Draft');
+    }
 
 
 }

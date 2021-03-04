@@ -118,10 +118,10 @@
                       </button>
                     </a>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                      <a href="<?php echo site_url()?>/C_Kasubid/edit/<?php echo $key->id; ?>" class="btn btn-warning">
+                      <a href="<?php echo site_url()?>/C_Kasubid/editdraft/<?php echo $key->id; ?>" class="btn btn-warning">
                         <i class="metismenu-icon fa fa-edit"></i>
                       </a>
-                      <a href="<?php echo site_url()?>/C_Kasubid/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
+                      <a href="<?php echo site_url()?>/C_Kasubid/deletedraft/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
                         <i class="metismenu-icon fa fa-trash"></i>
                       </a>
                       <a href="<?php echo site_url()?>/c_admin/cetakdraft/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">

@@ -216,13 +216,68 @@ class C_Belanja extends CI_Controller {
         }
     }
 
-    public function delete($id){
+     public function editdraft($id = NULL)
+    {
+        $data['page_title'] = 'Edit Sub Kegiatan Belanja';
+        $this->load->library('form_validation');
+        $this->load->model('M_Belanja');
+
+        $data['belanja'] = $this->M_Belanja->get_belanja_by_id($id);
+
+        if ( empty($id) || !$data['belanja'] ) redirect('C_Belanja');
+
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('indikator', 'Indikator', 'required',
+            array('required' => 'Mohon Isi %s'));
+        $this->form_validation->set_rules('target', 'Target', 'required',
+            array('required' => 'Mohon Isi %s'));
+
+
+        if ($this->form_validation->run() === FALSE)
+        {
+            $this->load->view('admin/header');
+            $this->load->view('admin/edit_belanja',$data);
+            $this->load->view('admin/footer');
+        } else {
+
+            $post_data = array(
+                'tanggal_sk'             => $this->input->post('tanggal_sk'),
+                'indikator'              => $this->input->post('indikator'),
+                'target'                 => $this->input->post('target'),
+                'alokasi_tahun2021'      => $this->input->post('alokasi_tahun2021'),
+                'status'                 => $this->input->post('status')
+            );
+
+            $this->load->view('admin/header');
+            
+            if ($this->M_Belanja->update_belanja($post_data, $id)) {
+                redirect('C_Admin/Draft');
+            } else {
+                redirect('C_Admin/Draft');
+            }
+            $this->load->view('admin/footer'); 
+
+        }
+    }
+
+    public function deleterka($id){
         $data['page_title'] = 'Hapus';
 
         $this->load->model('M_Belanja');
         $this->M_Belanja->delete($id);
 
-        redirect('C_Belanja');
+        redirect('C_Admin/RKA');
+    }
+
+    public function deletedraft($id){
+        $data['page_title'] = 'Hapus';
+
+        $this->load->model('M_Belanja');
+        $this->M_Belanja->delete($id);
+
+        redirect('C_Admin/Draft');
     }
 
    public function ajukan_draftdpa($id){

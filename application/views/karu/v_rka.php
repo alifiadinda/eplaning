@@ -120,7 +120,7 @@
                       <a href="<?php echo site_url()?>/C_Karu/edit/<?php echo $key->id; ?>" class="btn btn-warning">
                         <i class="metismenu-icon fa fa-edit"></i>
                       </a>
-                      <a href="<?php echo site_url()?>/C_Karu/delete/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
+                      <a href="<?php echo site_url()?>/C_Karu/deleterka/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
                         <i class="metismenu-icon fa fa-trash"></i>
                       </a>
                       <a href="<?php echo site_url()?>/c_admin/cetak/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
