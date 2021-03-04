@@ -95,7 +95,7 @@
 
 
                   <?php 
-                    if($this->session->userdata('level')=="kasubid"){
+                    if($this->session->userdata('level')=="Kasubid"){
                       if($key->status_karu==1 && $key->status_karu_dpa==1 && $key->status=="Draft DPA"){
                   ?>
                     <a href="<?php echo site_url()?>/C_Belanja/ajukan_dpa_kasubid/<?php echo $key->id; ?>">
