@@ -19,7 +19,7 @@
 				<form method="POST" action="<?= site_url('c_belanja/save_rincian') ?>">
 					<a class="btn btn-primary" href="<?= base_url('index.php/c_admin/rka') ?>">Kembali</a>
 					<button type="submit" class="btn btn-success">Simpan</button>
-					<span id="alokasi">0</span>
+					<span id="alokasi"></span>
 					<input type="hidden" name="id_dpa" value="<?= $id_dpa  ?>">
 					<br>
 					<br>
