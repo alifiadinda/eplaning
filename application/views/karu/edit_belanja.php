@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="form-group">
-                          <label for="title">Pilih Program</label>
+                          <label for="title">Pilih Kegiatan</label>
                             <select id="kegiatan" name="kegiatan"  onchange="tampilkansub()" class="form-control" required>
                             <?php
                               $program=$belanja->program;
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="form-group">
-                          <label for="title">Pilih Kegiatan</label>
+                          <label for="title">Pilih Sub Kegiatan</label>
                           <select id="tampil" name="subkegiatan" class="form-control" required>
                             <?php
                               $kegiatan=$belanja->kegiatan;

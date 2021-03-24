@@ -16,8 +16,8 @@
 				<!-- <pre>
 					<?php print_r($detail) ?>
 				</pre> -->
-				<form method="POST" action="<?= site_url('C_Kasubid/save_rincian') ?>">
-					<a class="btn btn-primary" href="<?= base_url('index.php/C_Kasubid/rka') ?>">Kembali</a>
+				<form method="POST" action="<?= site_url('c_belanja/save_rincian') ?>">
+					<a class="btn btn-primary" href="<?= base_url('index.php/c_admin/draft') ?>">Kembali</a>
 					<button type="submit" class="btn btn-success">Simpan</button>
 					<input type="hidden" name="id_dpa" value="<?= $id_dpa  ?>">
 					<input type="hidden" name="alokasi" id="input_alokasi"/>

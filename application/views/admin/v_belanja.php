@@ -47,7 +47,7 @@
                         </div>
                          <div class="form-group">
                           <label for="title">Indikator</label>
-                            <input type="number" class="form-control" name="indikator" value="<?php echo set_value('indikator') ?>" required>
+                            <input type="text" class="form-control" name="indikator" value="<?php echo set_value('indikator') ?>" required>
                           <div class="invalid-feedback">Isi Indikator</div>
                          </div>
                          <div class="form-group">
@@ -60,11 +60,11 @@
                             <input type="date" class="form-control" name="tanggal_sk" value="<?php echo set_value('tanggal_sk') ?>" required>
                           <div class="invalid-feedback">Isi Tgl SK</div>
                          </div>
-                         <div class="form-group">
+                         <!-- <div class="form-group">
                           <label for="title">Alokasi Tahun 2021</label>
                             <input type="number" class="form-control" name="alokasi_tahun2021" value="<?php echo set_value('alokasi_tahun2021') ?>" required>
                           <div class="invalid-feedback">Isi 2021</div>
-                         </div>
+                         </div> -->
                          <div class="form-group">
                             <label for="title">Status</label>
                             <input type="text" class="form-control" name="status" value="RKA" readonly="readonly" required>

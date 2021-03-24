@@ -90,6 +90,7 @@
 <script type="text/javascript">
 
 	function changeAlokasi(e){
+		refreshJumlah()
 		refreshAlokasi()
 	}
 

@@ -144,6 +144,7 @@ class C_Kasubid extends CI_Controller {
 
     public function save_rincian(){
         $id_dpa = $this->input->post('id_dpa');
+        $alokasi = $this->input->post('alokasi');
         $id_detail = $this->input->post('id_detail[]');
         $keterangan = $this->input->post('keterangan[]');
         $koefisien = $this->input->post('koefisien[]');
@@ -151,6 +152,10 @@ class C_Kasubid extends CI_Controller {
         $harga = $this->input->post('harga[]');
         $ppn = $this->input->post('ppn[]');
         $jumlah = $this->input->post('jumlah[]');
+
+        $this->db->where('id',$id_dpa)->update('sk_belanja', [
+            'alokasi_tahun2021'=> $alokasi
+        ]);
 
         $unique = array_unique($id_detail);
         foreach ($unique as $key => $uniq) {
@@ -242,12 +247,14 @@ class C_Kasubid extends CI_Controller {
         if ($this->form_validation->run() === FALSE)
         {
             $this->load->view('kasubid/header');
-            $this->load->view('admin/edit_belanja',$data);
+            $this->load->view('kasubid/edit_belanja',$data);
             $this->load->view('kasubid/footer');
         } else {
 
             $post_data = array(
                 'program'                => $this->input->post('program'),
+                'kegiatan'               => $this->input->post('kegiatan'),
+                'subkegiatan'            => $this->input->post('subkegiatan'),
                 'tanggal_sk'             => $this->input->post('tanggal_sk'),
                 'indikator'              => $this->input->post('indikator'),
                 'target'                 => $this->input->post('target'),
@@ -295,6 +302,8 @@ class C_Kasubid extends CI_Controller {
 
             $post_data = array(
                 'program'                => $this->input->post('program'),
+                'kegiatan'               => $this->input->post('kegiatan'),
+                'subkegiatan'            => $this->input->post('subkegiatan'),
                 'tanggal_sk'             => $this->input->post('tanggal_sk'),
                 'indikator'              => $this->input->post('indikator'),
                 'target'                 => $this->input->post('target'),

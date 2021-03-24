@@ -22,8 +22,8 @@ class M_Belanja extends CI_Model {
             'subkegiatan'            => $this->input->post('subkegiatan'),
             'indikator'              => $this->input->post('indikator'),
             'target'                 => $this->input->post('target'),
-            'status'                 => $this->input->post('status'),
-            'alokasi_tahun2021'          => $this->input->post('alokasi_tahun2021')
+            'status'                 => $this->input->post('status')
+            // 'alokasi_tahun2021'          => $this->input->post('alokasi_tahun2021')
         );
 
         return $this->db->insert('sk_belanja', $data);

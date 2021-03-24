@@ -107,6 +107,7 @@ class C_Belanja extends CI_Controller {
             'alokasi_tahun2021'=> $alokasi
         ]);
 
+        //$id_detail = $id_detail ? $id_detail : [];
         $unique = array_unique($id_detail);
         foreach ($unique as $key => $uniq) {
             $this->bersihkanRincianDetail($id_dpa, $uniq);
@@ -202,6 +203,9 @@ class C_Belanja extends CI_Controller {
         } else {
 
             $post_data = array(
+                'program'                => $this->input->post('program'),
+                'kegiatan'               => $this->input->post('kegiatan'),
+                'subkegiatan'            => $this->input->post('subkegiatan'),
                 'tanggal_sk'             => $this->input->post('tanggal_sk'),
                 'indikator'              => $this->input->post('indikator'),
                 'target'                 => $this->input->post('target'),
@@ -248,6 +252,9 @@ class C_Belanja extends CI_Controller {
         } else {
 
             $post_data = array(
+                'program'                => $this->input->post('program'),
+                'kegiatan'               => $this->input->post('kegiatan'),
+                'subkegiatan'            => $this->input->post('subkegiatan'),
                 'tanggal_sk'             => $this->input->post('tanggal_sk'),
                 'indikator'              => $this->input->post('indikator'),
                 'target'                 => $this->input->post('target'),
