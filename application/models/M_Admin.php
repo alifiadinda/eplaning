@@ -190,6 +190,14 @@ class M_Admin extends CI_Model {
 		return $result;
 	}
 
+	public function rekening(){
+
+        $this->db->order_by('id');
+
+        $query = $this->db->get('detail_belanja');
+        return $query->result();
+    }	
+
 }
 
 /* End of file ModelName.php */

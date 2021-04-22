@@ -16,11 +16,17 @@
 				<!-- <pre>
 					<?php print_r($detail) ?>
 				</pre> -->
-				<form method="POST" action="<?= site_url('C_Kasubid/save_rincian') ?>">
-					<a class="btn btn-primary" href="<?= base_url('index.php/C_Kasubid/rka') ?>">Kembali</a>
+				<form method="POST" action="<?= site_url('c_kasubid/save_rincian') ?>">
+					<a class="btn btn-danger" href="<?= base_url('index.php/c_kasubid/rka') ?>">Kembali</a>
 					<button type="submit" class="btn btn-success">Simpan</button>
+					<br><br> 
+					<!-- Button trigger modal -->
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl">
+                <i class="fa fa-plus">  Add Rekening </i>
+                </button>
 					<input type="hidden" name="id_dpa" value="<?= $id_dpa  ?>">
 					<input type="hidden" name="alokasi" id="input_alokasi"/>
+					<input type="hidden" id="base-url" value="<?= base_url() ?>">
 					<br>
 					<br>
 					<table class="table">
@@ -37,8 +43,8 @@
 								<th>Jumlah</th>
 							</tr>
 						</thead>
-						<tbody>
-							<?php foreach ($detail as $key => $d) { ?>
+						<tbody id="table-uraian">
+							<?php foreach ($detail_table as $key => $d) { ?>
 							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>">
 								<td>
 									<?php if ($d->butuh_rincian==1) { ?>
@@ -87,6 +93,53 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal -->
+	  <div class="modal fade" id="modal-xl">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Kode Rekening</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+            	<th></th>
+                <th>Kode rekening</th>
+                <th>Uraian</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <?php foreach ($detail as $key => $d) { ?>
+            <tr>
+            	<td>
+            		<div class="form-check">
+                    	<input type="checkbox" class="form-check-input" id="id_detail[]" value="<?php echo $d->id_detail ?>">
+                  	</div>
+              	</td>
+                <td><?php echo $d->kode_rekening ?></td>
+                <td><?php echo $d->uraian?></td>
+            </tr>
+        	<?php }; ?>
+            
+        </tbody>
+    </table>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="tambah" >Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
 <script type="text/javascript">
 
 	function changeAlokasi(e){
@@ -222,5 +275,41 @@
 		})
 
 	})
+
+</script>
+
+<script>
+	
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+
+</script>
+
+<script>
+	
+	$(function(){
+      $('#tambah').click(function(){
+        $(':checkbox:checked').each(function(i){
+      		var dataSend = {
+      			id_detail: $(this).val(),
+      			id_dpa: window.location.pathname.split("/").pop()
+      		}
+      		$.ajax({
+	            type: "POST",
+	            url: $('#base-url').val()+'index.php/C_Belanja/detailsave/',
+	            data:dataSend,
+	            success: function (response) {
+	            	if (response==1) {
+	            		$('#modal-xl').modal('hide');
+	            		location.reload();
+	            	} else {
+	            		alert('Gagal Save Data');
+	            	}
+		        }
+		    });
+        });
+      });
+    });
 
 </script>

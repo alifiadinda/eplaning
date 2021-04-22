@@ -195,6 +195,18 @@ class C_Admin extends CI_Controller {
 	}
 	// UPDATE CETAK
 
+	public function rekening()
+	{
+		$data['rekening'] = $this->M_admin->rekening();
+
+		$this->load->view('admin/header');
+		// $this->load->view('admin/sidebar');
+		$this->load->view('admin/v_detail', $data);
+		$this->load->view('admin/footer');
+	}
+
+	
+
 }
 
 ?>

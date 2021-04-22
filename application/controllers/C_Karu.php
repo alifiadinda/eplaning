@@ -103,21 +103,57 @@ class C_Karu extends CI_Controller {
 
     }
 
-     public function detail($id_dpa='')
+     public function detail($id_dpa='', $id_detail='')
     {
         $data['id_dpa'] = $id_dpa;
         $data['sk_belanja'] = $this->db->where('id', $id_dpa)->get('sk_belanja')->row();
+        $data['detail_table'] = $this->getDetailBelanja($id_dpa, $id_detail, true);
+        $data['detail'] = $this->getDetailBelanja($id_dpa, $id_detail);
 
-        $data['detail'] = $this->getDetailBelanja($id_dpa);
+        if ($id_detail!='') {
+            $data['detail'] = $this->getDetailBelanja($id_det, $id_detail);
+            echo json_encode($data['detail']);
+            exit();
+        }
 
         $this->load->view('karu/header');
         $this->load->view('karu/v_detail', $data);
         $this->load->view('karu/footer');
     }
 
-    function getDetailBelanja($id_dpa){
-        $this->db->order_by('db.kode_rekening');
-        $result = $this->db->get('detail_belanja db')->result();
+    public function detailSave()
+    {
+        $data = array(
+            'id_dpa' => $this->input->post('id_dpa'),
+            'id_detail_belanja' => $this->input->post('id_detail')
+        );
+        // save table rekening
+        $insert = $this->db->insert('rekening', $data);
+        if ($insert) {
+            echo 1;exit;
+        } else {
+            echo 0;exit;
+        }
+    }
+
+    function getDetailBelanja($id_dpa, $id_detail='', $view=false){
+        if ($id_detail!='') {
+            $this->db->order_by('db.kode_rekening');
+            $result = $this->db->where('id_detail', $id_detail)
+                    ->get('detail_belanja db')
+                    ->result();
+        } else {
+            if ($view) {
+                $this->db->join('rekening as r', 'r.id_detail_belanja = db.id_detail');
+                $this->db->where('r.id_dpa', $id_dpa);
+            }
+            $this->db->order_by('db.kode_rekening');
+            $result = $this->db->get('detail_belanja db')->result();
+            // var_dump($result);die;
+            // var_dump($this->db->last_query());die;
+         //$result = $this->db->query('SELECT detail_belanja.* FROM detail_belanja WHERE LENGTH(regexp_replace(detail_belanja.kode_rekening, "[0-9]", "")) <= 3')->result();
+        }
+
         foreach ($result as $key => $value) {
             $result[$key]->kode_rekening_parent = $value->parent ? $this->getKodeRekeningParent($value->parent) : '';
             
@@ -130,6 +166,7 @@ class C_Karu extends CI_Controller {
                 $result[$key]->rincian = [];
             }
         }
+        
         return $result;
     }
 

@@ -169,7 +169,7 @@ body {
                   </a>
                 </li>
               </ul>
-              <ul class="nav nav-treeview">
+             <!--  <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="<?php echo site_url();?>/C_Karu/Draft" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
@@ -185,7 +185,7 @@ body {
                   </a>
                 </li>
               </ul>
-            </li>
+            </li> -->
 
             <li class="nav-item">
               <a href="<?php echo site_url();?>/C_admin/Usulan" class="nav-link" >
