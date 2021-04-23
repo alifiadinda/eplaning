@@ -14,13 +14,22 @@ class M_UpdateAkun extends CI_Model {
     }
 
     public function changePass($id,$passnew)
-	    {
-	        $data = array( 'password'=>$passnew );
+    {
+        $data = array( 'password'=>$passnew );
 
-	        $this->db->where('id_akun', $id);
-	        $result = $this->db->update('akun', $data);
-	        return $result;
-        }
+        $this->db->where('id_akun', $id);
+        $result = $this->db->update('akun', $data);
+        return $result;
+    }
+
+    public function editAkun($id_akun,$nama)
+    {
+        $data = array(
+            'nama'          => $nama,
+        );
+        $this->db->where('id_akun', $id_akun);
+        $this->db->update('akun', $data);
+    }
 
 }
 

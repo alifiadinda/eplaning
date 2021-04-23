@@ -34,13 +34,15 @@
                 if ($cek->num_rows() == 1) {
                     $value = $cek->row();
 
-                    $userdata = array(
-                        'id_akun' 	=> $value->id_akun,
-                        'nama'		=> $value->nama,
-                        'username' 	=> $value->username, 
-                        'password' 	=> $value->password, 
-                        'level'		=> $value->level,
-                        'status' 	=> TRUE,
+                     $userdata = array(
+                        'id_akun'       => $value->id_akun,
+                        'nama'          => $value->nama,
+                        'username'      => $value->username, 
+                        'password'      => $value->password, 
+                        'level'         => $value->level,
+                        'kode_ruangan'  => $value->kode_ruangan,
+                        'nama_ruangan'  => $value->nama_ruangan,
+                        'status'        => TRUE,
                     );
 
                     $this->session->set_userdata($userdata);

@@ -16,7 +16,7 @@ class C_Admin extends CI_Controller {
 		}
 	}
 
-
+/*=============================================================== INDEX PER HALAMAN ===============================================================*/
 	public function index()
 	{
 		$data['data_rka'] = $this->M_admin->hitung_RKA();
@@ -68,55 +68,68 @@ class C_Admin extends CI_Controller {
 		$this->load->view('admin/v_detail_belanja',$data);
 		$this->load->view('admin/footer');
 	}
+/*=============================================================== INDEX PER HALAMAN ===============================================================*/
+
+/*=============================================================== MANAJEMEN AKUN ===============================================================*/
 
 	public function viewAkun()
 	{
 		$data['akun'] = $this->M_admin->getAkun();
-		$this->load->view('admin/header');
-		// $this->load->view('admin/sidebar');
-		$this->load->view('admin/v_akun',$data);
-		$this->load->view('admin/footer');
+        $data['ruangan'] = $this->M_admin->getRuangan();
+        // print_r($data['akun']);die();
+        $this->load->view('admin/header');
+        $this->load->view('admin/v_akun',$data);
+        $this->load->view('admin/footer');
 	}
 
 	public function pendaftaran()
 	{
-		$this->load->view('admin/header');
-		// $this->load->view('admin/sidebar');
-		$this->load->view('admin/v_register');
-		$this->load->view('admin/footer');
+		$data['ruangan'] = $this->M_admin->getRuangan();
+        $this->load->view('admin/header');
+        $this->load->view('admin/v_register',$data);
+        $this->load->view('admin/footer');
 	}
 
 	public function daftarAkun()
 	{
-		$uuid		= str_replace('-','',$this->uuid->v4());
-		$username	= $this->input->post('username');
-		$password	= $this->input->post('password');
-		$nama		= $this->input->post('nama');
-		$level		= $this->input->post('level');
+		$uuid       = str_replace('-','',$this->uuid->v4());
+        $username   = $this->input->post('username');
+        $password   = md5($this->input->post('password'));
+        $nama       = $this->input->post('nama');
+        $level      = $this->input->post('level');
+        $ruangan    = $this->input->post('ruangan');
+        // print_r($username);die();
 
-		$this->M_admin->tambahAkun($uuid, $username, $password, $nama, $level);
-		echo "<script>alert('Akun Berhasil Ditambahkan') </script>";
-		redirect('C_admin/viewAkun','refresh');
+        $cek = $this->M_admin->cekUsername($username);
+        if($cek == true){
+            echo "<script>alert('Username telah terdaftar. Gunakan username yang lain') </script>";
+            redirect('C_admin/viewAkun','refresh');
+        }else{
+            $this->M_admin->tambahAkun($uuid, $username, $password, $nama, $level,$ruangan);
+            echo "<script>alert('Akun baru telah berhasil ditambahkan') </script>";
+            redirect('C_admin/viewAkun','refresh');
+        }
 	}
 
 	public function viewEdtAkun($id_akun)
 	{
 		$data['akun'] = $this->M_admin->getAkunById($id_akun);
-		// var_dump($data['akun']);die();
-		$this->load->view('admin/header');
-		// $this->load->view('admin/sidebar');
-		$this->load->view('admin/v_edtAkun',$data);
-		$this->load->view('admin/footer');
+        $data['ruangan'] = $this->M_admin->getRuangan();
+        // var_dump($data['akun']);die();
+        $this->load->view('admin/header');
+        $this->load->view('admin/v_edtAkun',$data);
+        $this->load->view('admin/footer');
 	}
 
 	public function edtAkun($id_akun)
 	{
-		$nama		= $this->input->post('nama');
-		$level		= $this->input->post('level');
+		$nama       = $this->input->post('nama');
+        $level      = $this->input->post('level');
+        $ruangan    = $this->input->post('ruangan');
 
-		$this->M_admin->editAkun($id_akun, $nama, $level);
-		echo "<script>alert('Data Akun Berhasil Diupdate') </script>";
-		redirect('C_admin/viewAkun','refresh');
+        $this->M_admin->editAkun($id_akun, $nama, $level,$ruangan);
+        echo "<script>alert('Data Akun Berhasil Diupdate') </script>";
+        redirect('C_admin/viewAkun','refresh');
 	}
 
 	public function hapusAkun($id_akun)
@@ -125,9 +138,9 @@ class C_Admin extends CI_Controller {
 		echo "<script>alert('Akun telah berhasil dihapus!')</script>";
 		redirect('C_admin/viewAkun','refresh');
 	}
+/*=============================================================== MANAJEMEN AKUN ===============================================================*/
 
-
-	// UPDATE CETAK
+/*=============================================================== UPDATE CETAK ===============================================================*/
 	public function cetak($id_rka) {
 		// $data['capaian'] = 100;
 		// $data['sk_belanja'] = $this->where  .....($id_rka) get('sk_belanja')->row();
@@ -193,7 +206,7 @@ class C_Admin extends CI_Controller {
 		$this->db->where('id_dpa_detail', $id_dpa_detail);
 		return $this->db->get('rincian')->result();
 	}
-	// UPDATE CETAK
+/*=============================================================== UPDATE CETAK ===============================================================*/
 
 	public function rekening()
 	{
@@ -205,7 +218,109 @@ class C_Admin extends CI_Controller {
 		$this->load->view('admin/footer');
 	}
 
+/*=============================================================== USULAN ===============================================================*/
+
+	public function getUsulan()
+	{
+		$data['usulan'] = $this->M_admin->getUsulan();
+        $this->load->view('admin/header');
+        $this->load->view('admin/v_usulan',$data);
+        $this->load->view('admin/footer');	
+	}
+
+	public function tambahUsulan()
+	{
+		$result="";
+		$tgl_buka 	= $this->input->post('tgl_buka');
+		$tgl_tutup 	= $this->input->post('tgl_tutup');
+
+		if($tgl_buka > $tgl_tutup){
+				$data =['code' => 2]; // error tgl tutup lebih besar
+		}else{
+			$data=[ 'result'	=> $this->M_admin->tambahUsulan($tgl_buka,$tgl_tutup),
+						'code'	=> 1];
+		}
+
+		echo json_encode($data);
+	}
+
+	public function updateUsulan()
+	{
+		$result="";
+		$id			= $this->input->post('u_id_usulan');
+		$tgl_buka 	= $this->input->post('u_tgl_buka');
+		$tgl_tutup 	= $this->input->post('u_tgl_tutup');
+
+		if($tgl_buka > $tgl_tutup){
+				$data =['code' => 2]; // error tgl tutup lebih besar
+		}else{
+			$data=[ 'result'	=> $this->M_admin->updateUsulan($id,$tgl_buka,$tgl_tutup),
+					'code'	=> 1];
+		}
+
+		echo json_encode($data);
+	}
+
+	public function hapusUsulan($id_usulan)
+	{
+        // $id_usulan	= $this->input->post('id_usulan');
+		$result 	= $this->M_admin->deleteUsulan($id_usulan);
+		echo json_decode($result);
+	}
+
+	public function getDetailUsulan($id_usulan)
+	{
+		$data['getDetailUsulan']	= $this->M_admin->getDetailUsulan($id_usulan);
+		echo json_encode($data);	
+	}
+
+	public function getItemUsulan()
+	{
+		$data['getItemUsulan']		= $this->M_admin->getItemUsulan();
+		echo json_encode($data);	
+	}
+/*=============================================================== USULAN ===============================================================*/
+
+/*=============================================================== DETAIL USULAN ===============================================================*/
 	
+	public function getDetailUsulanUnit($id_usulan)
+	{
+		
+		$data['usulan'] = $this->M_admin->getPeriode($id_usulan);
+ 		$data['getDetailUsulanUnit'] = $this->M_admin->getDetailUsulanUnit($id_usulan,$this->session->kode_ruangan);
+		$data['getItemUsulan']		= $this->M_admin->getItemUsulan();
+		$this->load->view('admin/header');
+        $this->load->view('admin/v_usulan_detail',$data);
+        $this->load->view('admin/footer');
+	}
+
+	public function tambahDetailUsulan()
+	{
+		$result="";
+		$rincian_barang	= $this->input->post('rincian_barang');
+		$volume 		= $this->input->post('volume');
+		$satuan 		= $this->input->post('satuan');
+		$harga 			= $this->input->post('harga');
+		$existing 		= $this->input->post('existing');
+		$alasan 		= $this->input->post('alasan');
+		$jumlah 		= $this->input->post('jumlah');
+		$id_usulan 		= $this->input->post('id_usulan');
+		$unit_pengusul 	= $this->session->kode_ruangan;
+
+		$data=[ 'result'	=> $this->M_admin->tambahDetailUsulan($rincian_barang,$volume,$satuan,$harga,$existing,$alasan,$jumlah,$id_usulan,$unit_pengusul),
+				'code'	=> 1];
+
+		echo json_encode($data);
+	}
+
+
+
+	public function hapusDetailUsulan($id_detail_usulan)
+	{
+		$result 	= $this->M_admin->deleteDetailUsulan($id_detail_usulan);
+		echo json_decode($result);
+	}
+/*=============================================================== DETAIL USULAN ===============================================================*/
 
 }
 

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2021 at 03:58 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 8.0.0
+-- Generation Time: Apr 23, 2021 at 03:42 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,25 +32,25 @@ CREATE TABLE `akun` (
   `username` varchar(255) NOT NULL,
   `password` varchar(100) NOT NULL,
   `nama` varchar(255) NOT NULL,
-  `level` varchar(20) NOT NULL
+  `level` varchar(20) NOT NULL,
+  `kode_ruangan` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `akun`
 --
 
-INSERT INTO `akun` (`id_akun`, `username`, `password`, `nama`, `level`) VALUES
-('2038331b5d11487e9250', 'adminkaru', '1bd2dbee5a94d8e1850a5eb83d72d9d2', 'Admin Karu', 'Karu'),
-('34e123e12598496e8f91', 'admin_it', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Admin', 'admin'),
-('3c10a96684d94e11ac39', 'alifia', '81dc9bdb52d04dc20036dbd8313ed055', 'alifia', 'pengusul'),
-('44d363d0b2044708b813', 'penerima1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Penerima', 'kasubid'),
-('6a320de38ed245b880f4', 'coba', 'c3ec0f7b054e729c5a716c8125839829', 'coba', 'Karu'),
-('6ad5c5a6baa74a05a216', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Tes Admin IT', 'Admin'),
-('78e6ba3f91f24305a065', 'pengusul1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Pengusul', 'karu'),
-('a10b4545fa424d79bf84', 'asdasd', '4473e588b35568687564de38ed134d0b', 'asdsadas', 'admin'),
-('bdac6a1ad28d464fb82b', 'adminkasubag', '31b8c943aab6287440162172e591c89f', 'Admin Kasubag', 'Kasubid'),
-('c0db254b7a564f638463', 'kasubag', '31b8c943aab6287440162172e591c89f', 'kasubag', 'Kasubid'),
-('c3a9397b32084249927a', 'lalala', '2e3817293fc275dbee74bd71ce6eb056', 'lalala', 'penerima');
+INSERT INTO `akun` (`id_akun`, `username`, `password`, `nama`, `level`, `kode_ruangan`) VALUES
+('2038331b5d11487e9250', 'adminkaru', '1bd2dbee5a94d8e1850a5eb83d72d9d2', 'Admin Karu', 'Karu', 'IT'),
+('34e123e12598496e8f91', 'admin_it', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Admin', 'admin', 'IT'),
+('3c10a96684d94e11ac39', 'alifia', '81dc9bdb52d04dc20036dbd8313ed055', 'alifia', 'pengusul', 'IT'),
+('44d363d0b2044708b813', 'penerima1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Penerima', 'kasubid', 'IT'),
+('6a320de38ed245b880f4', 'coba', 'c3ec0f7b054e729c5a716c8125839829', 'coba', 'Karu', 'IT'),
+('6ad5c5a6baa74a05a216', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Tes Admin IT', 'Admin', 'IT'),
+('78e6ba3f91f24305a065', 'pengusul1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Pengusul', 'karu', 'IT'),
+('bdac6a1ad28d464fb82b', 'adminkasubag', '31b8c943aab6287440162172e591c89f', 'Admin Kasubag', 'Kasubid', 'IT'),
+('c0db254b7a564f638463', 'kasubag', '31b8c943aab6287440162172e591c89f', 'kasubag', 'Kasubid', 'IT'),
+('c3a9397b32084249927a', 'lalala', '2e3817293fc275dbee74bd71ce6eb056', 'lalala', 'penerima', 'IT');
 
 -- --------------------------------------------------------
 
@@ -247,6 +247,30 @@ INSERT INTO `dpa_detail` (`id_dpa_detail`, `id_dpa`, `id_detail`, `jumlah`) VALU
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `item_usulan`
+--
+
+CREATE TABLE `item_usulan` (
+  `id_usulan` int(11) NOT NULL,
+  `nama_usulan` varchar(255) NOT NULL,
+  `spesifikasi` text NOT NULL,
+  `satuan` varchar(100) NOT NULL,
+  `harga_satuan` int(11) NOT NULL,
+  `kode_rekening` varchar(255) NOT NULL,
+  `status` enum('aktif','nonakitf','','') NOT NULL DEFAULT 'aktif'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `item_usulan`
+--
+
+INSERT INTO `item_usulan` (`id_usulan`, `nama_usulan`, `spesifikasi`, `satuan`, `harga_satuan`, `kode_rekening`, `status`) VALUES
+(1, 'tes1', 'asd123', 'pcs', 20000, '5.1.01.03.07.0001', 'aktif'),
+(2, 'tes2', 'asd1234', 'box', 50000, '5.1.01.03.07.0001', 'aktif');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `rekening`
 --
 
@@ -272,7 +296,13 @@ INSERT INTO `rekening` (`id_rekening`, `id_dpa`, `id_detail_belanja`) VALUES
 (20, 26, 55),
 (21, 26, 57),
 (22, 26, 58),
-(23, 26, 56);
+(23, 26, 56),
+(24, 28, 9),
+(25, 28, 8),
+(26, 28, 145),
+(27, 28, 146),
+(28, 28, 147),
+(29, 28, 148);
 
 -- --------------------------------------------------------
 
@@ -306,9 +336,44 @@ INSERT INTO `rincian` (`id_rincian`, `id_dpa_detail`, `keterangan`, `koefisien`,
 --
 
 CREATE TABLE `ruangan` (
-  `id_ruangan` int(11) NOT NULL,
+  `kode_ruangan` varchar(20) NOT NULL,
   `nama_ruangan` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `ruangan`
+--
+
+INSERT INTO `ruangan` (`kode_ruangan`, `nama_ruangan`) VALUES
+('CSSD_LAU', 'CSSD Dan Laundry'),
+('FARMA', 'Farmasi'),
+('GIZI', 'Gizi'),
+('HCU', 'HCU'),
+('IGD', 'IGD'),
+('IPLRS', 'IPLRS'),
+('IPSRS', 'IPSRS'),
+('IRNA1', 'Rawat Inap Lt.1'),
+('IRNA2', 'Rawat Inap Lt.2'),
+('IRNA3', 'Rawat Inap Lt.3'),
+('IT', 'Informasi Teknologi'),
+('KEUANGAN', 'Keuangan'),
+('KMR_OP', 'Kamar Operasi'),
+('KMR_SALIN', 'Kamar Bersalin'),
+('LABOR', 'Laboratorium'),
+('PERINATOLOGI', 'Perinatologi'),
+('POLI_ANK', 'Poli Anak'),
+('POLI_GIGI', 'Poli Gigi'),
+('POLI_KK', 'Poli Kulit Kelamin'),
+('POLI_OBGYN', 'Poli Kandungan'),
+('POLI_PARU', 'Poli Paru'),
+('POLI_PD', 'Poli Penyakit Dalam'),
+('POLI_UMUM', 'Poli Umum'),
+('PSDP', 'Penunjang Sarana Dan Prasarana'),
+('RADIO', 'Radiologi'),
+('RH_MED', 'Rehab Medik'),
+('TU', 'Tata Usaha'),
+('WH_FARMA', 'Gudang Farmasi'),
+('YANMED', 'Pelayanan Medis');
 
 -- --------------------------------------------------------
 
@@ -356,19 +421,28 @@ INSERT INTO `sk_belanja` (`id`, `tanggal_sk`, `program`, `kegiatan`, `subkegiata
 --
 ALTER TABLE `akun`
   ADD PRIMARY KEY (`id_akun`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `fk_kode_ruangan` (`kode_ruangan`);
 
 --
 -- Indexes for table `detail_belanja`
 --
 ALTER TABLE `detail_belanja`
-  ADD PRIMARY KEY (`id_detail`);
+  ADD PRIMARY KEY (`id_detail`),
+  ADD KEY `kode_rekening` (`kode_rekening`);
 
 --
 -- Indexes for table `dpa_detail`
 --
 ALTER TABLE `dpa_detail`
   ADD PRIMARY KEY (`id_dpa_detail`);
+
+--
+-- Indexes for table `item_usulan`
+--
+ALTER TABLE `item_usulan`
+  ADD PRIMARY KEY (`id_usulan`),
+  ADD KEY `fk_kode_rekening` (`kode_rekening`);
 
 --
 -- Indexes for table `rekening`
@@ -386,7 +460,7 @@ ALTER TABLE `rincian`
 -- Indexes for table `ruangan`
 --
 ALTER TABLE `ruangan`
-  ADD PRIMARY KEY (`id_ruangan`);
+  ADD PRIMARY KEY (`kode_ruangan`);
 
 --
 -- Indexes for table `sk_belanja`
@@ -411,10 +485,16 @@ ALTER TABLE `dpa_detail`
   MODIFY `id_dpa_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 
 --
+-- AUTO_INCREMENT for table `item_usulan`
+--
+ALTER TABLE `item_usulan`
+  MODIFY `id_usulan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `rekening`
 --
 ALTER TABLE `rekening`
-  MODIFY `id_rekening` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_rekening` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `rincian`
@@ -423,16 +503,26 @@ ALTER TABLE `rincian`
   MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=381;
 
 --
--- AUTO_INCREMENT for table `ruangan`
---
-ALTER TABLE `ruangan`
-  MODIFY `id_ruangan` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `sk_belanja`
 --
 ALTER TABLE `sk_belanja`
   MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `akun`
+--
+ALTER TABLE `akun`
+  ADD CONSTRAINT `fk_kode_ruangan` FOREIGN KEY (`kode_ruangan`) REFERENCES `ruangan` (`kode_ruangan`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `item_usulan`
+--
+ALTER TABLE `item_usulan`
+  ADD CONSTRAINT `fk_kode_rekening` FOREIGN KEY (`kode_rekening`) REFERENCES `detail_belanja` (`kode_rekening`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

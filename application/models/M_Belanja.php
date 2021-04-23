@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_Belanja extends CI_Model {
 
-
     public function get_belanja(){
 
         $this->db->order_by('id');

@@ -5,7 +5,10 @@ class M_Admin extends CI_Model {
 
 	public function getAkun()
 	{
-		$query = $this->db->get('akun');
+		$this->db->select('*');
+		$this->db->from('akun');
+		$this->db->join('ruangan', 'akun.kode_ruangan = ruangan.kode_ruangan');
+		$query = $this->db->get();
 		return $query->result();
 	}
 
@@ -153,22 +156,33 @@ class M_Admin extends CI_Model {
 		return $query->result();
 	}
 
+/*=============================================================== MANAJEMEN AKUN ===============================================================*/
 	public function getAkunById($id_akun)
 	{
-		$this->db->select();
+		$this->db->select('*');
+		$this->db->from('akun');
+		$this->db->join('ruangan', 'akun.kode_ruangan = ruangan.kode_ruangan');
 		$this->db->where('id_akun', $id_akun);
-		$query=$this->db->get('akun');
+		$query = $this->db->get();
 		return $query->result();
 	}
 
-	public function tambahAkun($id_akun, $username, $password, $nama, $level)
+	public function getRuangan()
+	{
+		$this->db->order_by("nama_ruangan", "asc");
+		$query = $this->db->get('ruangan');
+		return $query->result();
+	}
+
+	public function tambahAkun($uuid, $username, $password, $nama, $level,$ruangan)
 	{
 		$data = array(
-			'id_akun'	=> $id_akun,
+			'id_akun'	=> $uuid,
 			'username'	=> $username, 
 			'password' 	=> md5($password), 
 			'nama'		=> $nama,
 			'level'		=> $level,
+			'kode_ruangan'	=> $ruangan,
 		);
 		$this->db->insert('akun', $data);
 	}
@@ -176,8 +190,9 @@ class M_Admin extends CI_Model {
 	public function editAkun($id_akun,$nama,$level)
 	{
 		$data = array(
-			'nama'		=> $nama,
-			'level'		=> $level,
+			'nama'			=> $nama,
+			'level'			=> $level,
+			'kode_ruangan'	=> $ruangan,
 		);
 		$this->db->where('id_akun', $id_akun);
 		$this->db->update('akun', $data);
@@ -190,6 +205,19 @@ class M_Admin extends CI_Model {
 		return $result;
 	}
 
+	public function cekUsername($username)
+	{
+		$this->db->where('username', $username);
+		$query = $this->db->get('akun');
+		if($query->num_rows() > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+/*=============================================================== MANAJEMEN AKUN ===============================================================*/
+	
+
 	public function rekening(){
 
         $this->db->order_by('id');
@@ -198,9 +226,109 @@ class M_Admin extends CI_Model {
         return $query->result();
     }	
 
-}
+/*=============================================================== USULAN ===============================================================*/
+
+	public function getUsulan()
+	{
+		$this->db->select('*');
+		$this->db->from('usulan');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function getItemUsulan()
+	{
+		$this->db->select('*');
+		$this->db->from('item_usulan');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function getPeriode($id_usulan)
+	{
+		$this->db->where('id_usulan', $id_usulan);
+		$query = $this->db->get('usulan');
+		return $query->result();
+	}
+
+	public function tambahUsulan($tgl_buka,$tgl_tutup)
+	{
+		$data = array(
+			'periode'		=> 'Tahun '.date('Y'),
+			'status_usulan'	=> 'Diajukan',
+			'tgl_buka'		=> $tgl_buka,
+			'tgl_tutup'		=> $tgl_tutup, 
+		);
+		$this->db->insert('usulan', $data);
+	}
+
+	public function updateUsulan($id,$tgl_buka,$tgl_tutup)
+	{
+		$data = array(
+			'tgl_buka'	=> $tgl_buka, 
+			'tgl_tutup'	=> $tgl_tutup, 
+		);
+		$this->db->where('id_usulan', $id);
+		$result = $this->db->update('usulan', $data);
+		return $result;
+	}
+
+
+	public function deleteUsulan($id_usulan)
+	{
+		$this->db->where('id_usulan', $id_usulan);
+		$result = $this->db->delete('usulan');
+		return $result;
+	}
+
+	public function getDetailUsulan($id_usulan)
+	{
+		$this->db->select('*');
+		$this->db->from('detail_usulan');
+		$this->db->join('usulan', 'detail_usulan.id_usulan = usulan.id_usulan');
+		$this->db->where('usulan.id_usulan', $id_usulan);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function getDetailUsulanUnit($id_usulan,$unit_pengusul)
+	{
+		$this->db->select('*');
+		$this->db->from('detail_usulan');
+		$this->db->join('usulan', 'detail_usulan.id_usulan = usulan.id_usulan');
+		$this->db->where('usulan.id_usulan', $id_usulan);
+		$this->db->where('detail_usulan.unit_pengusul', $unit_pengusul);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function tambahDetailUsulan($rincian_barang,$volume,$satuan,$harga,$existing,$alasan,$jumlah,$id_usulan,$unit_pengusul)
+	{
+		$data = array(
+			'rincian_barang'=> $rincian_barang,
+			'volume'		=> $volume, 
+			'satuan'		=> $satuan, 
+			'harga'			=> $harga, 
+			'existing'		=> $existing, 
+			'alasan'		=> $alasan, 
+			'jumlah'		=> $jumlah, 
+			'id_usulan'		=> $id_usulan, 
+			'unit_pengusul'	=> $unit_pengusul, 
+		);
+		$this->db->insert('detail_usulan', $data);
+	}
+
+	public function deleteDetailUsulan($id_detail_usulan)
+	{
+		$this->db->where('id_detail_usulan', $id_detail_usulan);
+		$result = $this->db->delete('detail_usulan');
+		return $result;
+	}
+
+	/*=============================================================== USULAN ===============================================================*/
 
 /* End of file ModelName.php */
 
+}
 
 ?>

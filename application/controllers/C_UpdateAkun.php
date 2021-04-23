@@ -33,6 +33,7 @@ class C_UpdateAkun extends CI_Controller {
             echo "<script>alert('password berhasil diubah') </script>";
             $this->M_UpdateAkun->changePass($id,$passnew);
         }
+
         if($this->session->level == 'Admin'){
             redirect('C_Admin', 'refresh');
         }else if($this->session->level == 'Karu'){
@@ -40,8 +41,24 @@ class C_UpdateAkun extends CI_Controller {
         }else{
             redirect('C_Kasubid', 'refresh');
         }
-
     }
+
+    public function editAkun($id_akun)
+    {
+        $nama = $this->input->post('nama');
+
+        $this->M_UpdateAkun->editAkun($id_akun, $nama);
+        $this->session->set_userdata('nama', $nama);
+
+        echo "<script>alert('Data Akun Berhasil Diupdate') </script>";
+
+        if($this->session->level == 'Karu'){
+            redirect('C_Karu', 'refresh');
+        }else{
+            redirect('C_Kasubid', 'refresh');
+        }
+    }
+
 
 }
 
