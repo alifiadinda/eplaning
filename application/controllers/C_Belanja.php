@@ -145,10 +145,8 @@ class C_Belanja extends CI_Controller {
         ]);
 
         //$id_detail = $id_detail ? $id_detail : [];
-        $unique = array_unique($id_detail);
-        foreach ($unique as $key => $uniq) {
-            $this->bersihkanRincianDetail($id_dpa, $uniq);
-        }
+        $this->bersihkanRincianDetail($id_dpa);
+        $id_detail = $id_detail ? $id_detail : [];
 
         foreach ($id_detail as $key => $id_det) {
             $data['keterangan'] = $keterangan[$key];
