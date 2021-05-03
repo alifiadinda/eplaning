@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2021 at 03:42 AM
+-- Generation Time: May 03, 2021 at 04:12 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -32,7 +32,7 @@ CREATE TABLE `akun` (
   `username` varchar(255) NOT NULL,
   `password` varchar(100) NOT NULL,
   `nama` varchar(255) NOT NULL,
-  `level` varchar(20) NOT NULL,
+  `level` enum('Kasubag','Karu','Admin','Pengusul','Perencana') NOT NULL DEFAULT 'Karu',
   `kode_ruangan` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -41,16 +41,18 @@ CREATE TABLE `akun` (
 --
 
 INSERT INTO `akun` (`id_akun`, `username`, `password`, `nama`, `level`, `kode_ruangan`) VALUES
-('2038331b5d11487e9250', 'adminkaru', '1bd2dbee5a94d8e1850a5eb83d72d9d2', 'Admin Karu', 'Karu', 'IT'),
-('34e123e12598496e8f91', 'admin_it', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Admin', 'admin', 'IT'),
-('3c10a96684d94e11ac39', 'alifia', '81dc9bdb52d04dc20036dbd8313ed055', 'alifia', 'pengusul', 'IT'),
-('44d363d0b2044708b813', 'penerima1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Penerima', 'kasubid', 'IT'),
-('6a320de38ed245b880f4', 'coba', 'c3ec0f7b054e729c5a716c8125839829', 'coba', 'Karu', 'IT'),
+('2038331b5d11487e9250', 'adminkaru', '1bd2dbee5a94d8e1850a5eb83d72d9d2', 'Admin Karu', 'Karu', 'WH_FARMA'),
+('34e123e12598496e8f91', 'admin_it', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Admin', 'Admin', 'IT'),
+('3c10a96684d94e11ac39', 'alifia', '81dc9bdb52d04dc20036dbd8313ed055', 'alifia', 'Pengusul', 'IT'),
+('44d363d0b2044708b813', 'penerima1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Penerima', 'Karu', 'TU'),
+('6a320de38ed245b880f4', 'perencana', 'bfd59291e825b5f2bbf1eb76569f8fe7', 'coba', 'Perencana', 'TU'),
 ('6ad5c5a6baa74a05a216', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Tes Admin IT', 'Admin', 'IT'),
-('78e6ba3f91f24305a065', 'pengusul1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Pengusul', 'karu', 'IT'),
-('bdac6a1ad28d464fb82b', 'adminkasubag', '31b8c943aab6287440162172e591c89f', 'Admin Kasubag', 'Kasubid', 'IT'),
-('c0db254b7a564f638463', 'kasubag', '31b8c943aab6287440162172e591c89f', 'kasubag', 'Kasubid', 'IT'),
-('c3a9397b32084249927a', 'lalala', '2e3817293fc275dbee74bd71ce6eb056', 'lalala', 'penerima', 'IT');
+('78e6ba3f91f24305a065', 'pengusul1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Pengusul', 'Pengusul', 'WH_FARMA'),
+('bdac6a1ad28d464fb82b', 'adminkasubag', '31b8c943aab6287440162172e591c89f', 'Admin Kasubag', 'Kasubag', 'IT'),
+('c0db254b7a564f638463', 'kasubag', 'bfd59291e825b5f2bbf1eb76569f8fe7', 'kasubag', 'Kasubag', 'KEUANGAN'),
+('c3a9397b32084249927a', 'lalala', '2e3817293fc275dbee74bd71ce6eb056', 'lalala', 'Pengusul', 'IGD'),
+('ed15ffcc26694a539cdc', 'asdasd', '130811dbd239c97bd9ce933de7349f20', 'sadas', 'Pengusul', 'GIZI'),
+('f32039aea4514af6b3e9', 'karu', 'f3685741425eca64ab27094e3420034c', 'tes karu', 'Karu', 'HCU');
 
 -- --------------------------------------------------------
 
@@ -266,7 +268,9 @@ CREATE TABLE `item_usulan` (
 
 INSERT INTO `item_usulan` (`id_usulan`, `nama_usulan`, `spesifikasi`, `satuan`, `harga_satuan`, `kode_rekening`, `status`) VALUES
 (1, 'tes1', 'asd123', 'pcs', 20000, '5.1.01.03.07.0001', 'aktif'),
-(2, 'tes2', 'asd1234', 'box', 50000, '5.1.01.03.07.0001', 'aktif');
+(2, 'tes2', 'asd1234', 'box', 50000, '5.1.01.03.07.0001', 'aktif'),
+(3, 'tes3', 'zxcv1234', 'unit', 2000000, '5.1.01.03.07.0002', 'aktif'),
+(4, 'tes4', 'dfas213', 'roll', 150000, '5.1.01.03.07.0002', 'aktif');
 
 -- --------------------------------------------------------
 
@@ -312,22 +316,31 @@ INSERT INTO `rekening` (`id_rekening`, `id_dpa`, `id_detail_belanja`) VALUES
 
 CREATE TABLE `rincian` (
   `id_rincian` int(11) NOT NULL,
-  `id_dpa_detail` int(11) NOT NULL,
+  `id_dpa_detail` int(11) DEFAULT NULL,
+  `id_usulan` int(11) NOT NULL,
   `keterangan` text NOT NULL,
   `koefisien` varchar(255) NOT NULL,
   `satuan` varchar(255) NOT NULL,
   `harga` int(11) NOT NULL,
   `PPN` int(11) NOT NULL,
-  `jumlah` int(11) NOT NULL
+  `jumlah` int(11) NOT NULL,
+  `kode_rekening` varchar(255) NOT NULL,
+  `unit_pengusul` varchar(20) NOT NULL,
+  `tgl_diusulkan` date NOT NULL DEFAULT current_timestamp(),
+  `status_usulan` enum('Diusulkan','Ditolak','Diterima','') NOT NULL DEFAULT 'Diusulkan'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rincian`
 --
 
-INSERT INTO `rincian` (`id_rincian`, `id_dpa_detail`, `keterangan`, `koefisien`, `satuan`, `harga`, `PPN`, `jumlah`) VALUES
-(379, 265, 'fgujdihgiufhg', '1', '1', 1, 1, 1),
-(380, 266, 'fdsgfdh', '2', '2', 2, 2, 2);
+INSERT INTO `rincian` (`id_rincian`, `id_dpa_detail`, `id_usulan`, `keterangan`, `koefisien`, `satuan`, `harga`, `PPN`, `jumlah`, `kode_rekening`, `unit_pengusul`, `tgl_diusulkan`, `status_usulan`) VALUES
+(379, 265, 0, 'fgujdihgiufhg', '1', '1', 1, 1, 1, '', 'HCU', '2021-04-26', 'Diusulkan'),
+(380, 266, 0, 'fdsgfdh', '2', '2', 2, 2, 2, '', 'Keuangan', '2021-04-26', 'Diusulkan'),
+(381, 0, 3, 'tes3<br />spesifikasi: zxcv1234', '4', 'unit', 2000000, 0, 8000000, '5.1.01.03.07.0002', 'HCU', '2021-04-29', 'Diusulkan'),
+(382, NULL, 2, 'tes2<br />spesifikasi: asd1234', '5', 'box', 50000, 0, 250000, '5.1.01.03.07.0001', 'HCU', '2021-04-29', 'Diusulkan'),
+(383, NULL, 1, 'tes1<br />spesifikasi: asd123', '2', 'pcs', 20000, 0, 40000, '5.1.01.03.07.0001', 'HCU', '2021-04-29', 'Diusulkan'),
+(384, 0, 3, 'tes3<br />spesifikasi: zxcv1234', '2', 'unit', 2000000, 0, 4000000, '5.1.01.03.07.0002', 'HCU', '2022-04-29', 'Diusulkan');
 
 -- --------------------------------------------------------
 
@@ -488,7 +501,7 @@ ALTER TABLE `dpa_detail`
 -- AUTO_INCREMENT for table `item_usulan`
 --
 ALTER TABLE `item_usulan`
-  MODIFY `id_usulan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_usulan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `rekening`
@@ -500,7 +513,7 @@ ALTER TABLE `rekening`
 -- AUTO_INCREMENT for table `rincian`
 --
 ALTER TABLE `rincian`
-  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=381;
+  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=385;
 
 --
 -- AUTO_INCREMENT for table `sk_belanja`

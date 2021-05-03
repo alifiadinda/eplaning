@@ -61,7 +61,7 @@
 	}
 
 	function hapusDetailUsulan(id_detail_usulan) {
-		console.log(id_detail_usulan);
+		// console.log(id_detail_usulan);
 		var r = confirm("Apakah anda yakin ingin menghapus data ini?");
 		  if (r == true) {
 			$.ajax({
@@ -150,42 +150,100 @@
 		});
 	/* DATATABLE */
 
-	/* USULAN */
-
-		/*TAMBAH USULAN*/
-		$('#formTambahUsulan').submit(function(e){
+	/* MANAJEMEN AKUN*/
+    	$('#formRegis').submit(function(e){
 	    	e.preventDefault();
 			// memasukkan data inputan ke variabel
-			var tgl_buka	= $('#tgl_buka').val();
-			var tgl_tutup	= $('#tgl_tutup').val();
+			var username 	= $('#username').val();
+			var password	= $('#password').val();
+			var nama		= $('#nama').val();
+			var level		= $('#level').val();
+			var ruangan		= $('#ruangan').val();
+			// console.log(nama);
+
 
 			$.ajax({
 				type : 'POST',
-				url  : '<?php echo site_url(); ?>/C_admin/tambahUsulan',
+				url  : '<?php echo site_url(); ?>/C_admin/daftarAkun',
 				dataType : 'JSON',
 				data : {
-					tgl_buka:tgl_buka,
-					tgl_tutup:tgl_tutup,
+					username:username,
+					password:password,
+					nama:nama,
+					level:level,
+					ruangan:ruangan,
 				},
 
 				success: function(data){
-					if(data.code==2){
-						Swal.fire({
-		                            type: 'warning',
-		                            title: 'Tanggal Pembukaan Melebihi Tanggal Penutupan',
-		                            showConfirmButton: true,
-		                            // timer: 1500
-		                        })
-                    }else{
-		                Swal.fire({
-		                            type: 'success',
-		                            title: 'Periode Usulan Baru Berhasil Ditambahkan',
-		                            showConfirmButton: true,
-		                            // timer: 1500
-								}).then(function() { location.reload();})
-		            } 
-	            }
+    					if(data.code==2){
+    						Swal.fire({
+    		                            type: 'warning',
+    		                            title: 'Username sudah terdaftar',
+    		                            showConfirmButton: true,
+    		                            // timer: 1500
+    		                        })
+    					}else{
+    		                Swal.fire({
+    		                            type: 'success',
+    		                            title: 'Pendaftaran Akun Penyeleksi Baru Selesai Dilakukan',
+    		                            showConfirmButton: true,
+    		                            // timer: 1500
+    		                        }).then(function() { location.reload();})
+    					} 
+    	            }
 	        });
+			return false;
+		});
+	/* MANAJEMEN AKUN*/
+
+	/* USULAN */
+
+		/*TAMBAH USULAN*/
+		$('#tambahUsulan').submit(function(e){
+	    	e.preventDefault();
+			// memasukkan data inputan ke variabel
+			var id_usulan 		= $('#id_usulan').val();
+			var nama_usulan		= $('#nama_usulan').val();
+			var spesifikasi		= $('#spesifikasi').val();
+			var satuan			= $('#satuan').val();
+			var harga_satuan	= $('#harga_satuan').val();
+			var kode_rekening	= $('#kode_rekening').val();
+			var koefisien		= $('#koefisien').val();
+			var jumlah			= harga_satuan*koefisien;
+
+			alert(id_usulan);
+
+			// $.ajax({
+			// 	type : 'POST',
+			// 	url  : '<?php echo site_url(); ?>/C_admin/tambahUsulan',
+			// 	dataType : 'JSON',
+			// 	data : {
+			// 		id_usulan:id_usulan,
+			// 		nama_usulan:nama_usulan,
+			// 		spesifikasi:spesifikasi,
+			// 		satuan:satuan,
+			// 		harga_satuan:harga_satuan,
+			// 		kode_rekening:kode_rekening,
+			// 		koefisien:koefisien,
+			// 		jumlah:jumlah,
+			// 	},
+
+			// 	success: function(data){
+			// 		if(data.code==2){
+			// 			Swal.fire({
+		 //                            type: 'warning',
+		 //                            title: 'Tanggal Pembukaan Melebihi Tanggal Penutupan',
+		 //                            showConfirmButton: true,
+		 //                        })
+   //                  }else{
+		 //                Swal.fire({
+		 //                            type: 'success',
+		 //                            title: 'Usulan Baru Berhasil Ditambahkan',
+		 //                            showConfirmButton: true,
+			// 					}).then(function() { location.reload();})
+		 //            } 
+	  //           }
+	  //       });
 			return false;
     	});
 		/*TAMBAH USULAN*/

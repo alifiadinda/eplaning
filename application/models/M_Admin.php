@@ -226,20 +226,15 @@ class M_Admin extends CI_Model {
         return $query->result();
     }	
 
-/*=============================================================== USULAN ===============================================================*/
 
-	public function getUsulan()
-	{
-		$this->db->select('*');
-		$this->db->from('usulan');
-		$query = $this->db->get();
-		return $query->result();
-	}
+
+/*=============================================================== USULAN ===============================================================*/
 
 	public function getItemUsulan()
 	{
 		$this->db->select('*');
 		$this->db->from('item_usulan');
+		$this->db->where('status', 'aktif');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -249,17 +244,6 @@ class M_Admin extends CI_Model {
 		$this->db->where('id_usulan', $id_usulan);
 		$query = $this->db->get('usulan');
 		return $query->result();
-	}
-
-	public function tambahUsulan($tgl_buka,$tgl_tutup)
-	{
-		$data = array(
-			'periode'		=> 'Tahun '.date('Y'),
-			'status_usulan'	=> 'Diajukan',
-			'tgl_buka'		=> $tgl_buka,
-			'tgl_tutup'		=> $tgl_tutup, 
-		);
-		$this->db->insert('usulan', $data);
 	}
 
 	public function updateUsulan($id,$tgl_buka,$tgl_tutup)
@@ -273,6 +257,12 @@ class M_Admin extends CI_Model {
 		return $result;
 	}
 
+	public function deleteDetailUsulan($id_detail_usulan)
+	{
+		$this->db->where('id_detail_usulan', $id_detail_usulan);
+		$result = $this->db->delete('detail_usulan');
+		return $result;
+	}
 
 	public function deleteUsulan($id_usulan)
 	{
@@ -284,48 +274,72 @@ class M_Admin extends CI_Model {
 	public function getDetailUsulan($id_usulan)
 	{
 		$this->db->select('*');
-		$this->db->from('detail_usulan');
-		$this->db->join('usulan', 'detail_usulan.id_usulan = usulan.id_usulan');
-		$this->db->where('usulan.id_usulan', $id_usulan);
+		$this->db->from('item_usulan');
+		$this->db->where('id_usulan', $id_usulan);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	public function getDetailUsulanUnit($id_usulan,$unit_pengusul)
+	public function getDetailUsulanUnit($unit_pengusul)
 	{
 		$this->db->select('*');
-		$this->db->from('detail_usulan');
-		$this->db->join('usulan', 'detail_usulan.id_usulan = usulan.id_usulan');
-		$this->db->where('usulan.id_usulan', $id_usulan);
-		$this->db->where('detail_usulan.unit_pengusul', $unit_pengusul);
+		$this->db->from('rincian');
+		$this->db->where('unit_pengusul', $unit_pengusul);
+		$this->db->order_by('tgl_diusulkan', 'desc');
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	public function tambahDetailUsulan($rincian_barang,$volume,$satuan,$harga,$existing,$alasan,$jumlah,$id_usulan,$unit_pengusul)
+/*=============================================================== USULAN ===============================================================*/
+
+/*=============================================================== RINCIAN ===============================================================*/
+	
+	public function cekRincian($id_usulan,$awal,$akhir,$unit_pengusul)
+	{
+		$condition = array('id_usulan' => $id_usulan,'unit_pengusul' => $unit_pengusul, 'tgl_diusulkan >=' => $awal, 'tgl_diusulkan <=' => $akhir);
+		$this->db->select('*');
+		$this->db->from('rincian');
+		$this->db->where($condition);
+		// $this->db->where('unit_pengusul', $unit_pengusul);
+		// $this->db->where('tgl_diusulkan >= ' => $awal);
+		// $this->db->where('tgl_diusulkan <= ' => $akhir);
+		$query = $this->db->get();
+		if($query->num_rows() > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function tambahUsulan($id_usulan,$keterangan,$satuan,$harga,$kode_rekening,$koefisien,$jumlah,$unit_pengusul)
 	{
 		$data = array(
-			'rincian_barang'=> $rincian_barang,
-			'volume'		=> $volume, 
+			'id_usulan'	=> $id_usulan,
+			'keterangan'	=> $keterangan,
+			'koefisien'		=> $koefisien, 
 			'satuan'		=> $satuan, 
-			'harga'			=> $harga, 
-			'existing'		=> $existing, 
-			'alasan'		=> $alasan, 
-			'jumlah'		=> $jumlah, 
-			'id_usulan'		=> $id_usulan, 
-			'unit_pengusul'	=> $unit_pengusul, 
+			'harga'	=> $harga, 
+			'ppn'			=> "0",
+			'jumlah'		=> $jumlah,
+			'kode_rekening'	=> $kode_rekening, 
+			'unit_pengusul'	=> $unit_pengusul,
 		);
-		$this->db->insert('detail_usulan', $data);
+		$this->db->insert('rincian', $data);
 	}
 
-	public function deleteDetailUsulan($id_detail_usulan)
+
+	public function updateJumlah($id_usulan,$awal,$akhir,$unit_pengusul,$koefisien,$jumlah)
 	{
-		$this->db->where('id_detail_usulan', $id_detail_usulan);
-		$result = $this->db->delete('detail_usulan');
+		$condition = array('id_usulan' => $id_usulan,'unit_pengusul' => $unit_pengusul, 'tgl_diusulkan >=' => $awal, 'tgl_diusulkan <=' => $akhir);
+		$data = array(
+			'koefisien'		=> $koefisien, 
+			'jumlah'		=> $jumlah,
+		);
+		$this->db->where($condition);
+		$result = $this->db->update('rincian', $data);
 		return $result;
 	}
-
-	/*=============================================================== USULAN ===============================================================*/
+/*=============================================================== RINCIAN ===============================================================*/
 
 /* End of file ModelName.php */
 

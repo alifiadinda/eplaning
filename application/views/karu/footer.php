@@ -37,4 +37,56 @@
 <script src="<?php echo base_url();?>assets/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <!-- SweetAlert -->
 <script src="<?php echo base_url();?>assets/adminlte/plugins/sweetalert2/sweetalert2.all.min.js"></script>
-    </div>
+</div>
+
+<script>
+	/*TAMBAH USULAN*/
+		$('#tambahUsulan').submit(function(e){
+	    	e.preventDefault();
+			// memasukkan data inputan ke variabel
+			var id_usulan 		= $('#id_usulan').val();
+			var nama_usulan		= $('#nama_usulan').val();
+			var spesifikasi		= $('#spesifikasi').val();
+			var satuan			= $('#satuan').val();
+			var harga			= $('#harga').val();
+			var kode_rekening	= $('#kode_rekening').val();
+			var koefisien		= $('#koefisien').val();
+			var jumlah			= harga*koefisien;
+
+			// alert(id_usulan);
+
+			$.ajax({
+				type : 'POST',
+				url  : '<?php echo site_url(); ?>/C_admin/tambahUsulan',
+				dataType : 'JSON',
+				data : {
+					id_usulan:id_usulan,
+					nama_usulan:nama_usulan,
+					spesifikasi:spesifikasi,
+					satuan:satuan,
+					harga:harga,
+					kode_rekening:kode_rekening,
+					koefisien:koefisien,
+					jumlah:jumlah,
+				},
+
+				success: function(data){
+					if(data.code==2){
+						Swal.fire({
+		                            type: 'success',
+		                            title: 'Jumlah Barang Usulan Berhasil Diperbarui',
+		                            showConfirmButton: true,
+		                        }).then(function() { location.reload();})
+                    }else{
+		                Swal.fire({
+		                            type: 'success',
+		                            title: 'Usulan Baru Berhasil Ditambahkan',
+		                            showConfirmButton: true,
+								}).then(function() { location.reload();})
+		            } 
+	            }
+	        });
+			return false;
+    	});
+		/*TAMBAH USULAN*/
+</script>

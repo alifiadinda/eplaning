@@ -96,7 +96,7 @@ body {
             <i class="far fa-user"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-item dropdown-header"><?php echo $this->session->username; ?></span>
+            <span class="dropdown-item dropdown-header"><?php echo $this->session->username; ?> | <?php echo $this->session->nama_ruangan; ?></span>
             <div class="dropdown-divider"></div>
             <a href="#" class="dropdown-item" data-toggle="modal" data-target="#changePass">
               <i class="fas fa-key mr-2"></i> Ganti Password
@@ -188,7 +188,7 @@ body {
             </li> -->
 
             <li class="nav-item">
-              <a href="<?php echo site_url();?>/C_admin/Usulan" class="nav-link" >
+              <a href="<?php echo site_url();?>/C_karu/getDetailUsulanUnit/<?php echo $this->session->nama_ruangan; ?>" class="nav-link" >
                 <i class="nav-icon fas fa-key"></i>
                 <p>
                   Usulan
@@ -237,7 +237,7 @@ body {
                   <input type="password" class="form-control" name="passconf" required>
                   <div class="invalid-feedback">Isi Konfirmasi Password Baru</div>
                 </div>
-              </div>
+            </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>

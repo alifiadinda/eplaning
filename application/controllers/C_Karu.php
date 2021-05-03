@@ -379,6 +379,46 @@ class C_Karu extends CI_Controller {
     }
 
 
+/*=============================================================== USULAN ===============================================================*/
+    
+    public function getDetailUsulanUnit()
+    {
+        
+        $data['getDetailUsulanUnit'] = $this->M_admin->getDetailUsulanUnit($this->session->kode_ruangan);
+        $data['getItemUsulan']      = $this->M_admin->getItemUsulan();
+        $this->load->view('karu/header');
+        $this->load->view('karu/v_usulan',$data);
+        $this->load->view('karu/footer');
+    }
+
+    public function tambahDetailUsulan()
+    {
+        $result="";
+        $rincian_barang = $this->input->post('rincian_barang');
+        $volume         = $this->input->post('volume');
+        $satuan         = $this->input->post('satuan');
+        $harga          = $this->input->post('harga');
+        $existing       = $this->input->post('existing');
+        $alasan         = $this->input->post('alasan');
+        $jumlah         = $this->input->post('jumlah');
+        $id_usulan      = $this->input->post('id_usulan');
+        $unit_pengusul  = $this->session->kode_ruangan;
+
+        $data=[ 'result'    => $this->M_admin->tambahDetailUsulan($rincian_barang,$volume,$satuan,$harga,$existing,$alasan,$jumlah,$id_usulan,$unit_pengusul),
+                'code'  => 1];
+
+        echo json_encode($data);
+    }
+
+
+
+    public function hapusDetailUsulan($id_detail_usulan)
+    {
+        $result     = $this->M_admin->deleteDetailUsulan($id_detail_usulan);
+        echo json_decode($result);
+    }
+/*=============================================================== USULAN ===============================================================*/
+
 }
 
 /* End of file C_Karu.php */

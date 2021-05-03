@@ -101,14 +101,21 @@ class C_Admin extends CI_Controller {
         // print_r($username);die();
 
         $cek = $this->M_admin->cekUsername($username);
+        // if($cek == true){
+        //     echo "<script>alert('Username telah terdaftar. Gunakan username yang lain') </script>";
+        //     redirect('C_admin/viewAkun','refresh');
+        // }else{
+        //     $this->M_admin->tambahAkun($uuid, $username, $password, $nama, $level,$ruangan);
+        //     echo "<script>alert('Akun baru telah berhasil ditambahkan') </script>";
+        //     redirect('C_admin/viewAkun','refresh');
+        // }
         if($cek == true){
-            echo "<script>alert('Username telah terdaftar. Gunakan username yang lain') </script>";
-            redirect('C_admin/viewAkun','refresh');
+            $data = ['code' => 2];
         }else{
-            $this->M_admin->tambahAkun($uuid, $username, $password, $nama, $level,$ruangan);
-            echo "<script>alert('Akun baru telah berhasil ditambahkan') </script>";
-            redirect('C_admin/viewAkun','refresh');
+            $data = [ 'result'	=> $this->M_admin->tambahAkun($uuid, $username, $password, $nama, $level,$ruangan), 
+            'code' => 1];
         }
+        echo json_encode($data);
 	}
 
 	public function viewEdtAkun($id_akun)
@@ -231,15 +238,29 @@ class C_Admin extends CI_Controller {
 	public function tambahUsulan()
 	{
 		$result="";
-		$tgl_buka 	= $this->input->post('tgl_buka');
-		$tgl_tutup 	= $this->input->post('tgl_tutup');
+		$id_usulan 		= $this->input->post('id_usulan');
+		$keterangan		= $this->input->post('nama_usulan').'<br />'."spesifikasi: ".$this->input->post('spesifikasi');;
+		$satuan 		= $this->input->post('satuan');
+		$harga 			= $this->input->post('harga');
+		$kode_rekening 	= $this->input->post('kode_rekening');
+		$koefisien 		= $this->input->post('koefisien');
+		$jumlah 		= $this->input->post('jumlah');
+		$unit_pengusul 	= $this->session->kode_ruangan;
 
-		if($tgl_buka > $tgl_tutup){
-				$data =['code' => 2]; // error tgl tutup lebih besar
+		$awal = date('Y-m-d',strtotime('first day of january this year'));
+		$akhir = date('Y-m-d',strtotime('last day of december this year'));
+		// print_r($awal.' || '.$akhir);die();
+
+		$cekRincian = $this->M_admin->cekRincian($id_usulan,$awal,$akhir,$unit_pengusul);
+		if($cekRincian == TRUE){
+			$data=[ 'result'	=> $this->M_admin->updateJumlah($id_usulan,$awal,$akhir,$unit_pengusul,$koefisien,$jumlah),
+				'code'	=> 2];
 		}else{
-			$data=[ 'result'	=> $this->M_admin->tambahUsulan($tgl_buka,$tgl_tutup),
-						'code'	=> 1];
+			$data=[ 'result'	=> $this->M_admin->tambahUsulan($id_usulan,$keterangan,$satuan,$harga,$kode_rekening,$koefisien,$jumlah,$unit_pengusul),
+				'code'	=> 1];
 		}
+		// print_r($cekRincian);
+
 
 		echo json_encode($data);
 	}
@@ -290,7 +311,7 @@ class C_Admin extends CI_Controller {
  		$data['getDetailUsulanUnit'] = $this->M_admin->getDetailUsulanUnit($id_usulan,$this->session->kode_ruangan);
 		$data['getItemUsulan']		= $this->M_admin->getItemUsulan();
 		$this->load->view('admin/header');
-        $this->load->view('admin/v_usulan_detail',$data);
+        $this->load->view('admin/v_usulan',$data);
         $this->load->view('admin/footer');
 	}
 

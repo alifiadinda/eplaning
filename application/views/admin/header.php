@@ -96,7 +96,7 @@ body {
 						<i class="far fa-user"></i>
 					</a>
 					<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-						<span class="dropdown-item dropdown-header"><?php echo $this->session->username; ?></span>
+						<span class="dropdown-item dropdown-header"><?php echo $this->session->username; ?> | <?php echo $this->session->nama_ruangan; ?></span>
 						<div class="dropdown-divider"></div>
 						<a href="#" class="dropdown-item" data-toggle="modal" data-target="#changePass">
 							<i class="fas fa-key mr-2"></i> Ganti Password
