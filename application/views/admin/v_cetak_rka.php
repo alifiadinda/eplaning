@@ -68,7 +68,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($detail as $ke_d => $d) { ?>
+				<?php foreach ($detail_table as $ke_d => $d) { ?>
 				<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>">
 					<td class="font-weight-bold"><?= $d->kode_rekening; ?></td>
 					<td class="font-weight-bold"colspan="5"><?= $d->uraian; ?></td>

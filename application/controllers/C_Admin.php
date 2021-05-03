@@ -148,15 +148,22 @@ class C_Admin extends CI_Controller {
 /*=============================================================== MANAJEMEN AKUN ===============================================================*/
 
 /*=============================================================== UPDATE CETAK ===============================================================*/
-	public function cetak($id_rka) {
+	public function cetak($id_rka,$id_detail='') {
 		// $data['capaian'] = 100;
 		// $data['sk_belanja'] = $this->where  .....($id_rka) get('sk_belanja')->row();
 		$data['id_dpa'] = $id_rka;
         $data['sk_belanja'] = $this->db->where('id', $id_rka)->get('sk_belanja')->row();
 		$data['RKA'] = $this->M_admin->getSatuRKA($id_rka);
+		$data['detail_table'] = $this->getDetailBelanja($id_rka, $id_detail, true);
+        $data['detail'] = $this->getDetailBelanja($id_rka, $id_detail);
 
         //$data['detail'] = $this->getDetailBelanja($id_dpa);
-		$data['detail'] = $this->getDetailBelanja($id_rka);
+        if ($id_detail!='') {
+            $data['detail'] = $this->getDetailBelanja($id_det, $id_detail);
+            echo json_encode($data['detail']);
+            exit();
+        }
+
 
 		$this->load->view('admin/v_cetak_rka',$data);
 	}
@@ -187,23 +194,39 @@ class C_Admin extends CI_Controller {
 		$this->load->view('admin/v_cetak_dpa',$data);
 	}
 
-	function getDetailBelanja($id_dpa){
-		$this->db->order_by('db.kode_rekening');
-		$result = $this->db->get('detail_belanja db')->result();
-		foreach ($result as $key => $value) {
-			$result[$key]->kode_rekening_parent = $value->parent ? $this->getKodeRekeningParent($value->parent) : '';
+	function getDetailBelanja($id_dpa, $id_detail='', $view=false){
+        if ($id_detail!='') {
+            $this->db->order_by('db.kode_rekening');
+            $result = $this->db->where('id_detail', $id_detail)
+                    ->get('detail_belanja db')
+                    ->result();
+        } else {
+            if ($view) {
+                $this->db->join('rekening as r', 'r.id_detail_belanja = db.id_detail');
+                $this->db->where('r.id_dpa', $id_dpa);
+            }
+            $this->db->order_by('db.kode_rekening');
+            $result = $this->db->get('detail_belanja db')->result();
+            // var_dump($result);die;
+            // var_dump($this->db->last_query());die;
+         //$result = $this->db->query('SELECT detail_belanja.* FROM detail_belanja WHERE LENGTH(regexp_replace(detail_belanja.kode_rekening, "[0-9]", "")) <= 3')->result();
+        }
 
-			$dpa_detail = $this->db
-			->where('id_dpa', $id_dpa)
-			->where('id_detail', $value->id_detail)->get('dpa_detail')->row();
-			if ($dpa_detail) {
-				$result[$key]->rincian = $this->getRincian($dpa_detail->id_dpa_detail);
-			} else {
-				$result[$key]->rincian = [];
-			}
-		}
-		return $result;
-	}
+        foreach ($result as $key => $value) {
+            $result[$key]->kode_rekening_parent = $value->parent ? $this->getKodeRekeningParent($value->parent) : '';
+            
+            $dpa_detail = $this->db
+            ->where('id_dpa', $id_dpa)
+            ->where('id_detail', $value->id_detail)->get('dpa_detail')->row();
+            if ($dpa_detail) {
+                $result[$key]->rincian = $this->getRincian($dpa_detail->id_dpa_detail);
+            } else {
+                $result[$key]->rincian = [];
+            }
+        }
+        
+        return $result;
+    }
 
 	function getKodeRekeningParent($id_parent) {
 		return $this->db->where('id_detail',$id_parent)->get('detail_belanja')->row()->kode_rekening;
@@ -212,17 +235,6 @@ class C_Admin extends CI_Controller {
 	function getRincian($id_dpa_detail){
 		$this->db->where('id_dpa_detail', $id_dpa_detail);
 		return $this->db->get('rincian')->result();
-	}
-/*=============================================================== UPDATE CETAK ===============================================================*/
-
-	public function rekening()
-	{
-		$data['rekening'] = $this->M_admin->rekening();
-
-		$this->load->view('admin/header');
-		// $this->load->view('admin/sidebar');
-		$this->load->view('admin/v_detail', $data);
-		$this->load->view('admin/footer');
 	}
 
 /*=============================================================== USULAN ===============================================================*/
