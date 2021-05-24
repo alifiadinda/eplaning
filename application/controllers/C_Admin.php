@@ -68,6 +68,7 @@ class C_Admin extends CI_Controller {
 		$this->load->view('admin/v_detail_belanja',$data);
 		$this->load->view('admin/footer');
 	}
+
 /*=============================================================== INDEX PER HALAMAN ===============================================================*/
 
 /*=============================================================== MANAJEMEN AKUN ===============================================================*/
@@ -316,16 +317,15 @@ class C_Admin extends CI_Controller {
 
 /*=============================================================== DETAIL USULAN ===============================================================*/
 	
-	public function getDetailUsulanUnit($id_usulan)
-	{
-		
-		$data['usulan'] = $this->M_admin->getPeriode($id_usulan);
- 		$data['getDetailUsulanUnit'] = $this->M_admin->getDetailUsulanUnit($id_usulan,$this->session->kode_ruangan);
-		$data['getItemUsulan']		= $this->M_admin->getItemUsulan();
-		$this->load->view('admin/header');
-        $this->load->view('admin/v_usulan',$data);
+	 public function getDetailUsulanUnit()
+    {
+        
+        $data['getDetailUsulanUnit'] = $this->M_admin->getDetailUsulanUnit($this->session->kode_ruangan);
+        $data['getItemUsulan']      = $this->M_admin->getItemUsulan();
+        $this->load->view('admin/header');
+        $this->load->view('karu/v_usulan',$data);
         $this->load->view('admin/footer');
-	}
+    }
 
 	public function tambahDetailUsulan()
 	{

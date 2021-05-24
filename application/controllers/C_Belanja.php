@@ -109,14 +109,17 @@ class C_Belanja extends CI_Controller {
             
             $dpa_detail = $this->db
             ->where('id_dpa', $id_dpa)
-            ->where('id_detail', $value->id_detail)->get('dpa_detail')->row();
+            ->where('id_detail', $value->id_detail)->get('dpa_detail')->result();
+
             if ($dpa_detail) {
-                $result[$key]->rincian = $this->getRincian($dpa_detail->id_dpa_detail);
+                foreach ($dpa_detail as $kk => $vv) {
+                    $result[$key]->rincian[$kk] = $this->getRincian($vv->id_dpa_detail);
+                }
             } else {
                 $result[$key]->rincian = [];
             }
         }
-        
+        // var_dump($result);die;
         return $result;
     }
 
@@ -125,13 +128,20 @@ class C_Belanja extends CI_Controller {
     }
 
     function getRincian($id_dpa_detail){
+        // if ($id_dpa > 0) {
+        //     $query = $this->db->query("SELECT r.* FROM dpa_detail AS dp JOIN rincian AS r on dp.id_dpa_detail=r.id_dpa_detail WHERE dp.id_dpa=$id_dpa");
+        //     return $query->result();
+        // }
         $this->db->where('id_dpa_detail', $id_dpa_detail);
-        return $this->db->get('rincian')->result();
+        return $this->db->get('rincian')->row();
     }
 
     public function save_rincian(){
         $id_dpa = $this->input->post('id_dpa');
         $alokasi = $this->input->post('alokasi');
+        // $id_usulan = $this->input->post('id_usulan');
+        // $kode_rekening = $this->input->post('kode_rekening');
+        // $unit_pengusul = $this->input->post('unit_pengusul');
         $id_detail = $this->input->post('id_detail[]');
         $keterangan = $this->input->post('keterangan[]');
         $koefisien = $this->input->post('koefisien[]');
@@ -150,6 +160,9 @@ class C_Belanja extends CI_Controller {
 
         foreach ($id_detail as $key => $id_det) {
             $data['keterangan'] = $keterangan[$key];
+            // $data['id_usulan'] = $id_usulan;
+            // $data['kode_rekening'] = $kode_rekening;
+            // $data['unit_pengusul'] = $unit_pengusul;
             $data['koefisien'] = $koefisien[$key];
             $data['satuan'] = $satuan[$key];
             $data['harga'] = $harga[$key];
@@ -387,5 +400,85 @@ class C_Belanja extends CI_Controller {
             $this->load->view('kasubid/footer'); 
     }
 
+    public function get_data_tabel_usulan_dropdown(){
+        $kode_rekening = $this->input->post('kode_rekening');
+        $sql="Select rincian.* 
+        from rincian 
+        where kode_rekening = '$kode_rekening' AND id_dpa_detail is null";
+        $query = $this->db->query($sql)->result();
+        echo json_encode($query);
+    }
+
+    public function get_data_tabel_usulan_dropdown_detail(){
+
+        $id_rincian = $this->input->post('id_rincian');
+
+        $sql="Select rincian.* 
+        from rincian 
+        where id_dpa_detail is null
+        and rincian.id_rincian = $id_rincian
+        ";    
+        $query = $this->db->query($sql)->row();
+
+        echo json_encode($query);
+    }
+
+    public function update_rincian(){
+        $id_rincian = $this->input->post('id_rincian');
+        $id_dpa = $this->input->post('id_dpa');
+        $id_detail = $this->input->post('id_detail');
+        $alokasi = $this->input->post('alokasi');
+        $id_dpa_detail = array();
+        $pesan = '';
+
+         $this->db->where('id',$id_dpa)->update('sk_belanja', [
+            'alokasi_tahun2021'=> $alokasi
+        ]);
+
+        $id_dpa_detail_hapus = $this->input->post('id_dpa_detail_hapus');
+
+        if (is_array($id_dpa_detail_hapus) > 0) {
+            $hapus = $this->bersihkanRincianDetailUpdate($id_dpa_detail_hapus);
+        }
+
+        foreach ($id_detail as $k => $v) {
+            $dpa_detail = array(
+                'id_dpa' => (int)$id_dpa,
+                'id_detail' => (int)$v,
+                'jumlah' => 0,
+            );
+
+            $this->db->insert('dpa_detail', $dpa_detail);
+            array_push($id_dpa_detail, $this->db->insert_id());
+        }
+        
+        // jika berhasil di tambahkan ke dpa_detail
+        if (count($id_dpa_detail) > 0) {
+            foreach ($id_rincian as $k => $v) {
+                $rincian = array(
+                    'id_dpa_detail' => $id_dpa_detail[$k],
+                );
+                $id = array('id_rincian' => $v);
+                $this->db->update('rincian', $rincian, $id);
+                $pesan = 'berhasil update data';
+            }
+        } else {
+            $pesan = 'gagal update data';
+        }
+        if ($hapus) {
+            $pesan = 'berhasil update data';
+        }
+        $this->session->set_flashdata('pesan_simpan', $pesan);
+        redirect(site_url('c_belanja/detail/'.$id_dpa));
+    }
+
+    public function bersihkanRincianDetailUpdate($id_dpa_detail){
+        foreach ($id_dpa_detail as $value) {
+            $this->db->where('id_dpa_detail', $value)->delete('rincian');
+            $this->db->where('id_dpa_detail', $value)->delete('dpa_detail');
+        }
+
+        return true;
+    }
 
 }
