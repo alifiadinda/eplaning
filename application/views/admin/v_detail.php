@@ -74,22 +74,22 @@
 									<!-- <input name="id_detail[]" type="hidden" value="<?= $d->id_detail ?>" /> -->
 								</td>
 								<td>
-									<textarea class="form-control" name="keterangan[]" placeholder="Keterangan"><?= $rincian->keterangan; ?></textarea>
+									<textarea class="form-control" name="keterangan[]" placeholder="Keterangan" readonly value=""><?= $rincian->keterangan; ?></textarea>
 								</td>
 								<td>
-									<input class="form-control" name="koefisien_data" type="text" placeholder="Koefisien" value="<?= $rincian->koefisien ?>" />
+									<input class="form-control" name="koefisien_data" type="text" placeholder="Koefisien" readonly value="<?= $rincian->koefisien ?>" />
 								</td>
 								<td>
-									<input class="form-control" name="satuan_data" type="text" placeholder="Satuan" value="<?= $rincian->satuan ?>" />
+									<input class="form-control" name="satuan_data" type="text" placeholder="Satuan" readonly value="<?= $rincian->satuan ?>" />
 								</td>
 								<td>
-									<input class="form-control" name="harga_data" type="text" placeholder="Harga" value="<?= $rincian->harga ?>" />
+									<input class="form-control" name="harga_data" type="text" placeholder="Harga" readonly value="<?= $rincian->harga ?>" />
 								</td>
 								<td>
-									<input class="form-control" name="ppn_data" type="text" placeholder="PPN" value="<?= $rincian->PPN ?>" />
+									<input class="form-control" name="ppn_data" type="text" placeholder="PPN" readonly value="<?= $rincian->PPN ?>" />
 								</td>
 								<td class="inputRincian">
-									<input class="form-control" name="jumlah_data" type="text" onchange="changeAlokasi()" placeholder="Jumlah" value="<?= $rincian->jumlah ?>" />
+									<input class="form-control" name="jumlah_data" type="text" onchange="changeAlokasi()" readonly placeholder="Jumlah" value="<?= $rincian->jumlah ?>" />
 								</td>
 							</tr>
 							<?php } ?>
