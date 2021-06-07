@@ -480,7 +480,7 @@ class C_Belanja extends CI_Controller {
 
         $id_dpa_detail_hapus = $this->input->post('id_dpa_detail_hapus');
 
-        if (count($id_dpa_detail_hapus) > 0) {
+        if (array($id_dpa_detail_hapus) > 0) {
             $hapus = $this->bersihkanRincianDetailUpdate($id_dpa_detail_hapus);
         }
 

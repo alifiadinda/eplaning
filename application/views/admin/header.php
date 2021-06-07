@@ -197,14 +197,14 @@ body {
 							</ul>
 						</li> -->
 
-					<li class="nav-item">
-		              <a href="<?php echo site_url();?>/C_Admin/getDetailUsulanUnit/<?php echo $this->session->nama_ruangan; ?>" class="nav-link" >
-		                <i class="nav-icon fas fa-key"></i>
-		                <p>
-		                  Usulan
-		                </p>
-		              </a>
-            		</li>
+						<li class="nav-item">
+			              <a href="<?php echo site_url();?>/C_Admin/getDetailUsulanUnit/<?php echo $this->session->nama_ruangan; ?>" class="nav-link" >
+			                <i class="nav-icon fas fa-key"></i>
+			                <p>
+			                  Usulan
+			                </p>
+			              </a>
+			            </li>
 
 						<li class="nav-item">
 							<a href="<?= site_url('c_admin/detail_belanja');?>" class="nav-link" >
