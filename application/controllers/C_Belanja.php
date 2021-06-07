@@ -77,6 +77,19 @@ class C_Belanja extends CI_Controller {
             'id_dpa' => $this->input->post('id_dpa'),
             'id_detail_belanja' => $this->input->post('id_detail')
         );
+        // $data = $this->input->post('data');
+        // $tempParent = array();
+
+        // foreach ($data as $k => $v) {
+        //     $where = array('id_detail' => $v['id_detail']);
+        //     $parent = $this->db->get_where('detail_belanja', $where)->row()->parent;
+        //     array_push($tempParent, $parent);
+        // }
+        // var_dump($tempParent);die;
+        // foreach ($tempParent as $k => $v) {
+        //     if ($v)
+        // }
+
         // save table rekening
         $insert = $this->db->insert('rekening', $data);
         if ($insert) {
@@ -99,6 +112,14 @@ class C_Belanja extends CI_Controller {
             }
             $this->db->order_by('db.kode_rekening');
             $result = $this->db->get('detail_belanja db')->result();
+            $tampil_rekening = $this->db->get_where('detail_belanja', array('tampil_rekening' => '1'))->result();
+            foreach ($tampil_rekening as $val) {
+                $ada = $this->tambahTampilRekening($val, $id_dpa);
+                if (!$ada) {
+                    array_push($result, $val);
+                }
+            }
+
             // var_dump($result);die;
             // var_dump($this->db->last_query());die;
          //$result = $this->db->query('SELECT detail_belanja.* FROM detail_belanja WHERE LENGTH(regexp_replace(detail_belanja.kode_rekening, "[0-9]", "")) <= 3')->result();
@@ -119,8 +140,30 @@ class C_Belanja extends CI_Controller {
                 $result[$key]->rincian = [];
             }
         }
-        // var_dump($result);die;
+        
         return $result;
+    }
+
+    function tambahTampilRekening($detail_belanja, $id_dpa)
+    {
+        $where = array(
+            'id_dpa' => $id_dpa, 
+            'id_detail_belanja' => $detail_belanja->id_detail,
+        );
+
+        $check = $this->db->get_where('rekening', $where)->row();
+
+        if (is_null($check)) {
+            $data = array(
+                'id_dpa' => $id_dpa,
+                'id_detail_belanja' => $detail_belanja->id_detail 
+            );
+            $this->db->insert('rekening', $data);
+
+            return false;
+        }
+
+        return true;
     }
 
     function getKodeRekeningParent($id_parent) {
@@ -429,15 +472,15 @@ class C_Belanja extends CI_Controller {
         $id_detail = $this->input->post('id_detail');
         $alokasi = $this->input->post('alokasi');
         $id_dpa_detail = array();
-        $pesan = '';
+        $pesan = 'berhasil update data';
 
-         $this->db->where('id',$id_dpa)->update('sk_belanja', [
-            'alokasi_tahun2021'=> $alokasi
-        ]);
+        // $this->db->where('id',$id_dpa)->update('sk_belanja', [
+        //     'alokasi_tahun2021'=> $alokasi
+        // ]);
 
         $id_dpa_detail_hapus = $this->input->post('id_dpa_detail_hapus');
 
-        if (is_array($id_dpa_detail_hapus) > 0) {
+        if (count($id_dpa_detail_hapus) > 0) {
             $hapus = $this->bersihkanRincianDetailUpdate($id_dpa_detail_hapus);
         }
 
@@ -462,12 +505,8 @@ class C_Belanja extends CI_Controller {
                 $this->db->update('rincian', $rincian, $id);
                 $pesan = 'berhasil update data';
             }
-        } else {
-            $pesan = 'gagal update data';
         }
-        if ($hapus) {
-            $pesan = 'berhasil update data';
-        }
+
         $this->session->set_flashdata('pesan_simpan', $pesan);
         redirect(site_url('c_belanja/detail/'.$id_dpa));
     }
@@ -477,6 +516,17 @@ class C_Belanja extends CI_Controller {
             $this->db->where('id_dpa_detail', $value)->delete('rincian');
             $this->db->where('id_dpa_detail', $value)->delete('dpa_detail');
         }
+
+        return true;
+    }
+
+    public function update_sk_alokasi()
+    {
+        $alokasi = $this->input->post('alokasi');
+        $id_dpa = $this->input->post('id_dpa');
+        $this->db->where('id',$id_dpa)->update('sk_belanja', [
+            'alokasi_tahun2021'=> $alokasi
+        ]);
 
         return true;
     }

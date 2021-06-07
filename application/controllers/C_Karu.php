@@ -103,7 +103,7 @@ class C_Karu extends CI_Controller {
 
     }
 
-     public function detail($id_dpa='', $id_detail='')
+    public function detail($id_dpa='', $id_detail='')
     {
         $data['id_dpa'] = $id_dpa;
         $data['sk_belanja'] = $this->db->where('id', $id_dpa)->get('sk_belanja')->row();
@@ -120,6 +120,7 @@ class C_Karu extends CI_Controller {
         $this->load->view('karu/v_detail', $data);
         $this->load->view('karu/footer');
     }
+
 
     public function detailSave()
     {
@@ -376,6 +377,55 @@ class C_Karu extends CI_Controller {
         $this->M_Belanja->delete($id);
 
         redirect('C_Karu/Draft');
+    }
+
+    public function update_rincian(){
+        $id_rincian = $this->input->post('id_rincian');
+        $id_dpa = $this->input->post('id_dpa');
+        $id_detail = $this->input->post('id_detail');
+        $alokasi = $this->input->post('alokasi');
+        $id_dpa_detail = array();
+        $pesan = '';
+
+         $this->db->where('id',$id_dpa)->update('sk_belanja', [
+            'alokasi_tahun2021'=> $alokasi
+        ]);
+
+        $id_dpa_detail_hapus = $this->input->post('id_dpa_detail_hapus');
+
+        if (is_array($id_dpa_detail_hapus) > 0) {
+            $hapus = $this->bersihkanRincianDetailUpdate($id_dpa_detail_hapus);
+        }
+
+        foreach ($id_detail as $k => $v) {
+            $dpa_detail = array(
+                'id_dpa' => (int)$id_dpa,
+                'id_detail' => (int)$v,
+                'jumlah' => 0,
+            );
+
+            $this->db->insert('dpa_detail', $dpa_detail);
+            array_push($id_dpa_detail, $this->db->insert_id());
+        }
+        
+        // jika berhasil di tambahkan ke dpa_detail
+        if (count($id_dpa_detail) > 0) {
+            foreach ($id_rincian as $k => $v) {
+                $rincian = array(
+                    'id_dpa_detail' => $id_dpa_detail[$k],
+                );
+                $id = array('id_rincian' => $v);
+                $this->db->update('rincian', $rincian, $id);
+                $pesan = 'berhasil update data';
+            }
+        } else {
+            $pesan = 'gagal update data';
+        }
+        if ($hapus) {
+            $pesan = 'berhasil update data';
+        }
+        $this->session->set_flashdata('pesan_simpan', $pesan);
+        redirect(site_url('c_karu/detail/'.$id_dpa));
     }
 
 
