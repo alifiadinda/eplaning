@@ -520,6 +520,7 @@ class C_Belanja extends CI_Controller {
         return true;
     }
 
+    // phpnya yang ini
     public function update_sk_alokasi()
     {
         $alokasi = $this->input->post('alokasi');

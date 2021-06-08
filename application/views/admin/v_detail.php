@@ -24,7 +24,7 @@
 				<!-- <pre>
 					<?php print_r($detail) ?>
 				</pre> -->
-				<form method="POST" action="<?= site_url('c_belanja/update_rincian') ?>">
+				<form method="POST" action="<?= site_url('c_belanja/update_rincian') ?>" id="form-simpan">
 					<a class="btn btn-danger" href="<?= base_url('index.php/c_admin/rka') ?>">Kembali</a>
 					<button type="submit" class="btn btn-success">Simpan</button>
 					<br><br> 
@@ -52,8 +52,9 @@
 							</tr>
 						</thead>
 						<tbody id="body-uraian">
+							<?php $totalDetail = count($detail_table); ?>
 							<?php foreach ($detail_table as $key => $d) { ?>
-							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>">
+							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>" id-detail="<?= $d->id_detail ?>">
 								<td>
 									<?php if ($d->butuh_rincian==1) { ?>
 									<span class="btn btn-success" onclick="tambahRincian(this, '<?= $d->id_detail ?>', '<?= $d->kode_rekening ?>', new Date().getUTCMilliseconds())"><i class="fa fa-plus"></i></span>
@@ -123,7 +124,9 @@
         </thead>
         <tbody>
 
-            <?php foreach ($detail as $key => $d) { ?>
+            <?php foreach ($detail as $key => $d) { 
+            	if ($d->tampil_rekening!='1') {
+        	?>
             <tr>
             	<td>
             		<div class="form-check">
@@ -133,7 +136,10 @@
                 <td><?php echo $d->kode_rekening ?></td>
                 <td><?php echo $d->uraian?></td>
             </tr>
-        	<?php }; ?>
+        	<?php 
+    			}
+			}; 
+    		?>
             
         </tbody>
     </table>
@@ -293,11 +299,14 @@
 
 	function refreshJumlah(){
 		const tr_parent = $($('.kode_rekening').get().reverse())
+		let child_belum = [];
 
 		tr_parent.each((index,item)=>{
 			let jumlah = 0
-			
 			const tr_child = $('.'+item.id)
+			if (tr_child.length==0) {
+				child_belum.push(item.id)
+			}
 			tr_child.each((index2,item2)=>{
 				const last_col = $(item2).children().last()
 				if (last_col.hasClass('inputRincian')) {
@@ -308,7 +317,7 @@
 					jumlah += value
 				}
 			})
-			
+
 			$(item).children().last().text(jumlah)
 		})
 
@@ -327,10 +336,29 @@
 		$('#input_alokasi').val(alokasi)
 	}
 
+	// scriptnya ini fi yang update_alokasi
+	function update_alokasi()
+	{
+		refreshAlokasi();
+		dataSend = {
+			id_dpa: window.location.pathname.split("/").pop(),
+			alokasi: $('#input_alokasi').val()
+		}
+		$.ajax({
+            type: "POST",
+            url: $('#base-url').val()+'index.php/C_Belanja/update_sk_alokasi/',
+            data:dataSend,
+            success: function (response) {
+            	
+	        }
+	    });
+	}
+
 	$(document).ready(()=> {
 
 		refreshJumlah()
 		refreshAlokasi()
+		update_alokasi() // di jalankan disini
 
 		const body = $('#body')
 
@@ -383,6 +411,33 @@ $(document).ready(function() {
 	
 	$(function(){
       $('#tambah').click(function(){
+     //  	var dataKirim = []
+     //    $(':checkbox:checked').each(function(i){
+     //  		var data = {
+     //  			id_detail: $(this).val(),
+     //  			id_dpa: window.location.pathname.split("/").pop()
+     //  		}
+     //  		dataKirim.push(data);
+     //    });
+
+     //    console.log(dataKirim);
+
+     //      $.ajax({
+     //        type: "POST",
+     //        url: $('#base-url').val()+'index.php/C_Belanja/detailsave/',
+     //        data: {
+     //        	'data': dataKirim
+     //        },
+     //        success: function (response) {
+     //        	if (response==1) {
+     //        		$('#modal-xl').modal('hide');
+     //        		location.reload();
+     //        	} else {
+     //        		alert('Gagal Save Data');
+     //        	}
+	    //     }
+	    // });
+
         $(':checkbox:checked').each(function(i){
       		var dataSend = {
       			id_detail: $(this).val(),
