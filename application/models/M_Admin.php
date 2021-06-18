@@ -1,4 +1,4 @@
-<?php
+  <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_Admin extends CI_Model {
@@ -217,7 +217,6 @@ class M_Admin extends CI_Model {
 	}
 /*=============================================================== MANAJEMEN AKUN ===============================================================*/
 	
-
 	public function rekening(){
 
         $this->db->order_by('id');
@@ -225,8 +224,6 @@ class M_Admin extends CI_Model {
         $query = $this->db->get('detail_belanja');
         return $query->result();
     }	
-
-
 
 /*=============================================================== USULAN ===============================================================*/
 
@@ -239,36 +236,12 @@ class M_Admin extends CI_Model {
 		return $query->result();
 	}
 
-	public function getPeriode($id_usulan)
+	public function getItemUsulanAdmin()
 	{
-		$this->db->where('id_usulan', $id_usulan);
-		$query = $this->db->get('usulan');
+		$this->db->select('*');
+		$this->db->from('item_usulan');
+		$query = $this->db->get();
 		return $query->result();
-	}
-
-	public function updateUsulan($id,$tgl_buka,$tgl_tutup)
-	{
-		$data = array(
-			'tgl_buka'	=> $tgl_buka, 
-			'tgl_tutup'	=> $tgl_tutup, 
-		);
-		$this->db->where('id_usulan', $id);
-		$result = $this->db->update('usulan', $data);
-		return $result;
-	}
-
-	public function deleteDetailUsulan($id_detail_usulan)
-	{
-		$this->db->where('id_detail_usulan', $id_detail_usulan);
-		$result = $this->db->delete('detail_usulan');
-		return $result;
-	}
-
-	public function deleteUsulan($id_usulan)
-	{
-		$this->db->where('id_usulan', $id_usulan);
-		$result = $this->db->delete('usulan');
-		return $result;
 	}
 
 	public function getDetailUsulan($id_usulan)
@@ -290,19 +263,50 @@ class M_Admin extends CI_Model {
 		return $query->result();
 	}
 
-/*=============================================================== USULAN ===============================================================*/
+	public function tambahUsulan($nama_usulan,$spesifikasi,$satuan,$harga_satuan,$kode_rekening)
+	{
+		$data = array(
+			'nama_usulan'	=> $nama_usulan,
+			'spesifikasi'	=> $spesifikasi,
+			'satuan'		=> $satuan, 
+			'harga_satuan'	=> $harga_satuan, 
+			'kode_rekening'	=> $kode_rekening, 
+			'status'		=> "aktif",
+		);
+		$this->db->insert('item_usulan', $data);
+	}
 
-/*=============================================================== RINCIAN ===============================================================*/
+	public function editUsulan($id_usulan,$nama_usulan,$spesifikasi,$satuan,$harga_satuan,$kode_rekening,$status)
+	{
+		$data = array(
+			'id_usulan'		=> $id_usulan,
+			'nama_usulan'	=> $nama_usulan,
+			'spesifikasi'	=> $spesifikasi,
+			'satuan'		=> $satuan,
+			'harga_satuan'	=> $harga_satuan,
+			'kode_rekening'	=> $kode_rekening,
+			'status'		=> $status,
+		);
+		$this->db->where('id_usulan', $id_usulan);
+		$this->db->update('item_usulan', $data);
+	}
+
 	
+	public function getDetailRincian($id_rincian)
+	{
+		$this->db->select('*');
+		$this->db->from('rincian');
+		$this->db->where('id_rincian', $id_rincian);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function cekRincian($id_usulan,$awal,$akhir,$unit_pengusul)
 	{
 		$condition = array('id_usulan' => $id_usulan,'unit_pengusul' => $unit_pengusul, 'tgl_diusulkan >=' => $awal, 'tgl_diusulkan <=' => $akhir);
 		$this->db->select('*');
 		$this->db->from('rincian');
 		$this->db->where($condition);
-		// $this->db->where('unit_pengusul', $unit_pengusul);
-		// $this->db->where('tgl_diusulkan >= ' => $awal);
-		// $this->db->where('tgl_diusulkan <= ' => $akhir);
 		$query = $this->db->get();
 		if($query->num_rows() > 0){
 			return true;
@@ -311,14 +315,15 @@ class M_Admin extends CI_Model {
 		}
 	}
 
-	public function tambahUsulan($id_usulan,$keterangan,$satuan,$harga,$kode_rekening,$koefisien,$jumlah,$unit_pengusul)
+	public function tambahRincian($id_usulan,$nama_usulan,$spesifikasi,$satuan,$harga,$kode_rekening,$koefisien,$jumlah,$unit_pengusul)
 	{
 		$data = array(
-			'id_usulan'	=> $id_usulan,
-			'keterangan'	=> $keterangan,
+			'id_usulan'		=> $id_usulan,
+			'nama_usulan'	=> $nama_usulan,
+			'spesifikasi'	=> $spesifikasi,
 			'koefisien'		=> $koefisien, 
 			'satuan'		=> $satuan, 
-			'harga'	=> $harga, 
+			'harga'			=> $harga, 
 			'ppn'			=> "0",
 			'jumlah'		=> $jumlah,
 			'kode_rekening'	=> $kode_rekening, 
@@ -328,7 +333,7 @@ class M_Admin extends CI_Model {
 	}
 
 
-	public function updateJumlah($id_usulan,$awal,$akhir,$unit_pengusul,$koefisien,$jumlah)
+	public function updateJumlah($id_rincian,$id_usulan,$awal,$akhir,$unit_pengusul,$koefisien,$jumlah)
 	{
 		$condition = array('id_usulan' => $id_usulan,'unit_pengusul' => $unit_pengusul, 'tgl_diusulkan >=' => $awal, 'tgl_diusulkan <=' => $akhir);
 		$data = array(
@@ -339,7 +344,15 @@ class M_Admin extends CI_Model {
 		$result = $this->db->update('rincian', $data);
 		return $result;
 	}
-/*=============================================================== RINCIAN ===============================================================*/
+
+	
+	public function hapusRincian($id_rincian)
+	{
+		$this->db->where('id_rincian', $id_rincian);
+		$result = $this->db->delete('rincian');
+		return $result;
+	}
+/*=============================================================== USULAN ===============================================================*/
 
 /* End of file ModelName.php */
 

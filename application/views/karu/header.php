@@ -84,7 +84,7 @@ body {
           <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="<?php echo site_url();?>index.php/C_Admin" class="nav-link">Home</a>
+          <a href="<?php echo site_url();?>/C_Karu" class="nav-link">Home</a>
         </li>
       </ul>
 

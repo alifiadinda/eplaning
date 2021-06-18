@@ -40,6 +40,32 @@
 </div>
 
 <script>
+	function hapusRincian(id_rincian) {
+		// console.log(id_usulan);
+		var r = confirm("Apakah anda yakin ingin menghapus usulan ini?");
+		  if (r == true) {
+			$.ajax({
+				type  : 'POST',
+				url   : '<?php echo base_url()?>index.php/C_Karu/hapusRincian/'+id_rincian,
+				async : false,
+				dataType : 'json',
+				success : function(data){
+					Swal.fire({
+	                    type: 'success',
+	                    title: 'Usulan Berhasil Dihapus ',
+	                    showConfirmButton: false,
+	                    timer: 1500
+	                }).then(function() { location.reload();})
+				}
+			});
+		  }	
+	}
+$(document).ready(function() {
+
+	/* DATATABLE */
+		// 
+	/* DATATABLE */
+
 	/*TAMBAH USULAN*/
 		$('#tambahUsulan').submit(function(e){
 	    	e.preventDefault();
@@ -57,7 +83,7 @@
 
 			$.ajax({
 				type : 'POST',
-				url  : '<?php echo site_url(); ?>/C_admin/tambahUsulan',
+				url  : '<?php echo site_url(); ?>/C_Karu/tambahRincian',
 				dataType : 'JSON',
 				data : {
 					id_usulan:id_usulan,
@@ -73,10 +99,11 @@
 				success: function(data){
 					if(data.code==2){
 						Swal.fire({
-		                            type: 'success',
-		                            title: 'Jumlah Barang Usulan Berhasil Diperbarui',
+		                            type: 'warning',
+		                            title: 'Usulan ini telah diajukan',
+		                            text: 'Silahkan Cek Pada Bagian Daftar Usulan Untuk Mengubah Data',
 		                            showConfirmButton: true,
-		                        }).then(function() { location.reload();})
+		                        })
                     }else{
 		                Swal.fire({
 		                            type: 'success',
@@ -88,5 +115,53 @@
 	        });
 			return false;
     	});
-		/*TAMBAH USULAN*/
+	/*TAMBAH USULAN*/
+
+	/*EDIT JUMLAH USULAN*/
+		$('#editJumlah').submit(function(e){
+	    	e.preventDefault();
+			// memasukkan data inputan ke variabel
+			var edt_id_rincian 		= $('#edt_id_rincian').val();
+			var edt_id_usulan 		= $('#edt_id_usulan').val();
+			var edt_tgl_diusulkan 	= $('#edt_tgl_diusulkan').val();
+			var edt_harga			= $('#edt_harga').val();
+			var edt_koefisien		= $('#edt_koefisien').val();
+			var edt_jumlah			= edt_harga*edt_koefisien;
+
+			// alert(id_usulan);
+
+			$.ajax({
+				type : 'POST',
+				url  : '<?php echo site_url(); ?>/C_Karu/updateJumlah',
+				dataType : 'JSON',
+				data : {
+					edt_id_rincian:edt_id_rincian,
+					edt_id_usulan:edt_id_usulan,
+					edt_tgl_diusulkan:edt_tgl_diusulkan,
+					edt_harga:edt_harga,
+					edt_koefisien:edt_koefisien,
+					edt_jumlah:edt_jumlah,
+				},
+
+				success: function(data){
+					if(data.code==2){
+						Swal.fire({
+		                            type: 'warning',
+		                            title: 'ERROR',
+		                            text: 'Detail Usulan Ini Sudah Tidak Bisa Diubah',
+		                            showConfirmButton: true,
+		                        })
+                    }else{
+		                Swal.fire({
+		                            type: 'success',
+		                            title: 'Detail Usulan Berasil Dirubah',
+		                            showConfirmButton: true,
+								}).then(function() { location.reload();})
+		            } 
+	            }
+	        });
+			return false;
+    	});
+	/*EDIT JUMLAH USULAN*/
+});
 </script>

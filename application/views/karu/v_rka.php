@@ -74,7 +74,7 @@
                   <td><?php echo $key->alokasi_tahun2021?></td>
                   <td align='center'>
 
-                 <!--  <?php 
+                  <?php 
                     if($this->session->userdata('level')=="Karu"){
                       if($key->status_karu==0){
                   ?>
@@ -108,7 +108,7 @@
                       </button>
                   <?php }
                     }
-                  ?> -->
+                  ?>
 
 
                        <a href="<?php echo site_url()?>/C_Karu/detail/<?php echo $key->id; ?>">

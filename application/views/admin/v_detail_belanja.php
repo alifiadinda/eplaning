@@ -27,7 +27,7 @@
 						</div>
 						<div class="form-group">
 							<label for="parent">Parent</label>
-							<select class="form-control" name="parent">
+							<select class="form-control select2" name="parent">
 								<option value="">Pilih parent</option>
 								<?php foreach ($detail as $keyy => $dd) { ?>
 									<option value="<?= $dd->id_detail ?>" <?= (isset($edit) && $edit->parent==$dd->id_detail) ? 'selected' : ''; ?> ><?= $dd->kode_rekening.' '.$dd->uraian ?></option>
@@ -37,10 +37,6 @@
 						<div class="form-group form-check">
 							<input type="checkbox" class="form-check-input" id="butuh_rincian" name="butuh_rincian" value="1" <?= isset($edit) ? $edit->butuh_rincian : ''; ?> />
 							<label class="form-check-label" for="butuh_rincian">Butuh Rincian</label>
-						</div>
-						<div class="form-group form-check">
-							<input type="checkbox" class="form-check-input" id="tampil_rekening" name="tampil_rekening" value="1" <?= isset($edit) ? $edit->tampil_rekening : ''; ?> />
-							<label class="form-check-label" for="tampil_rekening">Tampil Rekening</label>
 						</div>
 						<?php if(isset($edit)) { ?>
 						<a href="<?= site_url('c_admin/detail_belanja/') ?>" class="btn btn-success">Batal

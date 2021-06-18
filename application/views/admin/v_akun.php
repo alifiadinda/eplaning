@@ -96,7 +96,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="title">Level</label>
-                                <select id="level" name="level" class="form-control" required>
+                                <select id="level" name="level" class="form-control select2" required>
                                     <option value="" hidden disabled selected>Pilih Level Akun</option>
                                     <option value="Admin">Admin</option>
                                     <option value="Karu">Karu</option>
@@ -107,7 +107,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="title">Ruangan</label>
-                                <select id="ruangan" name="ruangan" class="form-control" required>
+                                <select id="ruangan" name="ruangan" class="form-control select2" required>
                                     <option value="" hidden disabled selected>Pilih Ruangan</option>
                                     <?php foreach ($ruangan as $key => $value) { ?>
                                     <option value="<?php echo $value->kode_ruangan ?>"><?php echo $value->nama_ruangan ?></option>
@@ -132,3 +132,51 @@
   </form>
 <!-- FORM REGIS PENYELEKSI -->
 
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable({ "info": false,});
+
+        $('#formRegis').submit(function(e){
+            e.preventDefault();
+            // memasukkan data inputan ke variabel
+            var username    = $('#username').val();
+            var password    = $('#password').val();
+            var nama        = $('#nama').val();
+            var level       = $('#level').val();
+            var ruangan     = $('#ruangan').val();
+
+            $.ajax({
+                type : 'POST',
+                url  : '<?php echo site_url(); ?>/C_admin/daftarAkun',
+                dataType : 'JSON',
+                data : {
+                    username:username,
+                    password:password,
+                    nama:nama,
+                    level:level,
+                    ruangan:ruangan,
+                },
+
+                success: function(data){
+                        if(data.code==2){
+                            Swal.fire({
+                                        type: 'warning',
+                                        title: 'Username sudah terdaftar',
+                                        showConfirmButton: true,
+                                        // timer: 1500
+                                    })
+                        }else{
+                            Swal.fire({
+                                        type: 'success',
+                                        title: 'Pendaftaran Akun Penyeleksi Baru Selesai Dilakukan',
+                                        showConfirmButton: true,
+                                        // timer: 1500
+                                    }).then(function() { location.reload();})
+                        } 
+                    }
+            });
+            return false;
+        });
+    });
+        
+</script>

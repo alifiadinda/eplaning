@@ -77,19 +77,6 @@ class C_Belanja extends CI_Controller {
             'id_dpa' => $this->input->post('id_dpa'),
             'id_detail_belanja' => $this->input->post('id_detail')
         );
-        // $data = $this->input->post('data');
-        // $tempParent = array();
-
-        // foreach ($data as $k => $v) {
-        //     $where = array('id_detail' => $v['id_detail']);
-        //     $parent = $this->db->get_where('detail_belanja', $where)->row()->parent;
-        //     array_push($tempParent, $parent);
-        // }
-        // var_dump($tempParent);die;
-        // foreach ($tempParent as $k => $v) {
-        //     if ($v)
-        // }
-
         // save table rekening
         $insert = $this->db->insert('rekening', $data);
         if ($insert) {
@@ -171,10 +158,6 @@ class C_Belanja extends CI_Controller {
     }
 
     function getRincian($id_dpa_detail){
-        // if ($id_dpa > 0) {
-        //     $query = $this->db->query("SELECT r.* FROM dpa_detail AS dp JOIN rincian AS r on dp.id_dpa_detail=r.id_dpa_detail WHERE dp.id_dpa=$id_dpa");
-        //     return $query->result();
-        // }
         $this->db->where('id_dpa_detail', $id_dpa_detail);
         return $this->db->get('rincian')->row();
     }
@@ -472,15 +455,15 @@ class C_Belanja extends CI_Controller {
         $id_detail = $this->input->post('id_detail');
         $alokasi = $this->input->post('alokasi');
         $id_dpa_detail = array();
-        $pesan = 'berhasil update data';
+        $pesan = '';
 
-        // $this->db->where('id',$id_dpa)->update('sk_belanja', [
-        //     'alokasi_tahun2021'=> $alokasi
-        // ]);
+         $this->db->where('id',$id_dpa)->update('sk_belanja', [
+            'alokasi_tahun2021'=> $alokasi
+        ]);
 
         $id_dpa_detail_hapus = $this->input->post('id_dpa_detail_hapus');
 
-        if (array($id_dpa_detail_hapus) > 0) {
+        if (is_array($id_dpa_detail_hapus) > 0) {
             $hapus = $this->bersihkanRincianDetailUpdate($id_dpa_detail_hapus);
         }
 
@@ -505,8 +488,12 @@ class C_Belanja extends CI_Controller {
                 $this->db->update('rincian', $rincian, $id);
                 $pesan = 'berhasil update data';
             }
+        } else {
+            $pesan = 'gagal update data';
         }
-
+        if ($hapus) {
+            $pesan = 'berhasil update data';
+        }
         $this->session->set_flashdata('pesan_simpan', $pesan);
         redirect(site_url('c_belanja/detail/'.$id_dpa));
     }

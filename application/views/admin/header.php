@@ -12,10 +12,11 @@
 	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 	<!-- Tempusdominus Bbootstrap 4 -->
 	<link rel="stylesheet" href="<?php echo base_url();?>adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	 <!-- Select2 -->
+	  <link rel="stylesheet" href="<?php echo base_url();?>adminlte/plugins/select2/css/select2.min.css">
+	  <link rel="stylesheet" href="<?php echo base_url();?>adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 	<!-- iCheck -->
 	<link rel="stylesheet" href="<?php echo base_url();?>adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-	<!-- JQVMap -->
-	<!-- <link rel="stylesheet" href="<?php echo base_url();?>assets/adminlte/plugins/jqvmap/jqvmap.min.css"> -->
 	<!-- Theme style -->
 	<link rel="stylesheet" href="<?php echo base_url();?>adminlte/dist/css/adminlte.min.css">
 	<!-- overlayScrollbars -->
@@ -179,7 +180,7 @@ body {
 									</a>
 								</li>
 							</ul>
-						<!-- 	<ul class="nav nav-treeview">
+							<!-- <ul class="nav nav-treeview">
 								<li class="nav-item">
 									<a href="<?php echo site_url();?>/C_admin/Draft" class="nav-link">
 										<i class="far fa-circle nav-icon"></i>
@@ -194,25 +195,42 @@ body {
 										<p>DPA</p>
 									</a>
 								</li>
-							</ul>
-						</li> -->
+							</ul> -->
+						</li>
 
 						<li class="nav-item">
-			              <a href="<?php echo site_url();?>/C_Admin/getDetailUsulanUnit/<?php echo $this->session->nama_ruangan; ?>" class="nav-link" >
-			                <i class="nav-icon fas fa-key"></i>
-			                <p>
-			                  Usulan
-			                </p>
-			              </a>
-			            </li>
-
-						<li class="nav-item">
-							<a href="<?= site_url('c_admin/detail_belanja');?>" class="nav-link" >
-								<i class="nav-icon fas fa-list"></i>
+							<a href="<?php echo site_url();?>/C_Admin/getDetailUsulanUnit/<?php echo $this->session->nama_ruangan; ?>" class="nav-link" >
+								<i class="nav-icon fas fa-key"></i>
 								<p>
-									Master Detail
+									Usulan
 								</p>
 							</a>
+						</li>
+
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+								<i class="nav-icon fas fa-list"></i>
+								<p>
+									Master Data
+									<i class="fas fa-angle-left right"></i>
+								</p>
+							</a>
+							<ul class="nav nav-treeview">
+								<li class="nav-item">
+									<a href="<?= site_url('c_admin/detail_belanja');?>" class="nav-link">
+										<i class="far fa-circle nav-icon"></i>
+										<p>Nomor Rekening</p>
+									</a>
+								</li>
+							</ul>
+							<ul class="nav nav-treeview">	
+								<li class="nav-item">
+									<a href="<?php echo site_url();?>/C_admin/getItemUsulan" class="nav-link">
+										<i class="far fa-circle nav-icon"></i>
+										<p>Item Usulan</p>
+									</a>
+								</li>
+							</ul>
 						</li>
 
 					</ul>

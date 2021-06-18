@@ -103,7 +103,7 @@ class C_Karu extends CI_Controller {
 
     }
 
-    public function detail($id_dpa='', $id_detail='')
+     public function detail($id_dpa='', $id_detail='')
     {
         $data['id_dpa'] = $id_dpa;
         $data['sk_belanja'] = $this->db->where('id', $id_dpa)->get('sk_belanja')->row();
@@ -120,7 +120,6 @@ class C_Karu extends CI_Controller {
         $this->load->view('karu/v_detail', $data);
         $this->load->view('karu/footer');
     }
-
 
     public function detailSave()
     {
@@ -379,7 +378,7 @@ class C_Karu extends CI_Controller {
         redirect('C_Karu/Draft');
     }
 
-    public function update_rincian(){
+     public function update_rincian(){
         $id_rincian = $this->input->post('id_rincian');
         $id_dpa = $this->input->post('id_dpa');
         $id_detail = $this->input->post('id_detail');
@@ -430,6 +429,12 @@ class C_Karu extends CI_Controller {
 
 
 /*=============================================================== USULAN ===============================================================*/
+
+    public function getDetailUsulan($id_usulan)
+    {
+        $data['getDetailUsulan']    = $this->M_admin->getDetailUsulan($id_usulan);
+        echo json_encode($data);    
+    }
     
     public function getDetailUsulanUnit()
     {
@@ -441,30 +446,67 @@ class C_Karu extends CI_Controller {
         $this->load->view('karu/footer');
     }
 
-    public function tambahDetailUsulan()
+    public function getDetailRincian($id_rincian)
+    {
+        $data['getDetailRincian']    = $this->M_admin->getDetailRincian($id_rincian);
+        echo json_encode($data);    
+    }
+
+    public function tambahRincian()
     {
         $result="";
-        $rincian_barang = $this->input->post('rincian_barang');
-        $volume         = $this->input->post('volume');
+        $id_usulan      = $this->input->post('id_usulan');
+        $nama_usulan    = $this->input->post('nama_usulan');
+        $spesifikasi    = $this->input->post('spesifikasi');
         $satuan         = $this->input->post('satuan');
         $harga          = $this->input->post('harga');
-        $existing       = $this->input->post('existing');
-        $alasan         = $this->input->post('alasan');
+        $kode_rekening  = $this->input->post('kode_rekening');
+        $koefisien      = $this->input->post('koefisien');
         $jumlah         = $this->input->post('jumlah');
-        $id_usulan      = $this->input->post('id_usulan');
         $unit_pengusul  = $this->session->kode_ruangan;
 
-        $data=[ 'result'    => $this->M_admin->tambahDetailUsulan($rincian_barang,$volume,$satuan,$harga,$existing,$alasan,$jumlah,$id_usulan,$unit_pengusul),
-                'code'  => 1];
+        $awal = date('Y-m-d',strtotime('first day of january this year'));
+        $akhir = date('Y-m-d',strtotime('last day of december this year'));
+        // print_r($awal.' || '.$akhir);die();
 
+        $cekRincian = $this->M_admin->cekRincian($id_usulan,$awal,$akhir,$unit_pengusul);
+        if($cekRincian == TRUE){
+            $data=[ 'code'  => 2];
+        }else{
+            $data=[ 'result'    => $this->M_admin->tambahRincian($id_usulan,$nama_usulan,$spesifikasi,$satuan,$harga,$kode_rekening,$koefisien,$jumlah,$unit_pengusul),
+                'code'  => 1];
+        }
+        echo json_encode($data);
+    }
+
+    public function updateJumlah()
+    {
+        $result="";
+        $id_rincian     = $this->input->post('edt_id_rincian');
+        $id_usulan      = $this->input->post('edt_id_usulan');
+        $tgl_diusulkan  = $this->input->post('edt_tgl_diusulkan');
+        $harga          = $this->input->post('edt_harga');
+        $koefisien      = $this->input->post('edt_koefisien');
+        $jumlah         = $this->input->post('edt_jumlah');
+        $unit_pengusul  = $this->session->kode_ruangan;
+
+        $awal = date('Y-m-d',strtotime('first day of january this year'));
+        $akhir = date('Y-m-d',strtotime('last day of december this year'));
+
+        if($awal<=$tgl_diusulkan && $tgl_diusulkan<=$akhir){
+            $data=[ 'result'    =>  $this->M_admin->updateJumlah($id_rincian,$id_usulan,$awal,$akhir,$unit_pengusul,$koefisien,$jumlah),
+                'code'  => 1];
+        }else{
+            $data=[ 'code'  => 2];
+        }
         echo json_encode($data);
     }
 
 
-
-    public function hapusDetailUsulan($id_detail_usulan)
+    public function hapusRincian($id_rincian)
     {
-        $result     = $this->M_admin->deleteDetailUsulan($id_detail_usulan);
+        // $id_rincian   = $this->input->post('id_rincian');
+        $result     = $this->M_admin->hapusRincian($id_rincian);
         echo json_decode($result);
     }
 /*=============================================================== USULAN ===============================================================*/
