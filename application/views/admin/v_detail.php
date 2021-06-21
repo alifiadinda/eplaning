@@ -37,7 +37,7 @@
 					<input type="hidden" id="base-url" value="<?= base_url() ?>">
 					<br>
 					<br>
-					<table class="table">
+					<table class="table" id="content-rekening">
 						<thead>
 							<tr>
 								<th>Aksi</th>
@@ -52,9 +52,20 @@
 							</tr>
 						</thead>
 						<tbody id="body-uraian">
-							<?php $totalDetail = count($detail_table); ?>
 							<?php foreach ($detail_table as $key => $d) { ?>
-							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>" id-detail="<?= $d->id_detail ?>">
+							<?php 
+								$arParent = explode('.', $d->kode_rekening);
+								array_pop($arParent);
+								$parentSekarang = '';
+								$jumArParent = count($arParent);
+								foreach ($arParent as $k => $va) {
+									$parentSekarang .= $va;
+									if ($jumArParent!=$k+1) {
+										$parentSekarang .= '_';
+									}
+								}
+							?>
+							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>" id-detail="<?= $d->id_detail ?>" id-parent="<?= $parentSekarang ?>">
 								<td>
 									<?php if ($d->butuh_rincian==1) { ?>
 									<span class="btn btn-success" onclick="tambahRincian(this, '<?= $d->id_detail ?>', '<?= $d->kode_rekening ?>', new Date().getUTCMilliseconds())"><i class="fa fa-plus"></i></span>
@@ -74,23 +85,28 @@
 								<td colspan="2">
 									<!-- <input name="id_detail[]" type="hidden" value="<?= $d->id_detail ?>" /> -->
 								</td>
-								<td>
+							<!-- 	<td>
 									<textarea class="form-control" name="keterangan[]" placeholder="Keterangan"><?= $rincian->keterangan; ?></textarea>
+								</td> -->
+								<td>
+									 <select class="form-control" id="keterangan_dropdown" name="nama_usulan[]" readonly>
+										    <option  value="<?= $rincian->nama_usulan ?>"><?php echo $rincian->nama_usulan; ?> <br> : <?php echo $rincian->spesifikasi; ?></option>
+									</select>
 								</td>
 								<td>
-									<input class="form-control" name="koefisien_data" type="text" placeholder="Koefisien" value="<?= $rincian->koefisien ?>" />
+									<input class="form-control" name="koefisien_data" type="text" placeholder="Koefisien" value="<?= $rincian->koefisien ?>" readonly/>
 								</td>
 								<td>
-									<input class="form-control" name="satuan_data" type="text" placeholder="Satuan" value="<?= $rincian->satuan ?>" />
+									<input class="form-control" name="satuan_data" type="text" placeholder="Satuan" value="<?= $rincian->satuan ?>" readonly/>
 								</td>
 								<td>
-									<input class="form-control" name="harga_data" type="text" placeholder="Harga" value="<?= $rincian->harga ?>" />
+									<input class="form-control" name="harga_data" type="text" placeholder="Harga" value="<?= $rincian->harga ?>" readonly/>
 								</td>
 								<td>
-									<input class="form-control" name="ppn_data" type="text" placeholder="PPN" value="<?= $rincian->PPN ?>" />
+									<input class="form-control" name="ppn_data" type="text" placeholder="PPN" value="<?= $rincian->PPN ?>" readonly/>
 								</td>
 								<td class="inputRincian">
-									<input class="form-control" name="jumlah_data" type="text" onchange="changeAlokasi()" placeholder="Jumlah" value="<?= $rincian->jumlah ?>" />
+									<input class="form-control" name="jumlah_data" type="text" onchange="changeAlokasi()" placeholder="Jumlah" value="<?= $rincian->jumlah ?>" readonly/>
 								</td>
 							</tr>
 							<?php } ?>
@@ -214,7 +230,7 @@
                         var i;
                         for(i=0; i<data.length; i++){
                             html += '<option value="'+data[i].id_rincian+'">'
-                            +data[i].keterangan+'</option>';
+                            +data[i].nama_usulan+' ('+data[i].spesifikasi+')</option>';
                         }
 
                         $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#keterangan_dropdown').html(html);
@@ -298,15 +314,26 @@
 	}
 
 	function refreshJumlah(){
+		var parentBelum = [];
+		$('#body-uraian').children('tr').each((i, e) => {
+			var idParent = $(e).attr('id-parent')
+			if (idParent!=undefined && idParent!='') {
+				var ada = $('#'+idParent)
+				if (ada.length==0) {
+					var pushParent = idParent.split('_').join('.')
+					if (parentBelum.includes(pushParent)==false) {
+						parentBelum.push(pushParent);
+					}
+				}
+			}
+		})
+		if (parentBelum.length > 0) {
+			alert("silahkan tambahkan rekening berikut, agar dapat dihitung jumlahnya dengan benar : \n" + parentBelum.join("\n"));
+		}
 		const tr_parent = $($('.kode_rekening').get().reverse())
-		let child_belum = [];
-
 		tr_parent.each((index,item)=>{
 			let jumlah = 0
 			const tr_child = $('.'+item.id)
-			if (tr_child.length==0) {
-				child_belum.push(item.id)
-			}
 			tr_child.each((index2,item2)=>{
 				const last_col = $(item2).children().last()
 				if (last_col.hasClass('inputRincian')) {
@@ -319,7 +346,7 @@
 			})
 
 			$(item).children().last().text(jumlah)
-		})
+		})		
 
 		refreshAlokasi()
 
@@ -411,33 +438,6 @@ $(document).ready(function() {
 	
 	$(function(){
       $('#tambah').click(function(){
-     //  	var dataKirim = []
-     //    $(':checkbox:checked').each(function(i){
-     //  		var data = {
-     //  			id_detail: $(this).val(),
-     //  			id_dpa: window.location.pathname.split("/").pop()
-     //  		}
-     //  		dataKirim.push(data);
-     //    });
-
-     //    console.log(dataKirim);
-
-     //      $.ajax({
-     //        type: "POST",
-     //        url: $('#base-url').val()+'index.php/C_Belanja/detailsave/',
-     //        data: {
-     //        	'data': dataKirim
-     //        },
-     //        success: function (response) {
-     //        	if (response==1) {
-     //        		$('#modal-xl').modal('hide');
-     //        		location.reload();
-     //        	} else {
-     //        		alert('Gagal Save Data');
-     //        	}
-	    //     }
-	    // });
-
         $(':checkbox:checked').each(function(i){
       		var dataSend = {
       			id_detail: $(this).val(),
