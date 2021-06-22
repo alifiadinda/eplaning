@@ -13,26 +13,33 @@
 	<div class="card-body">
 		<div class="row">
 			<div class="col-sm-12">
+				<?php if($this->session->userdata('pesan_simpan')) { ?>
+				<div class="alert alert-warning alert-dismissible fade show" role="alert">
+				  <strong><?= $this->session->userdata('pesan_simpan') ?></strong>
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				    <span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+				<?php } ?>
 				<!-- <pre>
 					<?php print_r($detail) ?>
 				</pre> -->
-				<form method="POST" action="<?= site_url('c_kasubid/save_rincian') ?>">
+				<form method="POST" action="<?= site_url('c_belanja/update_rincian') ?>" id="form-simpan">
 					<a class="btn btn-danger" href="<?= base_url('index.php/c_kasubid/rka') ?>">Kembali</a>
-					<button type="submit" class="btn btn-success">Simpan</button>
-					<br><br> 
+					<!-- <button type="submit" class="btn btn-success">Simpan</button>
+					<br><br>  -->
 					<!-- Button trigger modal -->
-<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl">
+<!-- <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl">
                 <i class="fa fa-plus">  Add Rekening </i>
-                </button>
-					<input type="hidden" name="id_dpa" value="<?= $id_dpa  ?>">
+                </button> -->
+					<input type="hidden" name="id_dpa" value="<?= $id_dpa  ?>" id="id_dpa">
 					<input type="hidden" name="alokasi" id="input_alokasi"/>
 					<input type="hidden" id="base-url" value="<?= base_url() ?>">
 					<br>
 					<br>
-					<table class="table">
+					<table class="table" id="content-rekening">
 						<thead>
 							<tr>
-								<th>Aksi</th>
 								<th>No Rekening</th>
 								<th>Uraian</th>
 								<th style="width: 30%">Keterangan</th>
@@ -43,14 +50,21 @@
 								<th>Jumlah</th>
 							</tr>
 						</thead>
-						<tbody id="table-uraian">
+						<tbody id="body-uraian">
 							<?php foreach ($detail_table as $key => $d) { ?>
-							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>">
-								<td>
-									<?php if ($d->butuh_rincian==1) { ?>
-									<span class="btn btn-success" onclick="tambahRincian(this, '<?= $d->id_detail ?>')"><i class="fa fa-plus"></i></span>
-									<?php } ?>
-								</td>
+							<?php 
+								$arParent = explode('.', $d->kode_rekening);
+								array_pop($arParent);
+								$parentSekarang = '';
+								$jumArParent = count($arParent);
+								foreach ($arParent as $k => $va) {
+									$parentSekarang .= $va;
+									if ($jumArParent!=$k+1) {
+										$parentSekarang .= '_';
+									}
+								}
+							?>
+							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>" id-detail="<?= $d->id_detail ?>" id-parent="<?= $parentSekarang ?>">
 								<td ><?= $d->kode_rekening; ?></td>
 								<td ><?= $d->uraian; ?></td>
 								<td colspan="5">
@@ -59,29 +73,34 @@
 							</tr>
 							<?php foreach ($d->rincian as $key => $rincian) { ?>
 							<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>">
-								<td>
-									<span class="btn btn-danger" onclick="hapusKolom(this)"><i class="fa fa-trash"></i></span>
-								</td>
+								<!-- <td>
+									<span class="btn btn-danger" onclick="hapusKolom(this, <?= $rincian->id_dpa_detail ?>)"><i class="fa fa-trash"></i></span>
+								</td> -->
 								<td colspan="2">
-									<input name="id_detail[]" type="hidden" value="<?= $d->id_detail ?>" />
+									<!-- <input name="id_detail[]" type="hidden" value="<?= $d->id_detail ?>" /> -->
+								</td>
+							<!-- 	<td>
+									<textarea class="form-control" name="keterangan[]" placeholder="Keterangan"><?= $rincian->keterangan; ?></textarea>
+								</td> -->
+								<td>
+									 <select class="form-control" id="keterangan_dropdown" name="nama_usulan[]" readonly>
+										    <option  value="<?= $rincian->nama_usulan ?>"><?php echo $rincian->nama_usulan; ?> <br> : <?php echo $rincian->spesifikasi; ?></option>
+									</select>
 								</td>
 								<td>
-									<textarea class="form-control" name="keterangan[]" placeholder="Keterangan" required><?= $rincian->keterangan; ?></textarea>
+									<input class="form-control" name="koefisien_data" type="text" placeholder="Koefisien" value="<?= $rincian->koefisien ?>" readonly/>
 								</td>
 								<td>
-									<input class="form-control" name="koefisien[]" type="text" placeholder="Koefisien" required value="<?= $rincian->koefisien ?>" />
+									<input class="form-control" name="satuan_data" type="text" placeholder="Satuan" value="<?= $rincian->satuan ?>" readonly/>
 								</td>
 								<td>
-									<input class="form-control" name="satuan[]" type="text" placeholder="Satuan" required value="<?= $rincian->satuan ?>" />
+									<input class="form-control" name="harga_data" type="text" placeholder="Harga" value="<?= $rincian->harga ?>" readonly/>
 								</td>
 								<td>
-									<input class="form-control" name="harga[]" type="text" placeholder="Harga" required value="<?= $rincian->harga ?>" />
-								</td>
-								<td>
-									<input class="form-control" name="ppn[]" type="text" placeholder="PPN" required value="<?= $rincian->PPN ?>" />
+									<input class="form-control" name="ppn_data" type="text" placeholder="PPN" value="<?= $rincian->PPN ?>" readonly/>
 								</td>
 								<td class="inputRincian">
-									<input class="form-control" name="jumlah[]" type="text" onchange="changeAlokasi()" placeholder="Jumlah" required value="<?= $rincian->jumlah ?>" />
+									<input class="form-control" name="jumlah_data" type="text" onchange="changeAlokasi()" placeholder="Jumlah" value="<?= $rincian->jumlah ?>" readonly/>
 								</td>
 							</tr>
 							<?php } ?>
@@ -115,7 +134,9 @@
         </thead>
         <tbody>
 
-            <?php foreach ($detail as $key => $d) { ?>
+            <?php foreach ($detail as $key => $d) { 
+            	if ($d->tampil_rekening!='1') {
+        	?>
             <tr>
             	<td>
             		<div class="form-check">
@@ -125,7 +146,10 @@
                 <td><?php echo $d->kode_rekening ?></td>
                 <td><?php echo $d->uraian?></td>
             </tr>
-        	<?php }; ?>
+        	<?php 
+    			}
+			}; 
+    		?>
             
         </tbody>
     </table>
@@ -141,7 +165,6 @@
       </div>
 
 <script type="text/javascript">
-
 	function changeAlokasi(e){
 		refreshJumlah()
 		refreshAlokasi()
@@ -157,10 +180,10 @@
 		return result;
 	}
 
-	function tambahRincian(el, id_detail) {
+	function tambahRincian(el, id_detail, kode_rekening, idUnik) {
 		const barisUraian = $(el).closest('tr')
 		const barisRincianBaru = $('<tr>')
-		barisRincianBaru.addClass('barisRincian'+id_detail)
+		barisRincianBaru.addClass('barisRincian'+id_detail+'-'+idUnik);
 
 		const kolomHapus		= $('<td>')
 		const kolomIdDetail 	= $('<td>')
@@ -174,12 +197,95 @@
 		kolomHapus.append('<span class="btn btn-danger" onclick="hapusKolom(this)"><i class="fa fa-trash"></i></span>')
 		kolomIdDetail.append(`<input name="id_detail[]" type="hidden" value="${id_detail}" />`)
 		kolomIdDetail.prop('colspan', 2)
-		kolomKet.append('<textarea class="form-control" name="keterangan[]" placeholder="Keterangan" required></textarea>')
-		kolomKoefisien.append('<input class="form-control" name="koefisien[]" type="text" placeholder="Koefisien" required />')
-		kolomSatuan.append('<input class="form-control" name="satuan[]" type="text" placeholder="Satuan" required />')
-		kolomHarga.append('<input class="form-control" name="harga[]" type="text" placeholder="Harga" required />')
-		kolomPPN.append('<input class="form-control" name="ppn[]" type="text" placeholder="PPN" required />')
-		kolomJumlah.append('<input class="form-control" name="jumlah[]" type="text" onchange="refreshAlokasi()" placeholder="Jumlah" required />')
+		// kolomKet.append('<input class ="form-control" name="keterangan[]" placeholder="Keterangan" required></textarea>')
+
+		kolomKoefisien.append('<input class="form-control" name="koefisien[]" id="koefisien" type="text" placeholder="Koefisien" required />')
+		kolomSatuan.append('<input class="form-control" name="satuan[]" id="satuan" type="text" placeholder="Satuan" required />')
+		kolomHarga.append('<input class="form-control" name="harga[]" id="harga" type="text" placeholder="Harga" required />')
+		kolomPPN.append('<input class="form-control" name="ppn[]" id="ppn" type="text" placeholder="PPN" required />')
+		kolomJumlah.append('<input class="form-control" name="jumlah[]" id="jumlah" type="text" onchange="refreshAlokasi()" placeholder="Jumlah" required />')
+
+
+
+		kolomKet.append('<select class="form-control" name="id_rincian[]" id="keterangan_dropdown"></select>')
+
+		$(document).ready(function(){
+ 
+                $.ajax({
+                    url : "<?php echo site_url('c_belanja/get_data_tabel_usulan_dropdown');?>",
+                    method : "POST",
+                    data : {kode_rekening: kode_rekening},
+                    async : true,
+                    dataType : 'json',
+                    success: function(data){
+                       
+                    	var html = '';
+                    	html += '<option value="">Pilih</option>'; 
+                        var i;
+                        for(i=0; i<data.length; i++){
+                            html += '<option value="'+data[i].id_rincian+'">'
+                            +data[i].nama_usulan+' ('+data[i].spesifikasi+')</option>';
+                        }
+
+                        $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#keterangan_dropdown').html(html);
+
+                    }
+                });
+             
+        });
+
+        $(document).ready(function(){
+
+	        $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#keterangan_dropdown').change(function() {
+	        	var parent = $(this).parent();
+	        	console.log(parent);
+	        	var id_rincian = $(this).val();
+	        	var id_dpa = $('#id_dpa').val();
+
+	        	// alert(id_rincian);
+	        	// console.log(id_rincian);
+
+	            $.ajax({
+                    url : "<?php echo site_url('c_belanja/get_data_tabel_usulan_dropdown_detail');?>",
+                    method : "POST",
+                    data : {
+                    	id_rincian: id_rincian,
+                    },
+                    async : true,
+                    dataType : 'json',
+                    success: function(data){
+                    	// var html = '';
+                    	// html += '<option value="">No Selected</option>'; 
+                     //    var i;
+                     //    for(i=0; i<data.length; i++){
+                     //        html += '<option value="'+data[i].id_rincian+'">'
+                     //        +data[i].keterangan+'</option>';
+                     //    }
+
+                     //    console.log(html);
+
+                     //    $('#keterangan_dropdown').html(html);
+                     // document.getElementById("koefisien").value = 'ini koofisien';
+                     $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#koefisien').val(data.koefisien);
+                     $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#satuan').val(data.satuan);
+                     $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#harga').val(data.harga);
+                     $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#ppn').val(data.PPN);
+                     $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#jumlah').val(data.jumlah);
+                     // $("#koefisien").val("coba");
+ 
+                    }
+                });
+
+	            // console.log(provinsi_id_select_input);
+	        });
+        });
+
+  //       $('.keterangan_dropdown_2').on('change', function() {
+		//   alert( this.value );
+		// });
+
+		
+	
 
 		barisRincianBaru.append(kolomHapus)
 		barisRincianBaru.append(kolomIdDetail)
@@ -193,17 +299,34 @@
 		refreshJumlah()
 	}
 
-	function hapusKolom(el){
+	function hapusKolom(el, id_dpa_detail=''){
 		$(el).closest('tr').remove()
 		refreshJumlah()
+		if (id_dpa_detail!='') {
+			$('#body-uraian').append('<input type="hidden" name="id_dpa_detail_hapus[]" value="'+id_dpa_detail+'"/>')
+		}
 	}
 
 	function refreshJumlah(){
+		var parentBelum = [];
+		$('#body-uraian').children('tr').each((i, e) => {
+			var idParent = $(e).attr('id-parent')
+			if (idParent!=undefined && idParent!='') {
+				var ada = $('#'+idParent)
+				if (ada.length==0) {
+					var pushParent = idParent.split('_').join('.')
+					if (parentBelum.includes(pushParent)==false) {
+						parentBelum.push(pushParent);
+					}
+				}
+			}
+		})
+		if (parentBelum.length > 0) {
+			alert("silahkan tambahkan rekening berikut, agar dapat dihitung jumlahnya dengan benar : \n" + parentBelum.join("\n"));
+		}
 		const tr_parent = $($('.kode_rekening').get().reverse())
-
 		tr_parent.each((index,item)=>{
 			let jumlah = 0
-			
 			const tr_child = $('.'+item.id)
 			tr_child.each((index2,item2)=>{
 				const last_col = $(item2).children().last()
@@ -215,9 +338,9 @@
 					jumlah += value
 				}
 			})
-			
+
 			$(item).children().last().text(jumlah)
-		})
+		})		
 
 		refreshAlokasi()
 
@@ -234,10 +357,29 @@
 		$('#input_alokasi').val(alokasi)
 	}
 
+	// scriptnya ini fi yang update_alokasi
+	function update_alokasi()
+	{
+		refreshAlokasi();
+		dataSend = {
+			id_dpa: window.location.pathname.split("/").pop(),
+			alokasi: $('#input_alokasi').val()
+		}
+		$.ajax({
+            type: "POST",
+            url: $('#base-url').val()+'index.php/C_Belanja/update_sk_alokasi/',
+            data:dataSend,
+            success: function (response) {
+            	
+	        }
+	    });
+	}
+
 	$(document).ready(()=> {
 
 		refreshJumlah()
 		refreshAlokasi()
+		update_alokasi() // di jalankan disini
 
 		const body = $('#body')
 
@@ -313,3 +455,4 @@ $(document).ready(function() {
     });
 
 </script>
+

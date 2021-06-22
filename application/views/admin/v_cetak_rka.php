@@ -46,7 +46,7 @@
 					<td colspan="2"><?php echo $RKA->target?></td>
 				</tr>
 				<tr>
-					<th>Alokasi Tahun 2021</th>
+					<th>Alokasi</th>
 					<td colspan="2" id="alokasi"></td>
 				</tr>
 			</tbody>
@@ -77,7 +77,7 @@
 				<?php foreach ($d->rincian as $key_r => $r) { ?>
 				<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>">
 					<td></td>
-					<td><?= $r->keterangan; ?></td>
+					<td><?php echo $r->nama_usulan; ?> <br> : <?php echo $r->spesifikasi; ?></td>
 					<td><?= $r->koefisien; ?></td>
 					<td><?= $r->satuan; ?></td>
 					<td class="text-right harga"><?= $r->harga; ?></td>

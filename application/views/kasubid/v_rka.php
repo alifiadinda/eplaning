@@ -40,7 +40,7 @@
                   <th>Sub Kegiatan</th>
                   <th>Indikator</th>
                   <th>Target</th>
-                  <th>Alokasi Tahun 2021</th>
+                  <th>Jumlah Alokasi</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -53,7 +53,7 @@
                   <th>Sub Kegiatan</th>
                   <th>Indikator</th>
                   <th>Target</th>
-                  <th>Alokasi Tahun 2021</th>
+                  <th>Jumlah Alokasi</th>
                   <th>Aksi</th>
                 </tr>
               </tfoot>
@@ -74,7 +74,7 @@
                   <td><?php echo $key->alokasi_tahun2021?></td>
                   <td align='center'>
 
-                  <?php 
+                 <!--  <?php 
                     if($this->session->userdata('level')=="Karu"){
                       if($key->status_karu==0){
                   ?>
@@ -108,7 +108,7 @@
                       </button>
                   <?php }
                     }
-                  ?>
+                  ?> -->
 
 
                      <a href="<?php echo site_url()?>/C_Kasubid/detail/<?php echo $key->id; ?>">
@@ -117,13 +117,13 @@
                       </button>
                     </a>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                      <a href="<?php echo site_url()?>/C_Kasubid/edit/<?php echo $key->id; ?>" class="btn btn-warning">
+                      <!-- <a href="<?php echo site_url()?>/C_Kasubid/edit/<?php echo $key->id; ?>" class="btn btn-warning">
                         <i class="metismenu-icon fa fa-edit"></i>
                       </a>
                       <a href="<?php echo site_url()?>/C_Kasubid/deleterka/<?php echo $key->id; ?>" onclick="return confirm('Anda ingin menghapus akun dengan username?')" class="btn btn-danger">
                         <i class="metismenu-icon fa fa-trash"></i>
-                      </a>
-                      <a href="<?php echo site_url()?>/c_admin/cetak/<?php echo $key->id; ?>" target="_blank" class="btn btn-primary">
+                      </a> -->
+                      <a href="<?php echo site_url()?>/c_admin/cetak/<?php echo $key->id; ?>" target="_blank" class="btn btn-warning">
                         <i class="metismenu-icon fa fa-print"></i>
                       </a>
                     </div>

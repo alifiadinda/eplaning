@@ -24,23 +24,22 @@
 				<!-- <pre>
 					<?php print_r($detail) ?>
 				</pre> -->
-				<form method="POST" action="<?= site_url('c_karu/update_rincian') ?>">
+				<form method="POST" action="<?= site_url('c_belanja/update_rincian') ?>" id="form-simpan">
 					<a class="btn btn-danger" href="<?= base_url('index.php/c_karu/rka') ?>">Kembali</a>
-					<button type="submit" class="btn btn-success">Simpan</button>
-					<br><br> 
+					<!-- <button type="submit" class="btn btn-success">Simpan</button>
+					<br><br>  -->
 					<!-- Button trigger modal -->
-<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl">
+<!-- <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl">
                 <i class="fa fa-plus">  Add Rekening </i>
-                </button>
+                </button> -->
 					<input type="hidden" name="id_dpa" value="<?= $id_dpa  ?>" id="id_dpa">
 					<input type="hidden" name="alokasi" id="input_alokasi"/>
 					<input type="hidden" id="base-url" value="<?= base_url() ?>">
 					<br>
 					<br>
-					<table class="table">
+					<table class="table" id="content-rekening">
 						<thead>
 							<tr>
-								<th>Aksi</th>
 								<th>No Rekening</th>
 								<th>Uraian</th>
 								<th style="width: 30%">Keterangan</th>
@@ -53,12 +52,19 @@
 						</thead>
 						<tbody id="body-uraian">
 							<?php foreach ($detail_table as $key => $d) { ?>
-							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>">
-								<td>
-									<?php if ($d->butuh_rincian==1) { ?>
-									<span class="btn btn-success" onclick="tambahRincian(this, '<?= $d->id_detail ?>', '<?= $d->kode_rekening ?>', new Date().getUTCMilliseconds())"><i class="fa fa-plus"></i></span>
-									<?php } ?>
-								</td>
+							<?php 
+								$arParent = explode('.', $d->kode_rekening);
+								array_pop($arParent);
+								$parentSekarang = '';
+								$jumArParent = count($arParent);
+								foreach ($arParent as $k => $va) {
+									$parentSekarang .= $va;
+									if ($jumArParent!=$k+1) {
+										$parentSekarang .= '_';
+									}
+								}
+							?>
+							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>" id-detail="<?= $d->id_detail ?>" id-parent="<?= $parentSekarang ?>">
 								<td ><?= $d->kode_rekening; ?></td>
 								<td ><?= $d->uraian; ?></td>
 								<td colspan="5">
@@ -67,29 +73,34 @@
 							</tr>
 							<?php foreach ($d->rincian as $key => $rincian) { ?>
 							<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>">
-								<td>
+								<!-- <td>
 									<span class="btn btn-danger" onclick="hapusKolom(this, <?= $rincian->id_dpa_detail ?>)"><i class="fa fa-trash"></i></span>
-								</td>
+								</td> -->
 								<td colspan="2">
 									<!-- <input name="id_detail[]" type="hidden" value="<?= $d->id_detail ?>" /> -->
 								</td>
+							<!-- 	<td>
+									<textarea class="form-control" name="keterangan[]" placeholder="Keterangan"><?= $rincian->keterangan; ?></textarea>
+								</td> -->
 								<td>
-									<textarea class="form-control" name="keterangan[]" placeholder="Keterangan" readonly value=""><?= $rincian->keterangan; ?></textarea>
+									 <select class="form-control" id="keterangan_dropdown" name="nama_usulan[]" readonly>
+										    <option  value="<?= $rincian->nama_usulan ?>"><?php echo $rincian->nama_usulan; ?> <br> : <?php echo $rincian->spesifikasi; ?></option>
+									</select>
 								</td>
 								<td>
-									<input class="form-control" name="koefisien_data" type="text" placeholder="Koefisien" readonly value="<?= $rincian->koefisien ?>" />
+									<input class="form-control" name="koefisien_data" type="text" placeholder="Koefisien" value="<?= $rincian->koefisien ?>" readonly/>
 								</td>
 								<td>
-									<input class="form-control" name="satuan_data" type="text" placeholder="Satuan" readonly value="<?= $rincian->satuan ?>" />
+									<input class="form-control" name="satuan_data" type="text" placeholder="Satuan" value="<?= $rincian->satuan ?>" readonly/>
 								</td>
 								<td>
-									<input class="form-control" name="harga_data" type="text" placeholder="Harga" readonly value="<?= $rincian->harga ?>" />
+									<input class="form-control" name="harga_data" type="text" placeholder="Harga" value="<?= $rincian->harga ?>" readonly/>
 								</td>
 								<td>
-									<input class="form-control" name="ppn_data" type="text" placeholder="PPN" readonly value="<?= $rincian->PPN ?>" />
+									<input class="form-control" name="ppn_data" type="text" placeholder="PPN" value="<?= $rincian->PPN ?>" readonly/>
 								</td>
 								<td class="inputRincian">
-									<input class="form-control" name="jumlah_data" type="text" onchange="changeAlokasi()" readonly placeholder="Jumlah" value="<?= $rincian->jumlah ?>" />
+									<input class="form-control" name="jumlah_data" type="text" onchange="changeAlokasi()" placeholder="Jumlah" value="<?= $rincian->jumlah ?>" readonly/>
 								</td>
 							</tr>
 							<?php } ?>
@@ -123,7 +134,9 @@
         </thead>
         <tbody>
 
-            <?php foreach ($detail as $key => $d) { ?>
+            <?php foreach ($detail as $key => $d) { 
+            	if ($d->tampil_rekening!='1') {
+        	?>
             <tr>
             	<td>
             		<div class="form-check">
@@ -133,7 +146,10 @@
                 <td><?php echo $d->kode_rekening ?></td>
                 <td><?php echo $d->uraian?></td>
             </tr>
-        	<?php }; ?>
+        	<?php 
+    			}
+			}; 
+    		?>
             
         </tbody>
     </table>
@@ -208,7 +224,7 @@
                         var i;
                         for(i=0; i<data.length; i++){
                             html += '<option value="'+data[i].id_rincian+'">'
-                            +data[i].keterangan+'</option>';
+                            +data[i].nama_usulan+' ('+data[i].spesifikasi+')</option>';
                         }
 
                         $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#keterangan_dropdown').html(html);
@@ -292,11 +308,25 @@
 	}
 
 	function refreshJumlah(){
+		var parentBelum = [];
+		$('#body-uraian').children('tr').each((i, e) => {
+			var idParent = $(e).attr('id-parent')
+			if (idParent!=undefined && idParent!='') {
+				var ada = $('#'+idParent)
+				if (ada.length==0) {
+					var pushParent = idParent.split('_').join('.')
+					if (parentBelum.includes(pushParent)==false) {
+						parentBelum.push(pushParent);
+					}
+				}
+			}
+		})
+		if (parentBelum.length > 0) {
+			alert("silahkan tambahkan rekening berikut, agar dapat dihitung jumlahnya dengan benar : \n" + parentBelum.join("\n"));
+		}
 		const tr_parent = $($('.kode_rekening').get().reverse())
-
 		tr_parent.each((index,item)=>{
 			let jumlah = 0
-			
 			const tr_child = $('.'+item.id)
 			tr_child.each((index2,item2)=>{
 				const last_col = $(item2).children().last()
@@ -308,9 +338,9 @@
 					jumlah += value
 				}
 			})
-			
+
 			$(item).children().last().text(jumlah)
-		})
+		})		
 
 		refreshAlokasi()
 
@@ -327,10 +357,29 @@
 		$('#input_alokasi').val(alokasi)
 	}
 
+	// scriptnya ini fi yang update_alokasi
+	function update_alokasi()
+	{
+		refreshAlokasi();
+		dataSend = {
+			id_dpa: window.location.pathname.split("/").pop(),
+			alokasi: $('#input_alokasi').val()
+		}
+		$.ajax({
+            type: "POST",
+            url: $('#base-url').val()+'index.php/C_Belanja/update_sk_alokasi/',
+            data:dataSend,
+            success: function (response) {
+            	
+	        }
+	    });
+	}
+
 	$(document).ready(()=> {
 
 		refreshJumlah()
 		refreshAlokasi()
+		update_alokasi() // di jalankan disini
 
 		const body = $('#body')
 
@@ -390,7 +439,7 @@ $(document).ready(function() {
       		}
       		$.ajax({
 	            type: "POST",
-	            url: $('#base-url').val()+'index.php/C_Karu/detailsave/',
+	            url: $('#base-url').val()+'index.php/C_Belanja/detailsave/',
 	            data:dataSend,
 	            success: function (response) {
 	            	if (response==1) {

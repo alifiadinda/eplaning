@@ -40,7 +40,7 @@
                   <th>Sub Kegiatan</th>
                   <th>Indikator</th>
                   <th>Target</th>
-                  <th>Alokasi Tahun 2021</th>
+                  <th>Jumlah Alokasi</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -53,7 +53,7 @@
                   <th>Sub Kegiatan</th>
                   <th>Indikator</th>
                   <th>Target</th>
-                  <th>Alokasi Tahun 2021</th>
+                  <th>Jumlah Alokasi</th>
                   <th>Aksi</th>
                 </tr>
               </tfoot>
