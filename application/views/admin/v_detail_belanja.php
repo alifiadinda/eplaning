@@ -38,6 +38,10 @@
 							<input type="checkbox" class="form-check-input" id="butuh_rincian" name="butuh_rincian" value="1" <?= isset($edit) ? $edit->butuh_rincian : ''; ?> />
 							<label class="form-check-label" for="butuh_rincian">Butuh Rincian</label>
 						</div>
+						<div class="form-group form-check">
+							<input type="checkbox" class="form-check-input" id="tampil_rekening" name="tampil_rekening" value="1" <?= isset($edit) ? $edit->tampil_rekening : ''; ?> />
+							<label class="form-check-label" for="tampil_rekening">Tampilkan Rekening</label>
+						</div>
 						<?php if(isset($edit)) { ?>
 						<a href="<?= site_url('c_admin/detail_belanja/') ?>" class="btn btn-success">Batal
 						</a>
@@ -54,6 +58,7 @@
 								<th>Kode Rekening</th>
 								<th>Uraian</th>
 								<th>Butuh Rincian</th>
+								<th>Tampil Rekening</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -64,6 +69,7 @@
 								<td><?= $d->kode_rekening; ?></td>
 								<td><?= $d->uraian; ?></td>
 								<td><?= $d->butuh_rincian==1 ? 'Iya' : 'Tidak'; ?></td>
+								<td><?= $d->tampil_rekening==1 ? 'Iya' : 'Tidak'; ?></td>
 								<td>
 									<div class="btn-group" role="group" aria-label="Basic example">
 										<a type="button" class="btn btn-warning" href="<?= site_url('c_admin/detail_belanja/'.$d->id_detail) ?>"><i class="fa fa-edit"></i></a>
