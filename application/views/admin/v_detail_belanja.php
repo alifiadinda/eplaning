@@ -35,11 +35,45 @@
 							</select>
 						</div>
 						<div class="form-group form-check">
-							<input type="checkbox" class="form-check-input" id="butuh_rincian" name="butuh_rincian" value="1" <?= isset($edit) ? $edit->butuh_rincian : ''; ?> />
+							<input type="checkbox" class="form-check-input" id="butuh_rincian" name="butuh_rincian" value="1" 
+
+							<?php 
+								if(isset($edit)) { 
+
+									echo $edit->butuh_rincian;
+
+									if($edit->butuh_rincian == '1'){
+										echo "checked";
+									}else if($edit->butuh_rincian == '0'){
+										echo "";
+									}
+
+								}else{
+									echo "";
+								}
+								?>
+
+							/>
 							<label class="form-check-label" for="butuh_rincian">Butuh Rincian</label>
 						</div>
 						<div class="form-group form-check">
-							<input type="checkbox" class="form-check-input" id="tampil_rekening" name="tampil_rekening" value="1" <?= isset($edit) ? $edit->tampil_rekening : ''; ?> />
+							<input type="checkbox" class="form-check-input" id="tampil_rekening" name="tampil_rekening" value="1" 
+							
+								<?php 
+								if(isset($edit)) { 
+
+									if($edit->tampil_rekening == '1'){
+										echo "checked";
+									}else if($edit->tampil_rekening == '0'){
+										echo "";
+									}
+
+								}else{
+									echo "";
+								}
+								?>
+
+							/>
 							<label class="form-check-label" for="tampil_rekening">Tampilkan Rekening</label>
 						</div>
 						<?php if(isset($edit)) { ?>

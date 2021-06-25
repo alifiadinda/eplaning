@@ -22,6 +22,7 @@ class C_DetailBelanja extends CI_Controller {
 		$parent = $this->input->post('parent');
 		$butuh_rincian = $this->input->post('butuh_rincian');
 		$tampil_rekening = $this->input->post('tampil_rekening');
+
 		$data = [
 			'kode_rekening' => $kode_rekening,
 			'uraian' => $uraian,
@@ -29,10 +30,21 @@ class C_DetailBelanja extends CI_Controller {
 		];
 		if ($butuh_rincian) {
 			$data['butuh_rincian'] = '1';
+		}else{
+			$data['butuh_rincian'] = '0';
 		}
+
+
 		if ($tampil_rekening) {
 			$data['tampil_rekening'] = '1';
+		}else{
+			$data['tampil_rekening'] = '0';
 		}
+
+		// print_r($data['tampil_rekening']);
+
+		// die();
+
 		if ($id_detail!='') {
 			// update
 			$this->db->where('id_detail', $id_detail);
