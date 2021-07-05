@@ -99,9 +99,9 @@ body {
 					<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 						<span class="dropdown-item dropdown-header"><?php echo $this->session->username; ?> | <?php echo $this->session->nama_ruangan; ?></span>
 						<div class="dropdown-divider"></div>
-						<a href="#" class="dropdown-item" data-toggle="modal" data-target="#changePass">
+						<!-- <a href="#" class="dropdown-item" data-toggle="modal" data-target="#changePass">
 							<i class="fas fa-key mr-2"></i> Ganti Password
-						</a>
+						</a> -->
 						<div class="dropdown-divider"></div>
 						<a href="<?php echo base_url();?>index.php/C_login/logout" class="dropdown-item">
 							<i class="fas fa-sign-out-alt mr-2"></i> Logout
@@ -180,22 +180,6 @@ body {
 									</a>
 								</li>
 							</ul>
-							<!-- <ul class="nav nav-treeview">
-								<li class="nav-item">
-									<a href="<?php echo site_url();?>/C_admin/Draft" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>Draft DPA</p>
-									</a>
-								</li>
-							</ul>
-							<ul class="nav nav-treeview">
-								<li class="nav-item">
-									<a href="<?php echo site_url();?>/C_admin/DPA" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>DPA</p>
-									</a>
-								</li>
-							</ul> -->
 						</li>
 
 						<li class="nav-item">
@@ -239,7 +223,7 @@ body {
 		</aside>
 
 		<div class="content-wrapper">
-			<div class="modal fade" id="changePass" tabindex="-1" role="dialog" aria-labelledby="changePassLabel" aria-hidden="true">
+			<!-- <div class="modal fade" id="changePass" tabindex="-1" role="dialog" aria-labelledby="changePassLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -273,4 +257,4 @@ body {
 						</form>
 					</div>
 				</div>
-			</div>
+			</div> -->

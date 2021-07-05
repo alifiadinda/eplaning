@@ -187,7 +187,7 @@ class M_Admin extends CI_Model {
 		$this->db->insert('akun', $data);
 	}
 
-	public function editAkun($id_akun,$nama,$level)
+	public function editAkun($id_akun,$nama,$level,$ruangan)
 	{
 		$data = array(
 			'nama'			=> $nama,

@@ -11,6 +11,7 @@ class C_Admin extends CI_Controller {
 		{
 			$this->load->model('M_admin');
 			$this->load->model('M_Belanja');
+			$this->load->model('M_UpdateAkun');
 		}else{	
 			redirect('C_login');
 		}
@@ -113,23 +114,37 @@ class C_Admin extends CI_Controller {
 	public function viewEdtAkun($id_akun)
 	{
 		$data['akun'] = $this->M_admin->getAkunById($id_akun);
+        // var_dump($data['akun']);die();        
         $data['ruangan'] = $this->M_admin->getRuangan();
-        // var_dump($data['akun']);die();
-        $this->load->view('admin/header');
-        $this->load->view('admin/v_edtAkun',$data);
-        $this->load->view('admin/footer');
+		echo json_encode($data);
+
 	}
 
-	public function edtAkun($id_akun)
+	public function edtAkun()
 	{
+		$id_akun	= $this->input->post('id_akun');
 		$nama       = $this->input->post('nama');
         $level      = $this->input->post('level');
         $ruangan    = $this->input->post('ruangan');
 
-        $this->M_admin->editAkun($id_akun, $nama, $level,$ruangan);
-        echo "<script>alert('Data Akun Berhasil Diupdate') </script>";
-        redirect('C_admin/viewAkun','refresh');
+        $data=[ 'result'	=> $this->M_admin->editAkun($id_akun, $nama, $level,$ruangan),
+				'code'	=> 1];
+		echo json_encode($data);
 	}
+
+	public function changePass()
+    {
+        $id = $this->input->post('changePass_id');
+        $passnew = md5($this->input->post('passnew'));
+        $passnew2 = md5($this->input->post('passnew2'));
+        if($passnew != $passnew2){
+        	$data=[ 'code'	=> 2];
+        }else{   	
+	        $data=[ 'result'=>$this->M_UpdateAkun->changePass($id,$passnew),
+					'code'	=> 1];
+        }
+		echo json_encode($data);
+    }
 
 	public function hapusAkun($id_akun)
 	{
@@ -266,7 +281,7 @@ class C_Admin extends CI_Controller {
 	public function getDetailUsulan($id_usulan)
 	{
 		$data['getDetailUsulan']	= $this->M_admin->getDetailUsulan($id_usulan);
-		echo json_encode($data);	
+		echo json_encode($data);
 	}
 
 	public function getDetailUsulanUnit()

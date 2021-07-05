@@ -28,7 +28,7 @@
 						<div class="form-group">
 							<label for="parent">Parent</label>
 							<select class="form-control select2" name="parent">
-								<option value="">Pilih parent</option>
+								<option value="" hidden disabled selected>Pilih parent</option>
 								<?php foreach ($detail as $keyy => $dd) { ?>
 									<option value="<?= $dd->id_detail ?>" <?= (isset($edit) && $edit->parent==$dd->id_detail) ? 'selected' : ''; ?> ><?= $dd->kode_rekening.' '.$dd->uraian ?></option>
 								<?php } ?>
