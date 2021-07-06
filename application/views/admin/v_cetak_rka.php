@@ -97,21 +97,43 @@
 
 	<script type="text/javascript">
 		function refreshJumlah(){
-			const tr_parent = $($('.kode_rekening').get().reverse())
-
-			tr_parent.each((index,item)=>{
-				let jumlah = 0
-
-				const tr_child = $('.'+item.id)
-				tr_child.each((index2,item2)=>{
-					const last_col = $(item2).children().last()
+		var parentBelum = [];
+		$('#body-uraian').children('tr').each((i, e) => {
+			var idParent = $(e).attr('id-parent')
+			if (idParent!=undefined && idParent!='') {
+				var ada = $('#'+idParent)
+				if (ada.length==0) {
+					var pushParent = idParent.split('_').join('.')
+					if (parentBelum.includes(pushParent)==false) {
+						parentBelum.push(pushParent);
+					}
+				}
+			}
+		})
+		if (parentBelum.length > 0) {
+			alert("silahkan tambahkan rekening berikut, agar dapat dihitung jumlahnya dengan benar : \n" + parentBelum.join("\n"));
+		}
+		const tr_parent = $($('.kode_rekening').get().reverse())
+		tr_parent.each((index,item)=>{
+			let jumlah = 0
+			const tr_child = $('.'+item.id)
+			tr_child.each((index2,item2)=>{
+				const last_col = $(item2).children().last()
+				if (last_col.hasClass('inputRincian')) {
+					const value =  parseInt(last_col.find('input').val())
+					jumlah += value
+				} else {
 					const value = parseInt(last_col.text().trim())
 					jumlah += value
-				})
-
-				$(item).children().last().text(jumlah)
+				}
 			})
-		}
+
+			$(item).children().last().text(jumlah)
+		})		
+
+		refreshAlokasi()
+
+	}
 
 		function refreshAlokasi(){
 			let alokasi = 0

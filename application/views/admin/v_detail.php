@@ -90,7 +90,7 @@
 								</td> -->
 								<td>
 									 <select class="form-control" id="keterangan_dropdown" name="nama_usulan[]" readonly>
-										    <option  value="<?= $rincian->nama_usulan ?>"><?php echo $rincian->nama_usulan; ?> <br> : <?php echo $rincian->spesifikasi; ?></option>
+										    <option  value="<?= $rincian->nama_usulan ?>"> <?php echo $rincian->unit_pengusul; ?>: <br> <?php echo $rincian->nama_usulan; ?> <br> ( <?php echo $rincian->spesifikasi; ?>)</option>
 									</select>
 								</td>
 								<td>
@@ -230,7 +230,7 @@
                         var i;
                         for(i=0; i<data.length; i++){
                             html += '<option value="'+data[i].id_rincian+'">'
-                            +data[i].nama_usulan+' ('+data[i].spesifikasi+')</option>';
+                            +data[i].unit_pengusul+':'+data[i].nama_usulan+' ('+data[i].spesifikasi+')</option>';
                         }
 
                         $('#body-uraian > .barisRincian'+id_detail+'-'+idUnik).find('#keterangan_dropdown').html(html);

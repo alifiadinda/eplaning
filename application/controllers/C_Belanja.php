@@ -489,7 +489,7 @@ class C_Belanja extends CI_Controller {
                 $pesan = 'berhasil update data';
             }
         } else {
-            $pesan = 'gagal update data';
+            $pesan = 'berhasil update data';
         }
         if ($hapus) {
             $pesan = 'berhasil update data';
