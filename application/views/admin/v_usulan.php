@@ -50,7 +50,9 @@
                                     </td>
                                 </tr>
                                 <?php } ?>
-                                <tr align='center'>
+                            </tbody>
+                            <tfoot>
+                               <tr align='center'>
                                     <th class="th-lg no-sort"> NOMOR </th>
                                     <th class="th-lg"> NAMA ITEM </th>
                                     <th class="th-lg"> SPESIFIKASI </th>
@@ -60,7 +62,7 @@
                                     <th class="th-lg"> STATUS </th>
                                     <th class="th-lg"> AKSI</th>
                                 </tr>
-                            </tbody>
+                            </tfoot>
                             </table>
                         </div>
                     </div>

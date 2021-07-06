@@ -77,7 +77,7 @@
 				<?php foreach ($d->rincian as $key_r => $r) { ?>
 				<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>">
 					<td></td>
-					<td><?php echo $r->nama_usulan; ?> <br> : <?php echo $r->spesifikasi; ?></td>
+					<td><?php echo $r->nama_usulan; ?> <br> Spesifikasi: <?php echo $r->spesifikasi; ?></td>
 					<td><?= $r->koefisien; ?></td>
 					<td><?= $r->satuan; ?></td>
 					<td class="text-right harga"><?= $r->harga; ?></td>

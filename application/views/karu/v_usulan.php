@@ -36,13 +36,15 @@
                                     </td>
                                 </tr>
                                 <?php } ?>
-                                <tr align='center'>
+                            </tbody>
+                             <tfoot>
+                               <tr align='center'>
                                     <th class="th-lg no-sort"> NOMOR </th>
                                     <th class="th-lg"> NAMA USULAN </th>
                                     <th class="th-lg"> SPESIFIKASI  </th>
                                     <th class="th-lg"> AKSI</th>
                                 </tr>
-                            </tbody>
+                            </tfoot>
                             </table>
                         </div>
                         
@@ -91,7 +93,9 @@
                                     </td>
                                 </tr>
                                 <?php } ?>
-                                <tr align='center'>
+                            </tbody>
+                             <tfoot>
+                               <tr align='center'>
                                     <th class="th-lg no-sort"> NOMOR </th>
                                     <th class="th-lg"> RINCIAN BARANG </th>
                                     <th class="th-lg"> JUMLAH PERMINTAAN  </th>
@@ -99,7 +103,7 @@
                                     <th class="th-lg"> TANGGAL DIUSULKAN </th>
                                     <th class="th-lg"> AKSI</th>
                                 </tr>
-                            </tbody>
+                            </tfoot>
                             </table>
                         </div>
                     </div>
