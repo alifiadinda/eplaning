@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2021 at 06:45 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 8.0.0
+-- Generation Time: Jul 08, 2021 at 03:52 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -41,18 +41,17 @@ CREATE TABLE `akun` (
 --
 
 INSERT INTO `akun` (`id_akun`, `username`, `password`, `nama`, `level`, `kode_ruangan`) VALUES
-('2038331b5d11487e9250', 'adminkaru', '1bd2dbee5a94d8e1850a5eb83d72d9d2', 'Admin Karu', 'Karu', 'WH_FARMA'),
+('2038331b5d11487e9250', 'adminkaru', '7c79dd68b400e6b0c9f99f8f221dae26', 'Admin Karu', 'Karu', 'WH_FARMA'),
 ('34e123e12598496e8f91', 'admin_it', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Admin', 'Admin', 'IT'),
 ('3c10a96684d94e11ac39', 'alifia', '81dc9bdb52d04dc20036dbd8313ed055', 'alifia', 'Pengusul', 'IT'),
 ('44d363d0b2044708b813', 'penerima1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Penerima', 'Karu', 'TU'),
 ('6a320de38ed245b880f4', 'perencana', 'bfd59291e825b5f2bbf1eb76569f8fe7', 'coba', 'Perencana', 'TU'),
 ('6ad5c5a6baa74a05a216', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Tes Admin IT', 'Admin', 'IT'),
-('78e6ba3f91f24305a065', 'pengusul1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Pengusul', 'Pengusul', 'WH_FARMA'),
+('78e6ba3f91f24305a065', 'pengusul2', '593ed2cba21b6da0bae443364107a649', 'Tes Pengusul', 'Pengusul', 'WH_FARMA'),
 ('bdac6a1ad28d464fb82b', 'adminkasubag', '31b8c943aab6287440162172e591c89f', 'Admin Kasubag', 'Kasubag', 'IT'),
 ('c0db254b7a564f638463', 'kasubag', 'bfd59291e825b5f2bbf1eb76569f8fe7', 'kasubag', 'Kasubag', 'KEUANGAN'),
-('c3a9397b32084249927a', 'lalala', '2e3817293fc275dbee74bd71ce6eb056', 'lalala', 'Pengusul', 'IGD'),
-('ed15ffcc26694a539cdc', 'asdasd', '130811dbd239c97bd9ce933de7349f20', 'sadas', 'Pengusul', 'GIZI'),
-('f32039aea4514af6b3e9', 'karu', 'f3685741425eca64ab27094e3420034c', 'tes karu', 'Karu', 'HCU');
+('ed15ffcc26694a539cdc', 'asdasd', '130811dbd239c97bd9ce933de7349f20', 'Cek asd 123', 'Pengusul', 'TU'),
+('f32039aea4514af6b3e9', 'pengusul', '593ed2cba21b6da0bae443364107a649', 'Pengusul-HCU', 'Karu', 'HCU');
 
 -- --------------------------------------------------------
 
@@ -227,9 +226,11 @@ CREATE TABLE `dpa_detail` (
 --
 
 INSERT INTO `dpa_detail` (`id_dpa_detail`, `id_dpa`, `id_detail`, `jumlah`) VALUES
-(278, 26, 147, 0),
-(279, 26, 147, 0),
-(280, 26, 147, 0);
+(1, 1, 25, 0),
+(2, 1, 32, 0),
+(3, 1, 32, 0),
+(4, 2, 147, 0),
+(5, 2, 147, 0);
 
 -- --------------------------------------------------------
 
@@ -252,12 +253,15 @@ CREATE TABLE `item_usulan` (
 --
 
 INSERT INTO `item_usulan` (`id_usulan`, `nama_usulan`, `spesifikasi`, `satuan`, `harga_satuan`, `kode_rekening`, `status`) VALUES
-(1, 'tes1', 'asd123', 'pcs', 20000, '5.1.01.03.07.0001', 'aktif'),
-(2, 'tes2', 'asd1234', 'box', 50000, '5.1.01.03.07.0001', 'aktif'),
-(3, 'tes3', 'zxcv1234', 'unit', 2000000, '5.1.01.03.07.0002', 'aktif'),
-(4, 'tes4', 'dfas213', 'roll', 150000, '5.1.01.03.07.0002', 'aktif'),
-(5, 'tes5', 'asd1234', 'pcs', 250007, '5.1.02.01.01.0012', 'nonaktif'),
-(6, 'tes6', 'dsdsad', 'pack', 100000, '5.1.02.03.02.0205', 'aktif');
+(1, 'Alkohol', '1000 ml', 'Botol', 31300, '5.1.02.01.01.0002', 'aktif'),
+(2, 'Elektro Surgical Unit', ' COVEDIEN VALLEYLAB FT10 FT SERIES', 'Unit', 620000000, '5.2.02.07.01.0023', 'aktif'),
+(3, 'Kalibrasi & Perbaikan X-Ray', '', 'Paket', 15781000, '5.1.02.03.02.0204', 'aktif'),
+(4, 'Kresek Kuning', '100 x 120 cm', 'pcs', 3000, '5.1.02.01.01.0030', 'aktif'),
+(5, 'Tempat makan sekali pakai', 'Plastik', 'pcs', 2500, '5.1.02.01.01.0030', 'aktif'),
+(6, 'Albumin 0285 -500', ' 2x 250 ml', 'set', 600000, '5.1.02.01.01.0002', 'aktif'),
+(7, 'stetoskop', '', 'unit', 100000, '5.1.02.03.02.0204', 'aktif'),
+(8, 'Tes Usulan Baru', '', 'pcs', 250000, '5.1.01.01.01.0001', 'aktif'),
+(9, 'Usulan Baru', 'Gaji Pegawai', 'org', 1000000, '5.1.01.01.01.0001', 'aktif');
 
 -- --------------------------------------------------------
 
@@ -302,7 +306,53 @@ INSERT INTO `rekening` (`id_rekening`, `id_dpa`, `id_detail_belanja`) VALUES
 (69, 26, 146),
 (70, 26, 147),
 (71, 27, 147),
-(72, 27, 145);
+(72, 27, 145),
+(73, 26, 50),
+(74, 26, 47),
+(75, 26, 22),
+(76, 26, 46),
+(77, 26, 17),
+(78, 26, 15),
+(79, 26, 14),
+(80, 1, 7),
+(81, 1, 8),
+(82, 1, 9),
+(83, 1, 10),
+(84, 1, 25),
+(85, 1, 23),
+(86, 1, 22),
+(87, 1, 17),
+(88, 1, 32),
+(89, 1, 49),
+(90, 1, 47),
+(91, 1, 46),
+(92, 1, 56),
+(93, 1, 55),
+(94, 1, 54),
+(95, 1, 119),
+(96, 1, 63),
+(97, 1, 62),
+(98, 1, 17),
+(99, 1, 22),
+(100, 2, 7),
+(101, 2, 8),
+(102, 2, 9),
+(103, 2, 10),
+(104, 2, 148),
+(105, 2, 146),
+(106, 2, 147),
+(107, 2, 152),
+(108, 2, 151),
+(109, 2, 145),
+(110, 2, 153),
+(111, 2, 136),
+(112, 2, 137),
+(113, 2, 14),
+(114, 2, 15),
+(115, 2, 25),
+(116, 2, 23),
+(117, 2, 22),
+(118, 2, 17);
 
 -- --------------------------------------------------------
 
@@ -331,12 +381,14 @@ CREATE TABLE `rincian` (
 --
 
 INSERT INTO `rincian` (`id_rincian`, `id_dpa_detail`, `id_usulan`, `nama_usulan`, `spesifikasi`, `koefisien`, `satuan`, `harga`, `PPN`, `jumlah`, `kode_rekening`, `unit_pengusul`, `tgl_diusulkan`) VALUES
-(380, NULL, 0, 'fdsgfdh', 'fdsgfdh', '2', '2', 2, 2, 2, '', 'Keuangan', '2021-04-26'),
-(381, 278, 3, 'tes3', 'zxcv1234', '4', 'unit', 2000000, 0, 8000000, '5.1.01.01.01.0001', 'HCU', '2021-04-29'),
-(382, 279, 2, 'tes2', 'asd1234', '5', 'box', 50000, 0, 250000, '5.1.01.01.01.0001', 'HCU', '2021-04-29'),
-(384, NULL, 3, 'tes3', 'zxcv1234', '2', 'unit', 2000000, 0, 4000000, '5.1.01.01.01.0002', 'HCU', '2022-04-29'),
-(385, 280, 1, 'tes1', 'asd123', '20', 'pcs', 20000, 0, 400000, '5.1.01.01.01.0001', 'HCU', '2021-05-10'),
-(386, NULL, 2, 'tes2', 'asd1234', '5', 'box', 50000, 0, 250000, '5.1.01.03.07.0001', 'WH_FARMA', '2021-06-18');
+(1, 1, 1, 'Alkohol', '1000 ml', '1279', 'Botol', 31300, 0, 40032700, '5.1.02.01.01.0002', 'HCU', '2021-07-06'),
+(2, NULL, 2, 'Elektro Surgical Unit', ' COVEDIEN VALLEYLAB FT10 FT SERIES', '1', 'Unit', 620000000, 0, 620000000, '5.2.02.07.01.0023', 'HCU', '2021-07-06'),
+(3, NULL, 3, 'Kalibrasi & Perbaikan X-Ray', '', '28', 'Paket', 15781000, 0, 441868000, '5.1.02.03.02.0204', 'HCU', '2021-07-06'),
+(4, 3, 4, 'Kresek Kuning', '100 x 120 cm', '5010', 'pcs', 3000, 0, 15030000, '5.1.02.01.01.0030', 'HCU', '2021-07-06'),
+(5, 2, 5, 'Tempat makan sekali pakai', 'Plastik', '44075', 'pcs', 2500, 0, 110187500, '5.1.02.01.01.0030', 'HCU', '2021-07-06'),
+(7, NULL, 6, 'Albumin 0285 -500', ' 2x 250 ml', '2', 'set', 600000, 0, 1200000, '5.1.02.01.01.0002', 'HCU', '2021-07-07'),
+(9, 5, 8, 'Tes Usulan Baru', '', '12', 'pcs', 250000, 0, 3000000, '5.1.01.01.01.0001', 'HCU', '2021-07-07'),
+(10, 4, 9, 'Usulan Baru', 'Gaji Pegawai', '20', 'org', 1000000, 0, 20000000, '5.1.01.01.01.0001', 'HCU', '2021-07-07');
 
 -- --------------------------------------------------------
 
@@ -398,7 +450,7 @@ CREATE TABLE `sk_belanja` (
   `subkegiatan` varchar(200) NOT NULL,
   `indikator` varchar(200) NOT NULL,
   `target` int(200) NOT NULL,
-  `alokasi_tahun2021` int(200) NOT NULL,
+  `alokasi_tahun2021` bigint(200) NOT NULL,
   `status` varchar(200) NOT NULL,
   `status_karu` int(11) NOT NULL,
   `status_karu_dpa` int(11) NOT NULL
@@ -409,17 +461,8 @@ CREATE TABLE `sk_belanja` (
 --
 
 INSERT INTO `sk_belanja` (`id`, `tanggal_sk`, `program`, `kegiatan`, `subkegiatan`, `indikator`, `target`, `alokasi_tahun2021`, `status`, `status_karu`, `status_karu_dpa`) VALUES
-(26, '2021-02-22', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penerbitan Izin Rumah Sakit kelas C,D dan Fasilitas Pelayanan Kesehatan tingkat Daerah Kabupaten atau kota', 'Peningkatan Tata Kelola RSUD dan Fasilitas Pelayanan Kesehatan Tingkat daerah kabupaten/Kota', 'Presentase Unit Pelayanan Kesehatan Yang Memenuhi SPM', 100, 8650000, 'RKA', 1, 1),
-(27, '2021-11-09', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '9', 9, 0, 'RKA', 0, 0),
-(28, '2021-02-14', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)', 'Pengadaan Prasarana dan Pendukung Fasilitas Pelayanan Kesehatan(RSUD)', 'dfgfhb', 10, 0, 'RKA', 0, 0),
-(29, '2021-02-15', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '5', 5, 1, 'Draft DPA', 1, 0),
-(30, '2021-02-16', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', '2', 2, 2, 'DPA', 1, 1),
-(33, '2021-02-15', 'Program Penunjang Urusan Pemerintahan Daerah Kabupaten/Kota', 'Peningkatan Pelayanan RSUD', 'Pelayanan dan Penunjang Pelayanan BLUD', '2', 2, 2, 'DPA', 0, 0),
-(36, '2021-03-08', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', 'iuiuojkj', 100, 2, 'DPA', 1, 1),
-(37, '2021-03-07', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', 'kkjk', 10, 5, 'Draft DPA', 1, 1),
-(39, '2021-03-09', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', 'dfgfhb', 6, 2, 'Draft DPA', 1, 0),
-(40, '2021-03-03', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)', 'Pengadaan Prasarana dan Pendukung Fasilitas Pelayanan Kesehatan(RSUD)', 'kjblkjlkj', 100, 0, 'RKA', 0, 0),
-(41, '2021-04-02', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)', 'Pengadaan Prasarana dan Pendukung Fasilitas Pelayanan Kesehatan(RSUD)', 'rhfjh', 90, 0, 'RKA', 0, 0);
+(1, '2021-12-06', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)', 'Pengadaan Alat Kesehatan atau Alat Penunjang Medik Fasilitas Pelayanan Kesehatan', 'Jumlah pengadaan sarana penunjang pelayanan kesehatan', 100, 661000800, 'RKA', 0, 0),
+(2, '2021-07-07', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', 'test', 100, 23000000, 'RKA', 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -491,31 +534,31 @@ ALTER TABLE `detail_belanja`
 -- AUTO_INCREMENT for table `dpa_detail`
 --
 ALTER TABLE `dpa_detail`
-  MODIFY `id_dpa_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=281;
+  MODIFY `id_dpa_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `item_usulan`
 --
 ALTER TABLE `item_usulan`
-  MODIFY `id_usulan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_usulan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `rekening`
 --
 ALTER TABLE `rekening`
-  MODIFY `id_rekening` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id_rekening` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 
 --
 -- AUTO_INCREMENT for table `rincian`
 --
 ALTER TABLE `rincian`
-  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=387;
+  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `sk_belanja`
 --
 ALTER TABLE `sk_belanja`
-  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

@@ -222,9 +222,12 @@ class C_Admin extends CI_Controller {
             
             $dpa_detail = $this->db
             ->where('id_dpa', $id_dpa)
-            ->where('id_detail', $value->id_detail)->get('dpa_detail')->row();
+            ->where('id_detail', $value->id_detail)->get('dpa_detail')->result();
+
             if ($dpa_detail) {
-                $result[$key]->rincian = $this->getRincian($dpa_detail->id_dpa_detail);
+                foreach ($dpa_detail as $kk => $vv) {
+                    $result[$key]->rincian[$kk] = $this->getRincian($vv->id_dpa_detail);
+                }
             } else {
                 $result[$key]->rincian = [];
             }
@@ -233,14 +236,14 @@ class C_Admin extends CI_Controller {
         return $result;
     }
 
-	function getKodeRekeningParent($id_parent) {
-		return $this->db->where('id_detail',$id_parent)->get('detail_belanja')->row()->kode_rekening;
-	}
+	 function getKodeRekeningParent($id_parent) {
+        return $this->db->where('id_detail',$id_parent)->get('detail_belanja')->row()->kode_rekening;
+    }
 
-	function getRincian($id_dpa_detail){
-		$this->db->where('id_dpa_detail', $id_dpa_detail);
-		return $this->db->get('rincian')->result();
-	}
+    function getRincian($id_dpa_detail){
+        $this->db->where('id_dpa_detail', $id_dpa_detail);
+        return $this->db->get('rincian')->row();
+    }
 /*=============================================================== UPDATE CETAK ===============================================================*/
 
 	public function rekening()
