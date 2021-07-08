@@ -85,9 +85,32 @@
 					<td class="text-right jumlah"><?= $r->jumlah; ?></td>
 				</tr>
 				<?php } ?>
+									
 
 				<?php } ?>
 			</tbody>
+		</table>
+
+		<table style="width: 100%">
+			
+			<tr><br><br>
+					<td class="font-weight-bold" style="text-align: center; padding-left: 780px;">
+					Malang, <?php echo date("d-m-Y")?>
+					<br>
+					Mengetahui,
+					<br>
+					<?php echo $jabatan; ?>
+					<br>
+					<br>
+					<br>
+					<br>
+					<hr style="width: 150px; height: 2px"></hr>
+					<?php echo $nama_pejabat; ?>
+					<br>
+					NIP. <?php echo $nip; ?>
+				</td>
+			</tr>
+
 		</table>
 	</div>
 

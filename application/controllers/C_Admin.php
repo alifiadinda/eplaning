@@ -163,6 +163,36 @@ class C_Admin extends CI_Controller {
 		$data['RKA'] = $this->M_admin->getSatuRKA($id_rka);
 		$data['detail_table'] = $this->getDetailBelanja($id_rka, $id_detail, true);
         $data['detail'] = $this->getDetailBelanja($id_rka, $id_detail);
+        $ambil_sub_kegiatan = $this->db->query("
+		SELECT sk_belanja.*
+		FROM sk_belanja
+		where sk_belanja.id = $id_rka
+		")->result_array();
+
+		
+        $nama_pejabat = '';
+        $nip = '';
+        $jabatan ='';
+		foreach ($ambil_sub_kegiatan as $data2) {
+			if($data2['subkegiatan'] == 'Operasional Pelayanan RSUD' || $data2['subkegiatan'] == 'Pelayanan dan Penunjang Pelayanan BLUD'){
+				$nama_pejabat = 'MEIFTA ETI WININDAR, S.ST,MM.';
+				$nip = '19800520 200312 2 008';
+				$jabatan = 'KASUBBAG TATA USAHA';
+			}else if($data2['subkegiatan'] == 'Peningkatan Tata Kelola RSUD dan Fasilitas Pelayanan Kesehatan Tingkat daerah kabupaten/Kota'){
+				$nama_pejabat = 'drg.TRI WAHYU HIDAYAT';
+				$nip = '19650221 199803 1 001';
+				$jabatan = 'KASIE PELAYANAN MEDIS DAN KEPERAWATAN';
+			}else{
+				$nama_pejabat = 'dr.ALDRIYANA YUSRAN';
+				$nip = '19721227 200501 2 013';
+				$jabatan = 'KASIE PELAYANAN PENUNJANG DAN SARANA PELAYANAN';
+			}
+		}
+
+		$data['nama_pejabat'] = $nama_pejabat;
+		$data['nip'] = $nip;
+		$data['jabatan'] = $jabatan;
+
 
         if ($id_detail!='') {
             $data['detail'] = $this->getDetailBelanja($id_det, $id_detail);
