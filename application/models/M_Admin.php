@@ -63,6 +63,19 @@ class M_Admin extends CI_Model {
 	    }
 	}
 
+	public function hitung_usulan()
+	{
+		$query = $this->db->get('item_usulan');
+	    if($query->num_rows()>0)
+	    {
+	      return $query->num_rows();
+	    }
+	    else
+	    {
+	      return 0;
+	    }
+	}
+
 	public function getRKA()
 	{
 		$get = $this->input->get();

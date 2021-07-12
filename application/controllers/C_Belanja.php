@@ -500,7 +500,7 @@ class C_Belanja extends CI_Controller {
 
     public function bersihkanRincianDetailUpdate($id_dpa_detail){
         foreach ($id_dpa_detail as $value) {
-            $this->db->where('id_dpa_detail', $value)->delete('rincian');
+            $this->db->where('id_dpa_detail', $value)->update('rincian', ['id_dpa_detail'=> null]);
             $this->db->where('id_dpa_detail', $value)->delete('dpa_detail');
         }
 

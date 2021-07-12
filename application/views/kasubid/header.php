@@ -155,37 +155,12 @@ body {
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="<?php echo site_url('C_Kasubid/Belanja')?>" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>SK Belanja</p>
-                  </a>
-                </li>
-              </ul>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
                   <a href="<?php echo site_url();?>/C_Kasubid/RKA" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>RKA</p>
                   </a>
                 </li>
               </ul>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?php echo site_url();?>/C_Kasubid/Draft" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Draft DPA</p>
-                  </a>
-                </li>
-              </ul>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?php echo site_url();?>/C_Kasubid/DPA" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>DPA</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
 
             <li class="nav-item">
               <a href="<?php echo site_url();?>/C_admin/Usulan" class="nav-link" >

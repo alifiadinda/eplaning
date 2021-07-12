@@ -65,7 +65,7 @@
 									}
 								}
 							?>
-							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>" id-detail="<?= $d->id_detail ?>" id-parent="<?= $parentSekarang ?>">
+							<tr class="barisRincian<?= $d->id_detail; ?> kode_rekening <?= ($d->parent) ? str_replace('.','_',$d->kode_rekening_parent) : '' ?>" id="<?= str_replace('.','_',$d->kode_rekening) ?>" id-detail="<?= $d->id_detail ?>" id-parent="<?= $parentSekarang ?>" style="background-color: #F0FFFF	;">
 								<td>
 									<?php if ($d->butuh_rincian==1) { ?>
 									<span class="btn btn-success" onclick="tambahRincian(this, '<?= $d->id_detail ?>', '<?= $d->kode_rekening ?>', new Date().getUTCMilliseconds())"><i class="fa fa-plus"></i></span>
@@ -78,7 +78,7 @@
 								<td class="text-right <?= (!$d->parent) ? 'alokasi' : '' ?>">0</td>
 							</tr>
 							<?php foreach ($d->rincian as $key => $rincian) { ?>
-							<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>">
+							<tr class="barisRincian<?= $d->id_detail; ?> <?= str_replace('.','_',$d->kode_rekening) ?>" style="background-color: #87CEEB	;">
 								<td>
 									<span class="btn btn-danger" onclick="hapusKolom(this, <?= $rincian->id_dpa_detail ?>)"><i class="fa fa-trash"></i></span>
 								</td>

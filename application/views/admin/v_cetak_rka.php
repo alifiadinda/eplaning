@@ -85,16 +85,15 @@
 					<td class="text-right jumlah"><?= $r->jumlah; ?></td>
 				</tr>
 				<?php } ?>
-									
-
 				<?php } ?>
+	
 			</tbody>
 		</table>
 
 		<table style="width: 100%">
 			
 			<tr><br><br>
-					<td class="font-weight-bold" style="text-align: center; padding-left: 780px;">
+					<td class="font-weight-bold" style="text-align: center; padding-left: 580px;">
 					Malang, <?php echo date("d-m-Y")?>
 					<br>
 					Mengetahui,

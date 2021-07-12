@@ -24,6 +24,7 @@ class C_Admin extends CI_Controller {
 		$data['data_draft'] = $this->M_admin->hitung_draft_DPA();
 		$data['data_dpa'] = $this->M_admin->hitung_DPA();
 		$data['data_akun'] = $this->M_admin->hitung_akun();
+		$data['usulan'] = $this->M_admin->hitung_usulan();
 
 		$this->load->view('admin/header');
 		// $this->load->view('admin/sidebar');

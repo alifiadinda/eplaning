@@ -55,7 +55,7 @@
                     <div class="small-box bg-blue">
                         <div class="inner">
                             <h3>
-                                0
+                                <?php echo $usulan; ?>
                             </h3>
                             <p>
                                 Usulan
@@ -64,7 +64,7 @@
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
                         </div>
-                        <a href="<?php echo site_url();?>/C_Admin/DPA" class="small-box-footer">
+                        <a href="<?php echo site_url();?>/C_Admin/getItemUsulan" class="small-box-footer">
                             More info <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
