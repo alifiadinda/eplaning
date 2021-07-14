@@ -48,10 +48,10 @@
                     $this->session->set_userdata($userdata);
                     if($value->level == 'Admin'){
                         redirect('C_Admin','refresh');
-                    }else if($value->level == 'Karu'){
-                        redirect('C_Karu','refresh');
+                    }else if($value->level == 'Perencana'){
+                        redirect('C_Perencana','refresh');
                     }else{
-                        redirect('C_Kasubid','refresh');
+                        redirect('C_Pengusul','refresh');
                     }
                 } else {
                     // echo "salah akun";

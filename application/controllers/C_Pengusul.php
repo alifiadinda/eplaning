@@ -1,23 +1,73 @@
 <?php
+
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_Belanja extends CI_Controller {
-
+class C_Pengusul extends CI_Controller {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('form_validation');
         if ($this->session->userdata('status')==TRUE) 
-        {
-            $this->load->model('M_admin');
-        }else{  
-            redirect('C_login');
-        }
+		{
+			$this->load->model('M_admin');
+		}else{	
+			redirect('C_login');
+		}
     }
-    
 
     public function index()
+    {
+        $data['data_rka'] = $this->M_admin->hitung_RKA();
+        $data['data_draft'] = $this->M_admin->hitung_draft_DPA();
+        $data['data_dpa'] = $this->M_admin->hitung_DPA();
+
+        $this->load->view('pengusul/header');
+        // $this->load->view('admin/sidebar');
+        $this->load->view('pengusul/v_home', $data);
+        $this->load->view('pengusul/footer');
+    }
+
+     public function RKA()
+    {
+        $data['page_title'] = 'RKA'; 
+        $data['RKA'] = $this->M_admin->getRKA();
+        $this->load->view('pengusul/header');
+        // $this->load->view('admin/sidebar');
+        $this->load->view('pengusul/v_rka',$data);
+        $this->load->view('pengusul/footer');
+    }
+
+    public function Draft()
+    {
+        $data['page_title'] = 'Draft DPA'; 
+        $data['Draft'] = $this->M_admin->getDraft();
+        $this->load->view('pengusul/header');
+        // $this->load->view('admin/sidebar');
+        $this->load->view('pengusul/v_draft',$data);
+        $this->load->view('pengusul/footer');
+    }
+
+    public function DPA()
+    {
+        $data['page_title'] = 'DPA'; 
+        $data['DPA'] = $this->M_admin->getDPA();
+        $this->load->view('pengusul/header');
+        // $this->load->view('admin/sidebar');
+        $this->load->view('pengusul/v_dpa',$data);
+        $this->load->view('pengusul/footer');
+    }
+
+    public function detail_belanja($id='')
+    {
+        $data['edit'] = $this->M_admin->getSatuData($id);
+        $data['detail'] = $this->M_admin->getDetail();
+        $this->load->view('pengusul/header');
+        $this->load->view('pengusul/v_detail_belanja',$data);
+        $this->load->view('pengusul/footer');
+    }
+
+     public function Belanja()
     {
         $this->load->model('M_Belanja');
         $this->load->library('form_validation');
@@ -38,22 +88,22 @@ class C_Belanja extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE)
         {
-            $this->load->view('admin/header');
-            $this->load->view('admin/v_belanja',$data);
-            $this->load->view('admin/footer');
+            $this->load->view('pengusul/header');
+            $this->load->view('pengusul/v_belanja',$data);
+            $this->load->view('pengusul/footer');
         } else {
             $data['program'] = $this->input->post('kategori');
             $data['kegiatan'] = $this->input->post('kegiatan');
             $data['subkegiatan'] = $this->input->post('tampil');
             // print_r($data['program']);
-            $this->load->view('admin/header');
-            $this->load->view('admin/v_belanja',$data);
-            $this->load->view('admin/footer');
+            $this->load->view('pengusul/header');
+            $this->load->view('pengusul/v_belanja',$data);
+            $this->load->view('pengusul/footer');
         }
 
     }
 
-    public function detail($id_dpa='', $id_detail='')
+     public function detail($id_dpa='', $id_detail='')
     {
         $data['id_dpa'] = $id_dpa;
         $data['sk_belanja'] = $this->db->where('id', $id_dpa)->get('sk_belanja')->row();
@@ -66,9 +116,9 @@ class C_Belanja extends CI_Controller {
             exit();
         }
 
-        $this->load->view('admin/header');
-        $this->load->view('admin/v_detail', $data);
-        $this->load->view('admin/footer');
+        $this->load->view('pengusul/header');
+        $this->load->view('pengusul/v_detail', $data);
+        $this->load->view('pengusul/footer');
     }
 
     public function detailSave()
@@ -99,14 +149,6 @@ class C_Belanja extends CI_Controller {
             }
             $this->db->order_by('db.kode_rekening');
             $result = $this->db->get('detail_belanja db')->result();
-            $tampil_rekening = $this->db->get_where('detail_belanja', array('tampil_rekening' => '1'))->result();
-            foreach ($tampil_rekening as $val) {
-                $ada = $this->tambahTampilRekening($val, $id_dpa);
-                if (!$ada) {
-                    array_push($result, $val);
-                }
-            }
-
             // var_dump($result);die;
             // var_dump($this->db->last_query());die;
          //$result = $this->db->query('SELECT detail_belanja.* FROM detail_belanja WHERE LENGTH(regexp_replace(detail_belanja.kode_rekening, "[0-9]", "")) <= 3')->result();
@@ -117,12 +159,9 @@ class C_Belanja extends CI_Controller {
             
             $dpa_detail = $this->db
             ->where('id_dpa', $id_dpa)
-            ->where('id_detail', $value->id_detail)->get('dpa_detail')->result();
-
+            ->where('id_detail', $value->id_detail)->get('dpa_detail')->row();
             if ($dpa_detail) {
-                foreach ($dpa_detail as $kk => $vv) {
-                    $result[$key]->rincian[$kk] = $this->getRincian($vv->id_dpa_detail);
-                }
+                $result[$key]->rincian = $this->getRincian($dpa_detail->id_dpa_detail);
             } else {
                 $result[$key]->rincian = [];
             }
@@ -131,43 +170,18 @@ class C_Belanja extends CI_Controller {
         return $result;
     }
 
-    function tambahTampilRekening($detail_belanja, $id_dpa)
-    {
-        $where = array(
-            'id_dpa' => $id_dpa, 
-            'id_detail_belanja' => $detail_belanja->id_detail,
-        );
-
-        $check = $this->db->get_where('rekening', $where)->row();
-
-        if (is_null($check)) {
-            $data = array(
-                'id_dpa' => $id_dpa,
-                'id_detail_belanja' => $detail_belanja->id_detail 
-            );
-            $this->db->insert('rekening', $data);
-
-            return false;
-        }
-
-        return true;
-    }
-
     function getKodeRekeningParent($id_parent) {
         return $this->db->where('id_detail',$id_parent)->get('detail_belanja')->row()->kode_rekening;
     }
 
     function getRincian($id_dpa_detail){
         $this->db->where('id_dpa_detail', $id_dpa_detail);
-        return $this->db->get('rincian')->row();
+        return $this->db->get('rincian')->result();
     }
 
     public function save_rincian(){
         $id_dpa = $this->input->post('id_dpa');
         $alokasi = $this->input->post('alokasi');
-        // $id_usulan = $this->input->post('id_usulan');
-        // $kode_rekening = $this->input->post('kode_rekening');
-        // $unit_pengusul = $this->input->post('unit_pengusul');
         $id_detail = $this->input->post('id_detail[]');
         $keterangan = $this->input->post('keterangan[]');
         $koefisien = $this->input->post('koefisien[]');
@@ -180,15 +194,13 @@ class C_Belanja extends CI_Controller {
             'alokasi_tahun2021'=> $alokasi
         ]);
 
-        //$id_detail = $id_detail ? $id_detail : [];
-        $this->bersihkanRincianDetail($id_dpa);
-        $id_detail = $id_detail ? $id_detail : [];
+        $unique = array_unique($id_detail);
+        foreach ($unique as $key => $uniq) {
+            $this->bersihkanRincianDetail($id_dpa, $uniq);
+        }
 
         foreach ($id_detail as $key => $id_det) {
             $data['keterangan'] = $keterangan[$key];
-            // $data['id_usulan'] = $id_usulan;
-            // $data['kode_rekening'] = $kode_rekening;
-            // $data['unit_pengusul'] = $unit_pengusul;
             $data['koefisien'] = $koefisien[$key];
             $data['satuan'] = $satuan[$key];
             $data['harga'] = $harga[$key];
@@ -201,7 +213,7 @@ class C_Belanja extends CI_Controller {
         }
 
         // print_r($this->input->post());
-        redirect(site_url('c_belanja/detail/'.$id_dpa));
+        redirect(site_url('C_Pengusul/detail/'.$id_dpa));
     }
 
     public function cekDpaDetail($id_dpa, $id_detail){
@@ -219,11 +231,11 @@ class C_Belanja extends CI_Controller {
         }
     }
 
-   public function bersihkanRincianDetail($id_dpa){
-        $ada = $this->db->where('id_dpa', $id_dpa)->get('dpa_detail')->result();
-        foreach ($ada as $key => $value) {
-            $this->db->where('id_dpa_detail', $value->id_dpa_detail)->delete('rincian');
-            $this->db->where('id_dpa_detail', $value->id_dpa_detail)->delete('dpa_detail');
+    public function bersihkanRincianDetail($id_dpa, $id_detail){
+        $ada = $this->db->where('id_dpa', $id_dpa)->where('id_detail', $id_detail)->get('dpa_detail')->row();
+        if ($ada) {
+            $this->db->where('id_dpa_detail', $ada->id_dpa_detail)->delete('rincian');
+            $this->db->where('id_dpa_detail', $ada->id_dpa_detail)->delete('dpa_detail');
         }
     }
 
@@ -241,16 +253,16 @@ class C_Belanja extends CI_Controller {
         $data['subkegiatan'] = $this->input->post('tampil');
         //if ($this->form_validation->run() === FALSE)
         //{
-            $this->load->view('admin/header');
-            $this->load->view('admin/v_belanja',$data);
-            $this->load->view('admin/footer');
+            $this->load->view('pengusul/header');
+            $this->load->view('pengusul/v_belanja',$data);
+            $this->load->view('pengusul/footer');
         //} else {
         $this->M_Belanja->create_belanja();
-        redirect('C_Admin/RKA');
+        redirect('C_Pengusul/RKA');
         //}
     }
 
-    public function edit($id = NULL)
+     public function edit($id = NULL)
     {
         $data['page_title'] = 'Edit Sub Kegiatan Belanja';
         $this->load->library('form_validation');
@@ -258,7 +270,7 @@ class C_Belanja extends CI_Controller {
 
         $data['belanja'] = $this->M_Belanja->get_belanja_by_id($id);
 
-        if ( empty($id) || !$data['belanja'] ) redirect('C_Belanja');
+        if ( empty($id) || !$data['belanja'] ) redirect('C_Pengusul/Belanja');
 
         $this->load->helper('form');
         $this->load->library('form_validation');
@@ -271,9 +283,9 @@ class C_Belanja extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE)
         {
-            $this->load->view('admin/header');
-            $this->load->view('admin/edit_belanja',$data);
-            $this->load->view('admin/footer');
+            $this->load->view('pengusul/header');
+            $this->load->view('pengusul/edit_belanja',$data);
+            $this->load->view('pengusul/footer');
         } else {
 
             $post_data = array(
@@ -287,14 +299,14 @@ class C_Belanja extends CI_Controller {
                 'status'                 => $this->input->post('status')
             );
 
-            $this->load->view('admin/header');
+            $this->load->view('pengusul/header');
             
             if ($this->M_Belanja->update_belanja($post_data, $id)) {
-                redirect('C_Admin/RKA');
+                redirect('C_Pengusul/RKA');
             } else {
-                redirect('C_Admin/RKA');
+                redirect('C_Pengusul/RKA');
             }
-            $this->load->view('admin/footer'); 
+            $this->load->view('pengusul/footer'); 
 
         }
     }
@@ -307,7 +319,7 @@ class C_Belanja extends CI_Controller {
 
         $data['belanja'] = $this->M_Belanja->get_belanja_by_id($id);
 
-        if ( empty($id) || !$data['belanja'] ) redirect('C_Belanja');
+        if ( empty($id) || !$data['belanja'] ) redirect('C_Pengusul/Belanja');
 
         $this->load->helper('form');
         $this->load->library('form_validation');
@@ -320,9 +332,9 @@ class C_Belanja extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE)
         {
-            $this->load->view('admin/header');
+            $this->load->view('pengusul/header');
             $this->load->view('admin/edit_belanja',$data);
-            $this->load->view('admin/footer');
+            $this->load->view('pengusul/footer');
         } else {
 
             $post_data = array(
@@ -336,25 +348,25 @@ class C_Belanja extends CI_Controller {
                 'status'                 => $this->input->post('status')
             );
 
-            $this->load->view('admin/header');
+            $this->load->view('pengusul/header');
             
             if ($this->M_Belanja->update_belanja($post_data, $id)) {
-                redirect('C_Admin/Draft');
+                redirect('C_Pengusul/Draft');
             } else {
-                redirect('C_Admin/Draft');
+                redirect('C_Pengusul/Draft');
             }
-            $this->load->view('admin/footer'); 
+            $this->load->view('pengusul/footer'); 
 
         }
     }
 
-    public function deleterka($id){
+      public function deleterka($id){
         $data['page_title'] = 'Hapus';
 
         $this->load->model('M_Belanja');
         $this->M_Belanja->delete($id);
 
-        redirect('C_Admin/RKA');
+        redirect('C_Pengusul/RKA');
     }
 
     public function deletedraft($id){
@@ -363,160 +375,95 @@ class C_Belanja extends CI_Controller {
         $this->load->model('M_Belanja');
         $this->M_Belanja->delete($id);
 
-        redirect('C_Admin/Draft');
+        redirect('C_Pengusul/Draft');
     }
 
-   public function ajukan_draftdpa($id){
-        $this->load->model('M_Belanja');
+    /*=============================================================== USULAN ===============================================================*/
 
-            $post_data = array(
-                'status_karu'             => 1
-            );
-            
-            if ($this->M_Belanja->update_belanja($post_data, $id)) {
-                redirect('C_Perencana/RKA');
-            } else {
-                redirect('C_Perencana/RKA');
-            }
-            $this->load->view('perencana/footer'); 
-    }
-    
-    public function ajukan_draftdpa_kasub($id){
-        $this->load->model('M_Belanja');
-
-            $post_data = array(
-                'status'             => "Draft DPA"
-            );
-            
-            if ($this->M_Belanja->update_belanja($post_data, $id)) {
-                redirect('C_Pengusul/RKA');
-            } else {
-                redirect('C_Pengusul/RKA');
-            }
-            $this->load->view('pengusul/footer'); 
-    }
-
-    public function ajukan_dpa($id){
-        $this->load->model('M_Belanja');
-
-            $post_data = array(
-                'status_karu_dpa'             => 1
-            );
-            
-            if ($this->M_Belanja->update_belanja($post_data, $id)) {
-                redirect('C_Perencana/Draft');
-            } else {
-                redirect('C_Perencana/Draft');
-            }
-            $this->load->view('perencana/footer'); 
-    }
-    
-    public function ajukan_dpa_kasubid($id){
-        $this->load->model('M_Belanja');
-
-            $post_data = array(
-                'status'             => "DPA"
-            );
-            
-            if ($this->M_Belanja->update_belanja($post_data, $id)) {
-                redirect('C_Pengusul/Draft');
-            } else {
-                redirect('C_Pengusul/Draft');
-            }
-            $this->load->view('pengusul/footer'); 
-    }
-
-    public function get_data_tabel_usulan_dropdown(){
-        $kode_rekening = $this->input->post('kode_rekening');
-        $sql="Select rincian.* 
-        from rincian 
-        where kode_rekening = '$kode_rekening' AND id_dpa_detail is null";
-        $query = $this->db->query($sql)->result();
-        echo json_encode($query);
-    }
-
-    public function get_data_tabel_usulan_dropdown_detail(){
-
-        $id_rincian = $this->input->post('id_rincian');
-
-        $sql="Select rincian.* 
-        from rincian 
-        where id_dpa_detail is null
-        and rincian.id_rincian = $id_rincian
-        ";    
-        $query = $this->db->query($sql)->row();
-
-        echo json_encode($query);
-    }
-
-    public function update_rincian(){
-        $id_rincian = $this->input->post('id_rincian');
-        $id_dpa = $this->input->post('id_dpa');
-        $id_detail = $this->input->post('id_detail');
-        $alokasi = $this->input->post('alokasi');
-        $id_dpa_detail = array();
-        $pesan = '';
-
-         $this->db->where('id',$id_dpa)->update('sk_belanja', [
-            'alokasi_tahun2021'=> $alokasi
-        ]);
-
-        $id_dpa_detail_hapus = $this->input->post('id_dpa_detail_hapus');
-
-        if (is_array($id_dpa_detail_hapus) > 0) {
-            $hapus = $this->bersihkanRincianDetailUpdate($id_dpa_detail_hapus);
-        }
-
-        foreach ($id_detail as $k => $v) {
-            $dpa_detail = array(
-                'id_dpa' => (int)$id_dpa,
-                'id_detail' => (int)$v,
-                'jumlah' => 0,
-            );
-
-            $this->db->insert('dpa_detail', $dpa_detail);
-            array_push($id_dpa_detail, $this->db->insert_id());
-        }
-        
-        // jika berhasil di tambahkan ke dpa_detail
-        if (count($id_dpa_detail) > 0) {
-            foreach ($id_rincian as $k => $v) {
-                $rincian = array(
-                    'id_dpa_detail' => $id_dpa_detail[$k],
-                );
-                $id = array('id_rincian' => $v);
-                $this->db->update('rincian', $rincian, $id);
-                $pesan = 'berhasil update data';
-            }
-        } else {
-            $pesan = 'berhasil update data';
-        }
-        if ($hapus) {
-            $pesan = 'berhasil update data';
-        }
-        $this->session->set_flashdata('pesan_simpan', $pesan);
-        redirect(site_url('c_belanja/detail/'.$id_dpa));
-    }
-
-    public function bersihkanRincianDetailUpdate($id_dpa_detail){
-        foreach ($id_dpa_detail as $value) {
-            $this->db->where('id_dpa_detail', $value)->update('rincian', ['id_dpa_detail'=> null]);
-            $this->db->where('id_dpa_detail', $value)->delete('dpa_detail');
-        }
-
-        return true;
-    }
-
-    // phpnya yang ini
-    public function update_sk_alokasi()
+    public function getDetailUsulan($id_usulan)
     {
-        $alokasi = $this->input->post('alokasi');
-        $id_dpa = $this->input->post('id_dpa');
-        $this->db->where('id',$id_dpa)->update('sk_belanja', [
-            'alokasi_tahun2021'=> $alokasi
-        ]);
-
-        return true;
+        $data['getDetailUsulan']    = $this->M_admin->getDetailUsulan($id_usulan);
+        echo json_encode($data);    
     }
+    
+    public function getDetailUsulanUnit()
+    {
+        
+        $data['getDetailUsulanUnit'] = $this->M_admin->getDetailUsulanUnit($this->session->kode_ruangan);
+        $data['getItemUsulan']      = $this->M_admin->getItemUsulan();
+        $this->load->view('pengusul/header');
+        $this->load->view('perencana/v_usulan',$data);
+        $this->load->view('pengusul/footer');
+    }
+
+    public function getDetailRincian($id_rincian)
+    {
+        $data['getDetailRincian']    = $this->M_admin->getDetailRincian($id_rincian);
+        echo json_encode($data);    
+    }
+
+    public function tambahRincian()
+    {
+        $result="";
+        $id_usulan      = $this->input->post('id_usulan');
+        $nama_usulan    = $this->input->post('nama_usulan');
+        $spesifikasi    = $this->input->post('spesifikasi');
+        $satuan         = $this->input->post('satuan');
+        $harga          = $this->input->post('harga');
+        $kode_rekening  = $this->input->post('kode_rekening');
+        $koefisien      = $this->input->post('koefisien');
+        $jumlah         = $this->input->post('jumlah');
+        $unit_pengusul  = $this->session->kode_ruangan;
+
+        $awal = date('Y-m-d',strtotime('first day of january this year'));
+        $akhir = date('Y-m-d',strtotime('last day of december this year'));
+
+        $cekRincian = $this->M_admin->cekRincian($id_usulan,$awal,$akhir,$unit_pengusul);
+        if($cekRincian == TRUE){
+            $data=[ 'code'  => 2];
+        }else{
+            $data=[ 'result'    => $this->M_admin->tambahRincian($id_usulan,$nama_usulan,$spesifikasi,$satuan,$harga,$kode_rekening,$koefisien,$jumlah,$unit_pengusul),
+                'code'  => 1];
+        }
+        echo json_encode($data);
+    }
+
+    public function updateJumlah()
+    {
+        $result="";
+        $id_rincian     = $this->input->post('edt_id_rincian');
+        $id_usulan      = $this->input->post('edt_id_usulan');
+        $tgl_diusulkan  = $this->input->post('edt_tgl_diusulkan');
+        $harga          = $this->input->post('edt_harga');
+        $koefisien      = $this->input->post('edt_koefisien');
+        $jumlah         = $this->input->post('edt_jumlah');
+        $unit_pengusul  = $this->session->kode_ruangan;
+
+        $awal = date('Y-m-d',strtotime('first day of january this year'));
+        $akhir = date('Y-m-d',strtotime('last day of december this year'));
+
+        if($awal<=$tgl_diusulkan && $tgl_diusulkan<=$akhir){
+            $data=[ 'result'    =>  $this->M_admin->updateJumlah($id_rincian,$id_usulan,$awal,$akhir,$unit_pengusul,$koefisien,$jumlah),
+                'code'  => 1];
+        }else{
+            $data=[ 'code'  => 2];
+        }
+        echo json_encode($data);
+    }
+
+
+    public function hapusRincian($id_rincian)
+    {
+        // $id_rincian   = $this->input->post('id_rincian');
+        $result     = $this->M_admin->hapusRincian($id_rincian);
+        echo json_decode($result);
+    }
+/*=============================================================== USULAN ===============================================================*/
+
 
 }
+
+/* End of file C_Pengusul.php */
+
+
+?>

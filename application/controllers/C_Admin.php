@@ -305,8 +305,9 @@ class C_Admin extends CI_Controller {
 		$satuan 		= $this->input->post('satuan');
 		$harga_satuan 	= $this->input->post('harga_satuan');
 		$kode_rekening 	= $this->input->post('kode_rekening');
+		$status 		= $this->input->post('status');
 
-		$data=[ 'result'	=> $this->M_admin->tambahUsulan($nama_usulan,$spesifikasi,$satuan,$harga_satuan,$kode_rekening),
+		$data=[ 'result'	=> $this->M_admin->tambahUsulan($nama_usulan,$spesifikasi,$satuan,$harga_satuan,$kode_rekening,$status),
 				'code'	=> 1];
 
 		echo json_encode($data);
@@ -324,7 +325,7 @@ class C_Admin extends CI_Controller {
         $data['getDetailUsulanUnit'] = $this->M_admin->getDetailUsulanUnit($this->session->kode_ruangan);
         $data['getItemUsulan']      = $this->M_admin->getItemUsulan();
         $this->load->view('admin/header');
-        $this->load->view('karu/v_usulan',$data);
+        $this->load->view('perencana/v_usulan',$data);
         $this->load->view('admin/footer');
     }
 

@@ -104,8 +104,6 @@
                                 <select id="level" name="level" class="form-control select2" required>
                                     <option value="" hidden disabled selected>Pilih Level Akun</option>
                                     <option value="Admin">Admin</option>
-                                    <option value="Karu">Karu</option>
-                                    <option value="Kasubag">Kasubag</option>
                                     <option value="Pengusul">Pengusul</option>
                                     <option value="Perencana">Perencana</option>
                                 </select>
@@ -166,8 +164,6 @@
                                 <select id="edt_level" name="edt_level" class="form-control select2" required>
                                     <option value="" hidden disabled selected>Pilih Jika Ada Perubahan</option>
                                     <option value="Admin">Admin</option>
-                                    <option value="Karu">Karu</option>
-                                    <option value="Kasubag">Kasubag</option>
                                     <option value="Pengusul">Pengusul</option>
                                     <option value="Perencana">Perencana</option>
                                 </select>

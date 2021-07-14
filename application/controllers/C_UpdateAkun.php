@@ -36,10 +36,10 @@ class C_UpdateAkun extends CI_Controller {
 
         if($this->session->level == 'Admin'){
             redirect('C_Admin', 'refresh');
-        }else if($this->session->level == 'Karu'){
-            redirect('C_Karu', 'refresh');
+        }else if($this->session->level == 'Perencana'){
+            redirect('C_Perencana', 'refresh');
         }else{
-            redirect('C_Kasubid', 'refresh');
+            redirect('C_Pengusul', 'refresh');
         }
     }
 
@@ -52,10 +52,10 @@ class C_UpdateAkun extends CI_Controller {
 
         echo "<script>alert('Data Akun Berhasil Diupdate') </script>";
 
-        if($this->session->level == 'Karu'){
-            redirect('C_Karu', 'refresh');
+        if($this->session->level == 'Perencana'){
+            redirect('C_Perencana', 'refresh');
         }else{
-            redirect('C_Kasubid', 'refresh');
+            redirect('C_Pengusul', 'refresh');
         }
     }
 

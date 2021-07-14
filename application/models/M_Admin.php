@@ -244,7 +244,7 @@ class M_Admin extends CI_Model {
 	{
 		$this->db->select('*');
 		$this->db->from('item_usulan');
-		$this->db->where('status', 'aktif');
+		$this->db->where('status', 'Tampil');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -276,7 +276,7 @@ class M_Admin extends CI_Model {
 		return $query->result();
 	}
 
-	public function tambahUsulan($nama_usulan,$spesifikasi,$satuan,$harga_satuan,$kode_rekening)
+	public function tambahUsulan($nama_usulan,$spesifikasi,$satuan,$harga_satuan,$kode_rekening,$status)
 	{
 		$data = array(
 			'nama_usulan'	=> $nama_usulan,
@@ -284,7 +284,7 @@ class M_Admin extends CI_Model {
 			'satuan'		=> $satuan, 
 			'harga_satuan'	=> $harga_satuan, 
 			'kode_rekening'	=> $kode_rekening, 
-			'status'		=> "aktif",
+			'status'		=> $status,
 		);
 		$this->db->insert('item_usulan', $data);
 	}
