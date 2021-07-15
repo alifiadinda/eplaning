@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2021 at 03:52 AM
+-- Generation Time: Jul 15, 2021 at 10:51 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -32,7 +32,7 @@ CREATE TABLE `akun` (
   `username` varchar(255) NOT NULL,
   `password` varchar(100) NOT NULL,
   `nama` varchar(255) NOT NULL,
-  `level` enum('Kasubag','Karu','Admin','Pengusul','Perencana') NOT NULL DEFAULT 'Karu',
+  `level` enum('Admin','Pengusul','Perencana') NOT NULL DEFAULT 'Pengusul',
   `kode_ruangan` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -41,17 +41,17 @@ CREATE TABLE `akun` (
 --
 
 INSERT INTO `akun` (`id_akun`, `username`, `password`, `nama`, `level`, `kode_ruangan`) VALUES
-('2038331b5d11487e9250', 'adminkaru', '7c79dd68b400e6b0c9f99f8f221dae26', 'Admin Karu', 'Karu', 'WH_FARMA'),
+('2038331b5d11487e9250', 'adminkaru', '7c79dd68b400e6b0c9f99f8f221dae26', 'Admin Karu', 'Pengusul', 'WH_FARMA'),
 ('34e123e12598496e8f91', 'admin_it', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Admin', 'Admin', 'IT'),
 ('3c10a96684d94e11ac39', 'alifia', '81dc9bdb52d04dc20036dbd8313ed055', 'alifia', 'Pengusul', 'IT'),
-('44d363d0b2044708b813', 'penerima1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Penerima', 'Karu', 'TU'),
-('6a320de38ed245b880f4', 'perencana', 'bfd59291e825b5f2bbf1eb76569f8fe7', 'coba', 'Perencana', 'TU'),
+('44d363d0b2044708b813', 'penerima1', '5d93ceb70e2bf5daa84ec3d0cd2c731a', 'Tes Penerima', 'Pengusul', 'TU'),
+('6a320de38ed245b880f4', 'perencana', '7d70c522bf3c837573c10fb0d2fac500', 'Perencana-TU', 'Perencana', 'TU'),
 ('6ad5c5a6baa74a05a216', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Tes Admin IT', 'Admin', 'IT'),
 ('78e6ba3f91f24305a065', 'pengusul2', '593ed2cba21b6da0bae443364107a649', 'Tes Pengusul', 'Pengusul', 'WH_FARMA'),
-('bdac6a1ad28d464fb82b', 'adminkasubag', '31b8c943aab6287440162172e591c89f', 'Admin Kasubag', 'Kasubag', 'IT'),
-('c0db254b7a564f638463', 'kasubag', 'bfd59291e825b5f2bbf1eb76569f8fe7', 'kasubag', 'Kasubag', 'KEUANGAN'),
+('bdac6a1ad28d464fb82b', 'adminkasubag', '31b8c943aab6287440162172e591c89f', 'Admin Kasubag', 'Pengusul', 'IT'),
+('c0db254b7a564f638463', 'kasubag', 'bfd59291e825b5f2bbf1eb76569f8fe7', 'kasubag', 'Pengusul', 'KEUANGAN'),
 ('ed15ffcc26694a539cdc', 'asdasd', '130811dbd239c97bd9ce933de7349f20', 'Cek asd 123', 'Pengusul', 'TU'),
-('f32039aea4514af6b3e9', 'pengusul', '593ed2cba21b6da0bae443364107a649', 'Pengusul-HCU', 'Karu', 'HCU');
+('f32039aea4514af6b3e9', 'pengusul', '593ed2cba21b6da0bae443364107a649', 'Pengusul-HCU', 'Pengusul', 'HCU');
 
 -- --------------------------------------------------------
 
@@ -245,7 +245,7 @@ CREATE TABLE `item_usulan` (
   `satuan` varchar(100) NOT NULL,
   `harga_satuan` int(11) NOT NULL,
   `kode_rekening` varchar(255) NOT NULL,
-  `status` enum('aktif','nonaktif','','') NOT NULL DEFAULT 'aktif'
+  `status` enum('Tampil','Sembunyikan','','') NOT NULL DEFAULT 'Tampil'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -253,15 +253,19 @@ CREATE TABLE `item_usulan` (
 --
 
 INSERT INTO `item_usulan` (`id_usulan`, `nama_usulan`, `spesifikasi`, `satuan`, `harga_satuan`, `kode_rekening`, `status`) VALUES
-(1, 'Alkohol', '1000 ml', 'Botol', 31300, '5.1.02.01.01.0002', 'aktif'),
-(2, 'Elektro Surgical Unit', ' COVEDIEN VALLEYLAB FT10 FT SERIES', 'Unit', 620000000, '5.2.02.07.01.0023', 'aktif'),
-(3, 'Kalibrasi & Perbaikan X-Ray', '', 'Paket', 15781000, '5.1.02.03.02.0204', 'aktif'),
-(4, 'Kresek Kuning', '100 x 120 cm', 'pcs', 3000, '5.1.02.01.01.0030', 'aktif'),
-(5, 'Tempat makan sekali pakai', 'Plastik', 'pcs', 2500, '5.1.02.01.01.0030', 'aktif'),
-(6, 'Albumin 0285 -500', ' 2x 250 ml', 'set', 600000, '5.1.02.01.01.0002', 'aktif'),
-(7, 'stetoskop', '', 'unit', 100000, '5.1.02.03.02.0204', 'aktif'),
-(8, 'Tes Usulan Baru', '', 'pcs', 250000, '5.1.01.01.01.0001', 'aktif'),
-(9, 'Usulan Baru', 'Gaji Pegawai', 'org', 1000000, '5.1.01.01.01.0001', 'aktif');
+(1, 'Alkohol', '1000 ml', 'Botol', 31300, '5.1.02.01.01.0002', 'Tampil'),
+(2, 'Elektro Surgical Unit', ' COVEDIEN VALLEYLAB FT10 FT SERIES', 'Unit', 620000000, '5.2.02.07.01.0023', 'Tampil'),
+(3, 'Kalibrasi & Perbaikan X-Ray', '', 'Paket', 15781000, '5.1.02.03.02.0204', 'Tampil'),
+(4, 'Kresek Kuning', '100 x 120 cm', 'pcs', 3000, '5.1.02.01.01.0030', 'Tampil'),
+(5, 'Tempat makan sekali pakai', 'Plastik', 'pcs', 2500, '5.1.02.01.01.0030', 'Tampil'),
+(6, 'Albumin 0285 -500', ' 2x 250 ml', 'set', 600000, '5.1.02.01.01.0002', 'Tampil'),
+(7, 'stetoskop', '', 'unit', 100000, '5.1.02.03.02.0204', 'Tampil'),
+(8, 'Tes Gaji', '', 'pcs', 250000, '5.1.01.01.01.0001', 'Sembunyikan'),
+(9, 'Usulan Baru', 'Gaji Pegawai', 'org', 1000000, '5.1.01.01.01.0001', 'Sembunyikan'),
+(10, 'Tes Gaji Baru', 'dfas213', 'pack', 55000, '5.1.02.01.01.0040', 'Sembunyikan'),
+(11, 'tes1', 'zxcv1234', 'box', 25000, '5.2.02.05.02.0005', 'Sembunyikan'),
+(12, 'Tes Perencana', 'Tambah Item Baru', 'pcs', 123123, '5.2.02.07.01.0001', 'Sembunyikan'),
+(13, 'tes2 ', '100 x 120', 'unit', 28005, '5.1.02.04.01.0003', 'Sembunyikan');
 
 -- --------------------------------------------------------
 
@@ -388,7 +392,9 @@ INSERT INTO `rincian` (`id_rincian`, `id_dpa_detail`, `id_usulan`, `nama_usulan`
 (5, 2, 5, 'Tempat makan sekali pakai', 'Plastik', '44075', 'pcs', 2500, 0, 110187500, '5.1.02.01.01.0030', 'HCU', '2021-07-06'),
 (7, NULL, 6, 'Albumin 0285 -500', ' 2x 250 ml', '2', 'set', 600000, 0, 1200000, '5.1.02.01.01.0002', 'HCU', '2021-07-07'),
 (9, 5, 8, 'Tes Usulan Baru', '', '12', 'pcs', 250000, 0, 3000000, '5.1.01.01.01.0001', 'HCU', '2021-07-07'),
-(10, 4, 9, 'Usulan Baru', 'Gaji Pegawai', '20', 'org', 1000000, 0, 20000000, '5.1.01.01.01.0001', 'HCU', '2021-07-07');
+(10, 4, 9, 'Usulan Baru', 'Gaji Pegawai', '20', 'org', 1000000, 0, 20000000, '5.1.01.01.01.0001', 'HCU', '2021-07-07'),
+(12, NULL, 4, 'Kresek Kuning', '100 x 120 cm', '5', 'pcs', 3000, 0, 15000, '5.1.02.01.01.0030', 'IT', '2021-07-15'),
+(13, NULL, 3, 'Kalibrasi & Perbaikan X-Ray', '', '10', 'Paket', 15781000, 0, 157810000, '5.1.02.03.02.0204', 'IT', '2021-07-15');
 
 -- --------------------------------------------------------
 
@@ -461,7 +467,7 @@ CREATE TABLE `sk_belanja` (
 --
 
 INSERT INTO `sk_belanja` (`id`, `tanggal_sk`, `program`, `kegiatan`, `subkegiatan`, `indikator`, `target`, `alokasi_tahun2021`, `status`, `status_karu`, `status_karu_dpa`) VALUES
-(1, '2021-12-06', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)', 'Pengadaan Alat Kesehatan atau Alat Penunjang Medik Fasilitas Pelayanan Kesehatan', 'Jumlah pengadaan sarana penunjang pelayanan kesehatan', 100, 661000800, 'RKA', 0, 0),
+(1, '2021-12-06', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Fasilitas Pelayanan Kesehatan untuk UKM dan UKP Kewenangan Daerah Kabupaten /Kota (RSUD)', 'Pengadaan Alat Kesehatan atau Alat Penunjang Medik Fasilitas Pelayanan Kesehatan', 'Jumlah pengadaan sarana penunjang pelayanan kesehatan', 100, 600880800, 'RKA', 0, 0),
 (2, '2021-07-07', 'Program Pemenuhan Upaya Kesehatan Perorangan dan Upaya Kesehatan Masyarakat', 'Penyedia Layanan Kesehatan Untuk UKM dan UKP Rujukan Tingkat Daerah Kabupaten /Kota (RSUD)', 'Operasional Pelayanan RSUD', 'test', 100, 23000000, 'RKA', 0, 0);
 
 --
@@ -540,7 +546,7 @@ ALTER TABLE `dpa_detail`
 -- AUTO_INCREMENT for table `item_usulan`
 --
 ALTER TABLE `item_usulan`
-  MODIFY `id_usulan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_usulan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `rekening`
@@ -552,7 +558,7 @@ ALTER TABLE `rekening`
 -- AUTO_INCREMENT for table `rincian`
 --
 ALTER TABLE `rincian`
-  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_rincian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `sk_belanja`

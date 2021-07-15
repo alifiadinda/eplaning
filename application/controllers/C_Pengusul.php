@@ -392,7 +392,7 @@ class C_Pengusul extends CI_Controller {
         $data['getDetailUsulanUnit'] = $this->M_admin->getDetailUsulanUnit($this->session->kode_ruangan);
         $data['getItemUsulan']      = $this->M_admin->getItemUsulan();
         $this->load->view('pengusul/header');
-        $this->load->view('perencana/v_usulan',$data);
+        $this->load->view('pengusul/v_usulan',$data);
         $this->load->view('pengusul/footer');
     }
 

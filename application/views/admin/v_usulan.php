@@ -117,14 +117,14 @@
                         </select>
                       </div>
 
-                       <div class="col-md-12">
-                            <label for="title">Status</label>
-                            <select id="status" name="status" class="form-control select2" required>
-                                <option value="" hidden disabled selected>Pilih Status</option>
-                                <option value="Tampil">Tampil</option>
-                                <option value="Sembunyikan">Sembunyikan</option>
-                            </select>
-                        </div>
+                      <div class="col-md-12">
+                        <label for="title">Status</label>
+                        <select id="status" name="status" class="form-control select2" required>
+                            <option value="" hidden disabled selected>Pilih Status</option>
+                            <option value="Tampil">Tampil</option>
+                            <option value="Sembunyikan">Sembunyikan</option>
+                        </select>
+                    </div>
                     
                     </div>
                     </div>
@@ -217,7 +217,7 @@
 <script>
 
     $(document).ready( function () {
-        $('.table').DataTable({ "info": false,});
+        // $('.table').DataTable({ "info": false,});
 
         /*TAMBAH USULAN*/
             $('#tambahUsulan').submit(function(e){

@@ -297,6 +297,12 @@ class C_Admin extends CI_Controller {
         $this->load->view('admin/footer');	
 	}
 
+	public function getDetailRincian($id_rincian)
+    {
+        $data['getDetailRincian']    = $this->M_admin->getDetailRincian($id_rincian);
+        echo json_encode($data);    
+    }
+
 	public function tambahUsulan()
 	{
 		$result="";
@@ -325,7 +331,7 @@ class C_Admin extends CI_Controller {
         $data['getDetailUsulanUnit'] = $this->M_admin->getDetailUsulanUnit($this->session->kode_ruangan);
         $data['getItemUsulan']      = $this->M_admin->getItemUsulan();
         $this->load->view('admin/header');
-        $this->load->view('perencana/v_usulan',$data);
+        $this->load->view('admin/v_usulan_detail',$data);
         $this->load->view('admin/footer');
     }
 
@@ -356,6 +362,63 @@ class C_Admin extends CI_Controller {
 
 /*=============================================================== USULAN ===============================================================*/
 
+/*=============================================================== RINCIAN USULAN ===============================================================*/
+	public function tambahRincian()
+    {
+        $result="";
+        $id_usulan      = $this->input->post('id_usulan');
+        $nama_usulan    = $this->input->post('nama_usulan');
+        $spesifikasi    = $this->input->post('spesifikasi');
+        $satuan         = $this->input->post('satuan');
+        $harga          = $this->input->post('harga');
+        $kode_rekening  = $this->input->post('kode_rekening');
+        $koefisien      = $this->input->post('koefisien');
+        $jumlah         = $this->input->post('jumlah');
+        $unit_pengusul  = $this->session->kode_ruangan;
+
+        $awal = date('Y-m-d',strtotime('first day of january this year'));
+        $akhir = date('Y-m-d',strtotime('last day of december this year'));
+
+        $cekRincian = $this->M_admin->cekRincian($id_usulan,$awal,$akhir,$unit_pengusul);
+        if($cekRincian == TRUE){
+            $data=[ 'code'  => 2];
+        }else{
+            $data=[ 'result'    => $this->M_admin->tambahRincian($id_usulan,$nama_usulan,$spesifikasi,$satuan,$harga,$kode_rekening,$koefisien,$jumlah,$unit_pengusul),
+                'code'  => 1];
+        }
+        echo json_encode($data);
+    }
+
+    public function updateJumlah()
+    {
+        $result="";
+        $id_rincian     = $this->input->post('edt_id_rincian');
+        $id_usulan      = $this->input->post('edt_id_usulan');
+        $tgl_diusulkan  = $this->input->post('edt_tgl_diusulkan');
+        $harga          = $this->input->post('edt_harga');
+        $koefisien      = $this->input->post('edt_koefisien');
+        $jumlah         = $this->input->post('edt_jumlah');
+        $unit_pengusul  = $this->session->kode_ruangan;
+
+        $awal = date('Y-m-d',strtotime('first day of january this year'));
+        $akhir = date('Y-m-d',strtotime('last day of december this year'));
+
+        if($awal<=$tgl_diusulkan && $tgl_diusulkan<=$akhir){
+            $data=[ 'result'    =>  $this->M_admin->updateJumlah($id_rincian,$id_usulan,$awal,$akhir,$unit_pengusul,$koefisien,$jumlah),
+                'code'  => 1];
+        }else{
+            $data=[ 'code'  => 2];
+        }
+        echo json_encode($data);
+    }
+
+
+    public function hapusRincian($id_rincian)
+    {
+        $result     = $this->M_admin->hapusRincian($id_rincian);
+        echo json_decode($result);
+    }
 }
+/*=============================================================== RINCIAN USULAN ===============================================================*/
 
 ?>

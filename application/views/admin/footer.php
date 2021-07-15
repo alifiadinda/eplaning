@@ -39,5 +39,6 @@
 <script>
 	$(document).ready(function() {
 		$('.select2').select2();
+		$('.table').DataTable({ "info": false,});
 	})
 </script>

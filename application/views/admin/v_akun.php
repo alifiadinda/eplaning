@@ -12,7 +12,8 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover" id="listAkun" width="100%" cellspacing="0">
+                            <!-- <table class="table table-bordered table-hover" id="listAkun" width="100%" cellspacing="0"> -->
+                            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
                             <thead>
                                 <tr align='center'>
                                     <th>NOMOR</th>
@@ -237,7 +238,7 @@
 
 <script>
     $(document).ready(function() {
-        $('.table').DataTable({ "info": false,});
+        // $('.table').DataTable({ "info": false,});
 
         $('#formRegis').submit(function(e){
             e.preventDefault();
